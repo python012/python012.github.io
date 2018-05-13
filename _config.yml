@@ -78,6 +78,6 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:git
-  repo:https://github.com/python012/python012.github.io
+  type: git
+  repo: https://github.com/python012/python012.github.io
   branch: master
