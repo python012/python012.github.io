@@ -1,5 +1,5 @@
 # Header
-navbar_brand: true
+navbar_brand: false
 menu:
   Home: index.html
   Archives: archives/
