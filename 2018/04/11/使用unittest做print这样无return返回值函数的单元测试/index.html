@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python," />
+  <meta name="keywords" content="python,unittest," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
-<meta name="keywords" content="python">
+<meta name="description" content="在看Python里自带的一个单元测试库unittest，有个有意思的应用是可以对类似于print()这样无return返回值的函数做验证。见下面代码。 123456789101112131415161718192021222324252627282930#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock imp">
+<meta name="keywords" content="python,unittest">
 <meta property="og:type" content="article">
-<meta property="og:title" content="不使用IDE的情况下，导入自定义Python module的最佳实践">
-<meta property="og:url" content="http://yoursite.com/2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/index.html">
+<meta property="og:title" content="使用unittest做print这样无return返回值函数的单元测试">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
+<meta property="og:description" content="在看Python里自带的一个单元测试库unittest，有个有意思的应用是可以对类似于print()这样无return返回值的函数做验证。见下面代码。 123456789101112131415161718192021222324252627282930#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock imp">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-14T15:28:27.665Z">
+<meta property="og:updated_time" content="2018-05-14T15:26:09.016Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="不使用IDE的情况下，导入自定义Python module的最佳实践">
-<meta name="twitter:description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
+<meta name="twitter:title" content="使用unittest做print这样无return返回值函数的单元测试">
+<meta name="twitter:description" content="在看Python里自带的一个单元测试库unittest，有个有意思的应用是可以对类似于print()这样无return返回值的函数做验证。见下面代码。 123456789101112131415161718192021222324252627282930#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock imp">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/"/>
 
 
 
 
 
-  <title>不使用IDE的情况下，导入自定义Python module的最佳实践 | 小码奔腾</title>
+  <title>使用unittest做print这样无return返回值函数的单元测试 | 小码奔腾</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">不使用IDE的情况下，导入自定义Python module的最佳实践</h1>
+          <h1 class="post-title" itemprop="name headline">使用unittest做print这样无return返回值函数的单元测试</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-04T21:38:19+08:00">
-                2018-05-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-11T21:40:29+08:00">
+                2018-04-11
               </time>
             
 
@@ -300,16 +300,12 @@
       
 
       
-        <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。</p>
-<p>今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了这个问题，看看有没有什么更好的办法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">base_path = os.path.dirname(os.path.abspath(__file__)) + <span class="string">'\\..\\'</span></span><br><span class="line"></span><br><span class="line">sys.path.append(base_path) <span class="comment">#这里临时性的把项目目录加入到系统路径中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.config_reader <span class="keyword">import</span> ConfigReader <span class="comment">#这样才可以导入位置在 ../utils/config_reader.py 里的 ConfigReader 类</span></span><br><span class="line">print(ConfigReader)</span><br></pre></td></tr></table></figure>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。</p>
-<p>方法1是针对应用了pytest框架的测试项目的，例如有如下项目结构。</p>
-<p><pre><br>  TEST_PROJECT<br>     /testlogin<br>        test_login.py<br>     /util<br>        <strong>init</strong>.py<br>        global_values.py<br>    conftest.py<br><code></code></pre></p>
-<p>项目中定义了一个包<code>util</code>，其中有模块<code>global_values.py</code>，在另一个目录<code>testlogin</code>中有<code>test_login.py</code>希望导入模块<code>global_values.py</code>，这里就需要在项目根目录下创建一个<code>conftest.py</code>文件（内容为空也是允许的），这样，当在项目根目录下执行pytest来启动测试的时候，pytest会帮你识别整个项目目录中的各种自定义模块，不会出现找不到模块的问题。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> util <span class="keyword">import</span> global_values <span class="comment">#导入自定义模块</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">()</span>:</span></span><br><span class="line">    print(global_values.USER_NAME)</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">5</span> == <span class="number">5</span></span><br></pre></td></tr></table></figure>
-<p>通过这个解答，我发现pytest里对conftest.py的应用还挺有意思的，<a href="https://stackoverflow.com/questions/34466027/in-py-test-what-is-the-use-of-conftest-py-files" target="_blank" rel="noopener">stackoverflow里这篇解答</a>写的很棒，值得一看！</p>
-<p>另一个方法是通过配置一个系统变量PYTHONPATH，python在查找module的时候会这个变量定义的目录里去查找，所以在不同平台下临时性定义这个系统变量，也是个解决导入自定义模块的办法。我猜想PyCharm就是用了这个方法来让用户方便导入模块的吧。</p>
+        <p>在看Python里自带的一个单元测试库unittest，有个有意思的应用是可以对类似于print()这样无return返回值的函数做验证。见下面代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'My name is '</span> + self.name)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FuncTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_print_name01</span><span class="params">(self)</span>:</span></span><br><span class="line">        john = Person(<span class="string">'John'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">            john.print_name()</span><br><span class="line">            mocked_print.assert_called_with(<span class="string">'My name is John'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_print_name02</span><span class="params">(self)</span>:</span></span><br><span class="line">        john = Person(<span class="string">'Donald'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">            john.print_name()</span><br><span class="line">            mocked_print.assert_called_with(<span class="string">'My name is Donald'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>执行结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">reedx:garrulous_py_practice reed$ python3 py_unittest_01.py</span><br><span class="line">..</span><br><span class="line">------------------------------------</span><br><span class="line">Ran 2 tests <span class="keyword">in</span> 0.001s</span><br><span class="line"> </span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>其中的<code>with patch(&#39;builtins.print&#39;) as mocked_print:</code> 语句是在with的block里，将内置函数print替换为mocked_print函数，再去block里执行print，实际也就是在执行mocked_print函数，然后去检查mocked_print函数是否收到同样的传入参数，也即检查了print语句的输出（print语句自然是传入什么样的字符串，就输出打印出什么样的字符串）。</p>
+<p>显而易见，这就是去验证目标函数或者方法的传入参数，单元测试里可以应用的范围很广。</p>
 
       
     </div>
@@ -329,6 +325,8 @@
           
             <a href="/tags/python/" rel="tag"># python</a>
           
+            <a href="/tags/unittest/" rel="tag"># unittest</a>
+          
         </div>
       
 
@@ -340,18 +338,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/19/python程序中将常量放在同一个文件里并防止修改/" rel="next" title="python程序中将常量放在同一个文件里并防止修改">
-                <i class="fa fa-chevron-left"></i> python程序中将常量放在同一个文件里并防止修改
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/08/pytest测试框架中的setup和tearDown/" rel="prev" title="pytest测试框架中的setup和tearDown">
-                pytest测试框架中的setup和tearDown <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/14/Python的单元测试unittest中的Mock使用小结/" rel="prev" title="Python的单元测试unittest中的Mock使用小结">
+                Python的单元测试unittest中的Mock使用小结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -409,17 +403,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -470,22 +455,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-1"><span class="nav-number">1.</span> <span class="nav-text">Part 1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-2"><span class="nav-number">2.</span> <span class="nav-text">Part 2</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -668,9 +637,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = '2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/';
-        var commenthub_url = 'http://yoursite.com/2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/';
-        var commenthub_title = '不使用IDE的情况下，导入自定义Python module的最佳实践';
+        var commenthub_identifier = '2018/04/11/使用unittest做print这样无return返回值函数的单元测试/';
+        var commenthub_url = 'http://yoursite.com/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/';
+        var commenthub_title = '使用unittest做print这样无return返回值函数的单元测试';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;
