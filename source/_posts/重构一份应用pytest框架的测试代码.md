@@ -7,8 +7,8 @@ tags: [python, pytest, 重构]
 项目中有份API测试的代码的结构大致如下
 
 > /api_test   
->     --  test_device_api01_via_lan.py   
->     --  test_device_api02_via_lan.py
+>     -- test_device_api01_via_lan.py   
+>     -- test_device_api02_via_lan.py
 >     -- test_device_api03_via_lan.py   
 >     -- test_device_api01_via_wan.py
 >     -- test_device_api02_via_wan.py   
