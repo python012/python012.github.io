@@ -364,6 +364,11 @@ disqus:
   shortname:
   count: true
 
+commenthub:
+  enable: true
+  id: your_id
+  site: your_website_url
+
 # Hypercomments
 #hypercomments_id:
 
