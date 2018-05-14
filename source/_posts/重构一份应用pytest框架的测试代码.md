@@ -1,7 +1,7 @@
 ---
 title: 重构一份应用pytest框架的测试代码
 date: 2018-05-13 22:27:15
-tags:
+tags: [python, pytest, 重构]
 ---
 
 项目中有份API测试的代码的结构大致如下
