@@ -366,8 +366,8 @@ disqus:
 
 commenthub:
   enable: true
-  id: your_id
-  site: your_website_url
+  id: 2948441
+  site: https://python012.github.io/
 
 # Hypercomments
 #hypercomments_id:
