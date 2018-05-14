@@ -23,7 +23,6 @@ sys.path.append(base_path) #这里临时性的把项目目录加入到系统路�
 from utils.config_reader import ConfigReader #这样才可以导入位置在 ../utils/config_reader.py 里的 ConfigReader 类
 print(ConfigReader)
 ```
-
 # Part 2
 
 CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。
