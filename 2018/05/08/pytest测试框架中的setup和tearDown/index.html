@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="python,pytest," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="记录一些和自动化测试、CI有关的想法">
-<meta name="keywords" content="自动化测试 Python CI Jenkins Java">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小码奔腾">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="最近对pytest比较感兴趣，看了pytest的文档classic xunit-style setup，这里做个小结，直接看代码。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717">
+<meta name="keywords" content="python,pytest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest测试框架中的setup和tearDown">
+<meta property="og:url" content="http://yoursite.com/2018/05/08/pytest测试框架中的setup和tearDown/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="记录一些和自动化测试、CI有关的想法">
+<meta property="og:description" content="最近对pytest比较感兴趣，看了pytest的文档classic xunit-style setup，这里做个小结，直接看代码。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-05-14T12:53:49.216Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小码奔腾">
-<meta name="twitter:description" content="记录一些和自动化测试、CI有关的想法">
+<meta name="twitter:title" content="pytest测试框架中的setup和tearDown">
+<meta name="twitter:description" content="最近对pytest比较感兴趣，看了pytest的文档classic xunit-style setup，这里做个小结，直接看代码。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/08/pytest测试框架中的setup和tearDown/"/>
 
 
 
 
 
-  <title>小码奔腾</title>
+  <title>pytest测试框架中的setup和tearDown | 小码奔腾</title>
   
 
 
@@ -144,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,141 +218,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/13/重构一份应用pytest框架的测试代码/" itemprop="url">重构一份应用pytest框架的测试代码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-13T22:27:15+08:00">
-                2018-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>项目中有份API测试的代码的结构大致如下</p>
-<blockquote>
-<p>/api_test<br>    –  test_device_api01_via_lan.py<br>    –  test_device_api02_via_lan.py<br>    – test_device_api03_via_lan.py<br>    – test_device_api01_via_wan.py<br>    – test_device_api02_via_wan.py<br>    – test_device_api03_via_wan.py</p>
-</blockquote>
-<p>很容易猜到其实这里是重复的2份代码，只是因为执行测试的时候，有一份是通过lan测试，另一份是通过wan测试。每次修改代码，还需要把修改同步到相应的lan或者wan的代码上去……</p>
-<p>但是又不能简单的做个循环，把lan/wan的地址丢进去当参数，因为项目目前运行是需要收集JUnit格式的测试报告的，优化代码后，还需要拿到和之前一样或者差不多的报告，好显示在Jenkins上。</p>
-<p>今天实在不能忍了，花点时间研究了下，有如下解决办法。</p>
-<p>项目根目录上新建一个conftest.py，内容如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pytest_generate_tests</span><span class="params">(metafunc)</span>:</span></span><br><span class="line">    idlist = []</span><br><span class="line">    argvalues = []</span><br><span class="line">    <span class="keyword">for</span> scenario <span class="keyword">in</span> metafunc.cls.scenarios:</span><br><span class="line">        idlist.append(scenario[<span class="number">0</span>])</span><br><span class="line">        items = scenario[<span class="number">1</span>].items()</span><br><span class="line">        argnames = [x[<span class="number">0</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]</span><br><span class="line">        argvalues.append(([x[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]))</span><br><span class="line">    metafunc.parametrize(argnames, argvalues, ids=idlist, scope=<span class="string">"class"</span>)</span><br><span class="line"></span><br><span class="line">scenario1 = (<span class="string">'LAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.baidu.com'</span>&#125;)</span><br><span class="line">scenario2 = (<span class="string">'WAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.sohu.com'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<p>tests目录下任一个test模块，大致做如下修改</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> conftest <span class="keyword">import</span> scenario1, scenario2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestLogin</span><span class="params">(object)</span>:</span></span><br><span class="line">    scenarios = [scenario1, scenario2]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_01</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"www"</span> <span class="keyword">in</span> URL</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_02</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"ok"</span> == <span class="string">"ok"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_03</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"sohu"</span> <span class="keyword">in</span> URL</span><br></pre></td></tr></table></figure>
-<p>然后执行以上测试的时候，虽然代码里只写了3个测试，实际上pytest会生成以下6个测试，生成的JUnit测试报告也会有这6个测试的测试结果。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ pytest --collect-only tests/test_api01.py</span><br><span class="line">============= <span class="built_in">test</span> session starts ======</span><br><span class="line">platform darwin -- Python 3.6.5, pytest-3.5.1, py-1.5.3, pluggy-0.6.0</span><br><span class="line">rootdir: /Users/reed/Documents/dev/pytest_proj, inifile:</span><br><span class="line">collected 6 items</span><br><span class="line">&lt;Module <span class="string">'tests/test_api01.py'</span>&gt;</span><br><span class="line">  &lt;Class <span class="string">'TestLogin'</span>&gt;</span><br><span class="line">    &lt;Instance <span class="string">'()'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[WAN]'</span>&gt;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -382,9 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/08/pytest测试框架中的setup和tearDown/" itemprop="url">pytest测试框架中的setup和tearDown</a></h1>
+          <h1 class="post-title" itemprop="name headline">pytest测试框架中的setup和tearDown</h1>
         
 
         <div class="post-meta">
@@ -434,9 +300,7 @@
       
 
       
-        
-          
-            <p>最近对pytest比较感兴趣，看了pytest的文档<a href="https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup" target="_blank" rel="noopener">classic xunit-style setup</a>，这里做个小结，直接看代码。</p>
+        <p>最近对pytest比较感兴趣，看了pytest的文档<a href="https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup" target="_blank" rel="noopener">classic xunit-style setup</a>，这里做个小结，直接看代码。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_websites.py</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Setup/teardown in pytest, see https://docs.pytest.org/en/3.5.1/xunit_setup.html</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Remarks:</span></span><br><span class="line"><span class="string">1. setup/teardown的结对函数在测试进程中可以被调用多次的。</span></span><br><span class="line"><span class="string">2. 如果setup函数在执行时失败或被skipped了，相应的tearDown函数不会被调用。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setup_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的setup，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行之前，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print()</span><br><span class="line">    print(<span class="string">"-------------- setup before module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">teardown_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的teardown，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行完成之后，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print(<span class="string">"-------------- teardown after module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBaidu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"test baidu login function"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSohu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个class级别的setup函数，它会在这个测试类TestSohu里</span></span><br><span class="line"><span class="string">        所有test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ setup before class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">         <span class="string">""" 这是一个class级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里所有test执行完之后，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ teardown after class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的setup函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- setup before each method ---"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之后，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- teardown after each method ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu login"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_logout</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu logout"</span>)</span><br><span class="line">        pytest.skip()</span><br></pre></td></tr></table></figure>
 <p>pytest中的setup/teardown还有一个更推荐的实现方法是去使用pytest.fixture特性，上面这种经典的setup/teardown，pytest表示也会继续支持。下面准备总结下用pytest.fixture实现setup/teardown的方法。</p>
 <p>下面内容是阅读文档<a href="https://docs.pytest.org/en/latest/fixture.html" target="_blank" rel="noopener">pytest fixtures: explicit, modular, scalable</a>的一些总结，pytest fixture功能很丰富，功能远不止用来构建测试中传统的setup/teardown。</p>
@@ -448,8 +312,6 @@
 <p>fixture如果不用到yield，则只是把fixture函数里返回的值，作为参数给到使用fixture的函数，代码如下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fruit_name</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  <span class="string">"apple"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_fruit</span><span class="params">(fruit_name)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"apple"</span> == fruit_name</span><br></pre></td></tr></table></figure>
 
-          
-        
       
     </div>
     
@@ -464,14 +326,38 @@
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/pytest/" rel="tag"># pytest</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/13/重构一份应用pytest框架的测试代码/" rel="prev" title="重构一份应用pytest框架的测试代码">
+                重构一份应用pytest框架的测试代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -481,10 +367,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -492,6 +379,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -697,6 +588,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
