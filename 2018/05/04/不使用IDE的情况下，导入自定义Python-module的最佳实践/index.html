@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
+<meta name="description" content="Part One微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不使用IDE的情况下，导入自定义Python module的最佳实践">
 <meta property="og:url" content="http://yoursite.com/2018/05/04/不使用IDE的情况下，导入自定义Python-module的最佳实践/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
+<meta property="og:description" content="Part One微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-14T15:28:27.665Z">
+<meta property="og:updated_time" content="2018-05-15T12:20:04.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不使用IDE的情况下，导入自定义Python module的最佳实践">
-<meta name="twitter:description" content="Part 1微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了">
+<meta name="twitter:description" content="Part One微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。 今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上">
 
 
 
@@ -238,7 +238,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -300,10 +300,10 @@
       
 
       
-        <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。</p>
+        <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。</p>
 <p>今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了这个问题，看看有没有什么更好的办法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">base_path = os.path.dirname(os.path.abspath(__file__)) + <span class="string">'\\..\\'</span></span><br><span class="line"></span><br><span class="line">sys.path.append(base_path) <span class="comment">#这里临时性的把项目目录加入到系统路径中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.config_reader <span class="keyword">import</span> ConfigReader <span class="comment">#这样才可以导入位置在 ../utils/config_reader.py 里的 ConfigReader 类</span></span><br><span class="line">print(ConfigReader)</span><br></pre></td></tr></table></figure>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。</p>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。</p>
 <p>方法1是针对应用了pytest框架的测试项目的，例如有如下项目结构。</p>
 <p><pre><br>  TEST_PROJECT<br>     /testlogin<br>        test_login.py<br>     /util<br>        <strong>init</strong>.py<br>        global_values.py<br>    conftest.py<br><code></code></pre></p>
 <p>项目中定义了一个包<code>util</code>，其中有模块<code>global_values.py</code>，在另一个目录<code>testlogin</code>中有<code>test_login.py</code>希望导入模块<code>global_values.py</code>，这里就需要在项目根目录下创建一个<code>conftest.py</code>文件（内容为空也是允许的），这样，当在项目根目录下执行pytest来启动测试的时候，pytest会帮你识别整个项目目录中的各种自定义模块，不会出现找不到模块的问题。</p>
@@ -423,6 +423,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
               <p class="site-author-name" itemprop="name">Reed Xia</p>
               <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
           </div>
@@ -434,7 +438,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -447,7 +451,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -457,6 +461,16 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pytho012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -480,7 +494,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-1"><span class="nav-number">1.</span> <span class="nav-text">Part 1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-2"><span class="nav-number">2.</span> <span class="nav-text">Part 2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-One"><span class="nav-number">1.</span> <span class="nav-text">Part One</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-Two"><span class="nav-number">2.</span> <span class="nav-text">Part Two</span></a></li></ol></div>
             
 
           </div>
@@ -510,17 +524,13 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
-
-
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
 
 
         

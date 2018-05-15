@@ -238,7 +238,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -370,7 +370,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -436,10 +436,10 @@
       
         
           
-            <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>最近对pytest比较感兴趣，看了pytest的文档<a href="https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup" target="_blank" rel="noopener">classic xunit-style setup</a>，这里做个小结，直接看代码。</p>
+            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>最近对pytest比较感兴趣，看了pytest的文档<a href="https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup" target="_blank" rel="noopener">classic xunit-style setup</a>，这里做个小结，直接看代码。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_websites.py</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Setup/teardown in pytest, see https://docs.pytest.org/en/3.5.1/xunit_setup.html</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Remarks:</span></span><br><span class="line"><span class="string">1. setup/teardown的结对函数在测试进程中可以被调用多次的。</span></span><br><span class="line"><span class="string">2. 如果setup函数在执行时失败或被skipped了，相应的tearDown函数不会被调用。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setup_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的setup，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行之前，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print()</span><br><span class="line">    print(<span class="string">"-------------- setup before module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">teardown_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的teardown，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行完成之后，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print(<span class="string">"-------------- teardown after module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBaidu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"test baidu login function"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSohu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个class级别的setup函数，它会在这个测试类TestSohu里</span></span><br><span class="line"><span class="string">        所有test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ setup before class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">         <span class="string">""" 这是一个class级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里所有test执行完之后，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ teardown after class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的setup函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- setup before each method ---"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之后，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- teardown after each method ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu login"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_logout</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu logout"</span>)</span><br><span class="line">        pytest.skip()</span><br></pre></td></tr></table></figure>
 <p>pytest中的setup/teardown还有一个更推荐的实现方法是去使用pytest.fixture特性，上面这种经典的setup/teardown，pytest表示也会继续支持。下面准备总结下用pytest.fixture实现setup/teardown的方法。</p>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>下面内容是阅读文档<a href="https://docs.pytest.org/en/latest/fixture.html" target="_blank" rel="noopener">pytest fixtures: explicit, modular, scalable</a>的一些总结，pytest fixture功能很丰富，功能远不止用来构建测试中传统的setup/teardown。</p>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>下面内容是阅读文档<a href="https://docs.pytest.org/en/latest/fixture.html" target="_blank" rel="noopener">pytest fixtures: explicit, modular, scalable</a>的一些总结，pytest fixture功能很丰富，功能远不止用来构建测试中传统的setup/teardown。</p>
 <p>但是还是先看下用pytest.fixture特性写的setup/teardown，据<a href="https://stackoverflow.com/a/39401087/2526362" target="_blank" rel="noopener">stakoverflow上一哥们</a>说，这还是目前的最佳实践。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> utils.log <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">from</span> utils.config <span class="keyword">import</span> get_url</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chrome_driver</span><span class="params">(scope=<span class="string">"function"</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    scope="function"是scope的默认值，表示这是一个function级别的fixture</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(<span class="string">"setup() begin"</span>)</span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    driver.get(get_url())</span><br><span class="line">    print(<span class="string">"setup() end"</span>)</span><br><span class="line">    <span class="keyword">yield</span> driver </span><br><span class="line">    <span class="comment">#这里会返回driver，给使用这个fixture为参数的test_函数使用，</span></span><br><span class="line">    <span class="comment">#test_函数结束后，会回到这里，继续执行后面语句</span></span><br><span class="line">    print(<span class="string">"teardown() begin"</span>)</span><br><span class="line">    driver.close()</span><br><span class="line">    print(<span class="string">"teardown() end"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBaiDu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    locator_kw = (By.ID, <span class="string">'kw'</span>)</span><br><span class="line">    locator_su = (By.ID, <span class="string">'su'</span>)</span><br><span class="line">    locator_result = (By.XPATH, <span class="string">'//div[contains(@class, "result")]/h3/a'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_search_0</span><span class="params">(self, chrome_driver)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        这里的chrome_driver是在本模块中定义的fixture，这里输入</span></span><br><span class="line"><span class="string">        的参数是上面yield driver中返回的driver</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        chrome_driver.find_element(*self.locator_kw).send_keys(<span class="string">u'selenium 测试'</span>)</span><br><span class="line">        chrome_driver.find_element(*self.locator_su).click()</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">        links = chrome_driver.find_elements(*self.locator_result)</span><br><span class="line">        <span class="keyword">for</span> link <span class="keyword">in</span> links:</span><br><span class="line">            logger.info(link.text)</span><br></pre></td></tr></table></figure>
 <p>这样写看起来有点pythonic的味道，我理解写这样fixture形式的setup/teardown函数，主要还是给那些需要打开然后关闭的资源，比如上面例子中的浏览器driver，确实需要收尾（<code>driver.quit()</code>）。</p>
@@ -500,7 +500,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -566,10 +566,10 @@
       
         
           
-            <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。</p>
+            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。</p>
 <p>今天做了些探索，目前可行的方法大致如下，但是仍然不能算是最佳实践，已经在CPyUG上提了这个问题，看看有没有什么更好的办法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">base_path = os.path.dirname(os.path.abspath(__file__)) + <span class="string">'\\..\\'</span></span><br><span class="line"></span><br><span class="line">sys.path.append(base_path) <span class="comment">#这里临时性的把项目目录加入到系统路径中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils.config_reader <span class="keyword">import</span> ConfigReader <span class="comment">#这样才可以导入位置在 ../utils/config_reader.py 里的 ConfigReader 类</span></span><br><span class="line">print(ConfigReader)</span><br></pre></td></tr></table></figure>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。</p>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。</p>
 <p>方法1是针对应用了pytest框架的测试项目的，例如有如下项目结构。</p>
 <p><pre><br>  TEST_PROJECT<br>     /testlogin<br>        test_login.py<br>     /util<br>        <strong>init</strong>.py<br>        global_values.py<br>    conftest.py<br><code></code></pre></p>
 <p>项目中定义了一个包<code>util</code>，其中有模块<code>global_values.py</code>，在另一个目录<code>testlogin</code>中有<code>test_login.py</code>希望导入模块<code>global_values.py</code>，这里就需要在项目根目录下创建一个<code>conftest.py</code>文件（内容为空也是允许的），这样，当在项目根目录下执行pytest来启动测试的时候，pytest会帮你识别整个项目目录中的各种自定义模块，不会出现找不到模块的问题。</p>
@@ -629,7 +629,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -752,7 +752,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -878,7 +878,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1001,7 +1001,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1067,7 +1067,8 @@
       
         
           
-            <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>前面一篇博文简单说了使用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 被测函数中使用到了input需要自动化输入</span><br><span class="line"></span><br><span class="line">``` python</span><br><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">from unittest import TestCase</span><br><span class="line">from unittest.mock import patch</span><br><span class="line">from unittest import main</span><br><span class="line"></span><br><span class="line">def func_input():</span><br><span class="line">    name = input(&quot;Enter your name: &quot;)</span><br><span class="line">    print(&apos;Your name is &#123;&#125;&apos;.format(name))</span><br><span class="line"></span><br><span class="line">def test_func_input():</span><br><span class="line">    with patch(&apos;builtins.input&apos;) as mocked_input:</span><br><span class="line">        mocked_input.side_effect = (&apos;Jo&apos;,)  #当input的时候会输入Jo</span><br><span class="line">        with patch(&apos;builtins.print&apos;) as mocked_print:</span><br><span class="line">            func_input()</span><br><span class="line">            mocked_print.assert_called_with(&apos;Your name is Jo&apos;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>前面一篇博文简单说了使用<code>unittest.mock</code>对无返回值的函数做单元测试，这里是更多一些例子的总结。</p>
+<h2 id="被测函数中使用到了input需要自动化输入"><a href="#被测函数中使用到了input需要自动化输入" class="headerlink" title="被测函数中使用到了input需要自动化输入"></a>被测函数中使用到了input需要自动化输入</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_input</span><span class="params">()</span>:</span></span><br><span class="line">    name = input(<span class="string">"Enter your name: "</span>)</span><br><span class="line">    print(<span class="string">'Your name is &#123;&#125;'</span>.format(name))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_input</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">        mocked_input.side_effect = (<span class="string">'Jo'</span>,)  <span class="comment">#当input的时候会输入Jo</span></span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">            func_input()</span><br><span class="line">            mocked_print.assert_called_with(<span class="string">'Your name is Jo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <h2 id="需要验证函数是否被“被测函数“调用"><a href="#需要验证函数是否被“被测函数“调用" class="headerlink" title="需要验证函数是否被“被测函数“调用"></a>需要验证函数是否被“被测函数“调用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">    func_2()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"It's func 2!"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'func_2'</span>) <span class="keyword">as</span> mocked_func_2:</span><br><span class="line">        func_1()</span><br><span class="line">        mocked_func_2.assert_called_once()  <span class="comment">#断言mocked_func_2被调用过一次，在执行func_1()后</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <h2 id="mock-patch-和mock-patch-object-的区别"><a href="#mock-patch-和mock-patch-object-的区别" class="headerlink" title="mock.patch()和mock.patch.object()的区别"></a>mock.patch()和mock.patch.object()的区别</h2><p>这一块我还不是特别明白，搜索了下，大致区别如下</p>
 <blockquote>
@@ -1075,11 +1076,10 @@
 </blockquote>
 <p>有一个遗留问题，如下代码中，完全不能使用mock.patch()吗？</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># py_unittest.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'My name is '</span> + self.name)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        mother = input(<span class="string">"Enter mother's name: "</span>)</span><br><span class="line">        father = input(<span class="string">"Enter father's name: "</span>)</span><br><span class="line">     </span><br><span class="line">        print(<span class="string">"&#123;&#125;'s parents are &#123;&#125; and &#123;&#125;."</span>.format(self.name, mother, father))</span><br><span class="line">        self.fake_func()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fake_func</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FuncTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        john = Person(<span class="string">'John'</span>)</span><br><span class="line">             </span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">            mocked_input.side_effect = (<span class="string">'Jo'</span>, <span class="string">'Lee'</span>)</span><br><span class="line">            <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">                <span class="keyword">with</span> patch.object(Person, <span class="string">"fake_func"</span>) <span class="keyword">as</span> mocked_fake_func:</span><br><span class="line">                <span class="comment"># with patch('Person.fake_func') as mocked_fake_func: 启用这里的话，会报</span></span><br><span class="line">                <span class="comment"># 错 ModuleNotFoundError: No module named 'Person'</span></span><br><span class="line">                    john.print_parents()</span><br><span class="line">                    mocked_print.assert_called_with(<span class="string">"John's parents are Jo and Lee."</span>)</span><br><span class="line">                    mocked_fake_func.assert_called_once()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>今天研究了下，问题解决了，关键还是一个查找module的问题。</p>
-<p>##小结一个import的基础用法</p>
-<p>很多源代码里看到这样的用法，<code>from flask import Flask</code>，<code>from models.item import ItemModel</code>，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用<code>from person import Person</code>来导入<code>Person</code>类的话，可以这样做。</p>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>今天研究了下，问题解决了，关键还是一个查找module的问题。</p>
+<h2 id="小结一个import的基础用法"><a href="#小结一个import的基础用法" class="headerlink" title="小结一个import的基础用法"></a>小结一个import的基础用法</h2><p>很多源代码里看到这样的用法，<code>from flask import Flask</code>，<code>from models.item import ItemModel</code>，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用<code>from person import Person</code>来导入<code>Person</code>类的话，可以这样做。</p>
 <p>创建person目录，同时目录下有<code>__init__.py</code>和<code>person.py</code>两个文件，</p>
-<p><img src="https://img-blog.csdn.net/20180416203026947?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3B5dGhvbjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p><img src="/images/20180416203026947.png" alt=""></p>
 <p><code>person.py</code>中定义了一个<code>Person</code>类，有<code>__init__.py</code>文件存在，则会定义这个目录是一个module，同时文件内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__all__ = [<span class="string">'Person'</span>,]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .person <span class="keyword">import</span> Person</span><br></pre></td></tr></table></figure>
 <p>这样在其他module或者python代码里，就可以通过<code>from person import Person</code>来导入<code>Person</code>类了，假如<code>__init__.py</code>是空的，则需要使用<code>from person.person import Person</code>来导入<code>Person</code>类。</p>
@@ -1137,7 +1137,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1244,9 +1244,283 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/CI-CD在Jenkins上的简易实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/CI-CD在Jenkins上的简易实现/" itemprop="url">CI/CD在Jenkins上的简易实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T21:42:19+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Build-job"><a href="#Build-job" class="headerlink" title="Build job"></a>Build job</h2><p>在pipeline的最上游的Build job里的Configure里做如下设置，可使该job以1分钟1次的频率，去轮询Git repository里的代码，如果有更新，则即刻开始build。<code>* * * * *</code>表示轮询频率是每一天的每一分钟，这里是用的Cron表达式，具体可见<a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank" rel="noopener">Cron Format</a>。</p>
+<p><img src="/images/20180405214711474.png" alt=""></p>
+<p>Continous Delivery（持续交付），里面当然包含了自动化部署，以Java实现的web app项目为例，部署就需要拿到编译通过并打包好的war包文件，并部署到Tomcat服务器上。</p>
+<p>在job Configure -&gt; Build -&gt; <strong>Invoke top-level Maven targets</strong>里填入 <code>clean package</code>，然后在Post-build Actions里添加<strong>Archive the artifacts</strong>，填入<code>**/*.war</code>，表示寻找所有war文件并存档到workspace里。</p>
+<p>当然Build job里也是可以跑单元测试和做静态代码检查的。</p>
+<p>继续在Configure -&gt; Post-build Actions里添加<strong>Build other projects</strong>，在这里填入下游的staging job的名字。</p>
+<h2 id="Staging-job"><a href="#Staging-job" class="headerlink" title="Staging job"></a>Staging job</h2><p>在用来部署staging环境的job里，需要用到<a href="https://plugins.jenkins.io/copyartifact" target="_blank" rel="noopener">Copy Artifact</a>插件，和<a href="https://plugins.jenkins.io/deploy" target="_blank" rel="noopener">Deploy to container</a>插件。</p>
+<p>Configure-&gt;Build里添加<strong>Copy artifacts from another project</strong>，Artifact to copy里填<code>**/*.war</code>，Post-build Actions里添加<strong>Deploy war/ear to a container</strong>，Container里选择合适的容器，比如Tomcat 8.x，设置好Credentials和Tomcat URL，保存。顺利的话，至此，启动上游Build job成功后，会拉起这个staging job，会把war包部署到Tomcat里，这时候打开Tomcat下的web app的链接，就能看到运行的web app了，这也意味着可以开始下一步的产品测试，比如接口测试和Selenium实现的Web UI测试。</p>
+<p>最后使用<a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin" target="_blank" rel="noopener">Build Pipeline Plugin</a>插件，新建pipeline view，可获得下面的可视化的pipeline效果。</p>
+<p><img src="/images/20180407001336964.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/" itemprop="url">在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T18:11:08+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>需要的插件：</p>
+<ul>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Maven+Project+Plugin" target="_blank" rel="noopener">Maven Integration plugin</a></li>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin" target="_blank" rel="noopener">Checkstyle Plug-in</a></li>
+</ul>
+<p>具体步骤：</p>
+<ol>
+<li>新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。</li>
+<li>Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Jenkins-&gt;Gloabl Tool Configuration里设置的Maven name.</li>
+<li>Goals里填入Maven命令，比如clean package，这里为了添加Java静态代码检查功能，实际设置为<code>clean package checkstyle:checkstyle</code>。</li>
+<li>Post build actions里添加Publish Checkstyle analysis results，再Save。</li>
+<li>下次build即可见到代码质量报告，和非常具体的错误提示。</li>
+</ol>
+<p>效果如图</p>
+<p><img src="/images/20180405202722385.png" alt=""></p>
+<p><img src="/images/20180405202740728.png" alt=""></p>
+<hr>
+<p> 可选的其他静态代码检查工具插件：</p>
+<ul>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin" target="_blank" rel="noopener">PMD Jenkins plugin</a></li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin" target="_blank" rel="noopener">Findbugs Jenkins Plugin</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1279,6 +1553,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
               <p class="site-author-name" itemprop="name">Reed Xia</p>
               <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
           </div>
@@ -1290,7 +1568,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1303,7 +1581,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -1313,6 +1591,16 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pytho012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -1350,17 +1638,13 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
-
-
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
 
 
         

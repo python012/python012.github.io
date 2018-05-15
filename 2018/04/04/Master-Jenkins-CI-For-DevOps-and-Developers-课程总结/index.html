@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python,pytest,重构," />
+  <meta name="keywords" content="Jenkins,CI,DevOps," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
-<meta name="keywords" content="python,pytest,重构">
+<meta name="description" content="这个课程的内容不算多，不到一个星期就看完了，赶紧来做个总结和笔记。 课程中的内容大致分为3部分。  普通的Jenkins pipeline的创建。从github（git）上pull代码，触发的时间设置（Poll SCM），配置JDK、Maven、Git，配置Maven项目，Maven项目中clean package后收集生成的war包，job之间的触发的互相依赖，使用pipeline插件，让pip">
+<meta name="keywords" content="Jenkins,CI,DevOps">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重构一份应用pytest框架的测试代码">
-<meta property="og:url" content="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/index.html">
+<meta property="og:title" content="&#39;Master Jenkins CI For DevOps and Developers&#39;课程总结">
+<meta property="og:url" content="http://yoursite.com/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
+<meta property="og:description" content="这个课程的内容不算多，不到一个星期就看完了，赶紧来做个总结和笔记。 课程中的内容大致分为3部分。  普通的Jenkins pipeline的创建。从github（git）上pull代码，触发的时间设置（Poll SCM），配置JDK、Maven、Git，配置Maven项目，Maven项目中clean package后收集生成的war包，job之间的触发的互相依赖，使用pipeline插件，让pip">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-14T15:01:17.303Z">
+<meta property="og:image" content="http://yoursite.com/images/20180429212000957.png">
+<meta property="og:image" content="http://yoursite.com/images/UC-TG6ZI0V3.png">
+<meta property="og:updated_time" content="2018-05-15T13:26:04.058Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重构一份应用pytest框架的测试代码">
-<meta name="twitter:description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
+<meta name="twitter:title" content="&#39;Master Jenkins CI For DevOps and Developers&#39;课程总结">
+<meta name="twitter:description" content="这个课程的内容不算多，不到一个星期就看完了，赶紧来做个总结和笔记。 课程中的内容大致分为3部分。  普通的Jenkins pipeline的创建。从github（git）上pull代码，触发的时间设置（Poll SCM），配置JDK、Maven、Git，配置Maven项目，Maven项目中clean package后收集生成的war包，job之间的触发的互相依赖，使用pipeline插件，让pip">
+<meta name="twitter:image" content="http://yoursite.com/images/20180429212000957.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/"/>
 
 
 
 
 
-  <title>重构一份应用pytest框架的测试代码 | 小码奔腾</title>
+  <title>'Master Jenkins CI For DevOps and Developers'课程总结 | 小码奔腾</title>
   
 
 
@@ -233,7 +236,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
@@ -250,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">重构一份应用pytest框架的测试代码</h1>
+          <h1 class="post-title" itemprop="name headline">'Master Jenkins CI For DevOps and Developers'课程总结</h1>
         
 
         <div class="post-meta">
@@ -262,8 +265,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-13T22:27:15+08:00">
-                2018-05-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T00:07:47+08:00">
+                2018-04-04
               </time>
             
 
@@ -300,19 +303,44 @@
       
 
       
-        <p>项目中有份API测试的代码的结构大致如下</p>
+        <p>这个课程的内容不算多，不到一个星期就看完了，赶紧来做个总结和笔记。</p>
+<p>课程中的内容大致分为3部分。</p>
+<ul>
+<li>普通的Jenkins pipeline的创建。从github（git）上pull代码，触发的时间设置（Poll SCM），配置JDK、Maven、Git，配置Maven项目，Maven项目中clean package后收集生成的war包，job之间的触发的互相依赖，使用pipeline插件，让pipeline更加的可视化。</li>
+<li>Jenkins pipeline as code的实现，就是把pipeline的建立、各项具体配置都写在jenkinsfile里。在创建job的时候，选择pipeline而不是freestyle。</li>
+<li>Jenkins master和slave结构的建立。</li>
+</ul>
+<h2 id="Jenkins-master和slave结构的建立"><a href="#Jenkins-master和slave结构的建立" class="headerlink" title="Jenkins master和slave结构的建立"></a>Jenkins master和slave结构的建立</h2><p>重点记一下这部分。</p>
+<p>课程中的目标是，使用两台ubuntu主机，一台作为master，一台作为slave。为了方便起见，这里是申请了<a href="https://www.digitalocean.com/" target="_blank" rel="noopener">https://www.digitalocean.com/</a> 里的两台ubuntu 16.04LTS主机。</p>
+<p>先登陆master主机上安装Jenkins，具体命令</p>
+<ol>
+<li><code>wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -</code></li>
+<li><code>echo deb http://pkg.jenkins-ci.org/debian binary/ &gt; /etc/apt/sources.list.d/jenkins.list</code></li>
+<li><code>apt-get update</code></li>
+<li><code>apt-get install jenkins</code></li>
+</ol>
+<p>参考链接<a href="https://jenkins.io/doc/book/installing/#debian-ubuntu" target="_blank" rel="noopener">https://jenkins.io/doc/book/installing/#debian-ubuntu</a>，注意默认会去安装Jenkins的最新版，安装指定版本可用<code>apt-get install jenkins=2.67</code>。</p>
+<p>实际验证中发现Ubuntu主机上没有安装JDK，所以还要先安装jdk8。命令如下</p>
+<ol>
+<li><code>sudo add-apt-repository ppa:webupd8team/java</code></li>
+<li><code>sudo apt update</code></li>
+<li><code>sudo apt install oracle-java8-installer</code></li>
+</ol>
+<p>参考链接是<a href="http://tipsonubuntu.com/2016/07/31/install-oracle-java-8-9-ubuntu-16-04-linux-mint-18/" target="_blank" rel="noopener">http://tipsonubuntu.com/2016/07/31/install-oracle-java-8-9-ubuntu-16-04-linux-mint-18/</a></p>
+<p>还可以继续安装jre，命令是<code>sudo apt install oracle-java8-set-default</code>。</p>
+<p>另外在master的Ubuntu上安装Maven后，还需要去Global Tool Configuration里去配置JDK，Git和Maven的路径，下面是我配置的默认路径：</p>
+<p><img src="/images/20180429212000957.png" alt=""></p>
+<p>然后需要master主机上生成一对rsa密钥，再在master和slave上执行以下命令，达到可以无密码访问slave主机效果</p>
 <blockquote>
-<p>/api_test<br>    – test_device_api01_via_lan.py<br>    – test_device_api02_via_lan.py<br>    – test_device_api03_via_lan.py<br>    – test_device_api01_via_wan.py<br>    – test_device_api02_via_wan.py<br>    – test_device_api03_via_wan.py</p>
+<p>sudo -iu jenkins<br>ssh root@slave_ip mkdir -p .ssh<br>cat .ssh/id_rsa.pub | ssh root@slave_ip ‘cat &gt;&gt; .ssh/authorized_keys’</p>
 </blockquote>
-<p>很容易猜到其实这里是重复的2份代码，只是因为执行测试的时候，有一份是通过lan测试，另一份是通过wan测试。每次修改代码，还需要把修改同步到相应的lan或者wan的代码上去……</p>
-<p>但是又不能简单的做个循环，把lan/wan的地址丢进去当参数，因为项目目前运行是需要收集JUnit格式的测试报告的，优化代码后，还需要拿到和之前一样或者差不多的报告，好显示在Jenkins上。</p>
-<p>今天实在不能忍了，花点时间研究了下，有如下解决办法。</p>
-<p>项目根目录上新建一个conftest.py，内容如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pytest_generate_tests</span><span class="params">(metafunc)</span>:</span></span><br><span class="line">    idlist = []</span><br><span class="line">    argvalues = []</span><br><span class="line">    <span class="keyword">for</span> scenario <span class="keyword">in</span> metafunc.cls.scenarios:</span><br><span class="line">        idlist.append(scenario[<span class="number">0</span>])</span><br><span class="line">        items = scenario[<span class="number">1</span>].items()</span><br><span class="line">        argnames = [x[<span class="number">0</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]</span><br><span class="line">        argvalues.append(([x[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]))</span><br><span class="line">    metafunc.parametrize(argnames, argvalues, ids=idlist, scope=<span class="string">"class"</span>)</span><br><span class="line"></span><br><span class="line">scenario1 = (<span class="string">'LAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.baidu.com'</span>&#125;)</span><br><span class="line">scenario2 = (<span class="string">'WAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.sohu.com'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<p>tests目录下任一个test模块，大致做如下修改</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> conftest <span class="keyword">import</span> scenario1, scenario2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestLogin</span><span class="params">(object)</span>:</span></span><br><span class="line">    scenarios = [scenario1, scenario2]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_01</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"www"</span> <span class="keyword">in</span> URL</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_02</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"ok"</span> == <span class="string">"ok"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_03</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"sohu"</span> <span class="keyword">in</span> URL</span><br></pre></td></tr></table></figure>
-<p>然后执行以上测试的时候，虽然代码里只写了3个测试，实际上pytest会生成以下6个测试，生成的JUnit测试报告也会有这6个测试的测试结果。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ pytest --collect-only tests/test_api01.py</span><br><span class="line">============= <span class="built_in">test</span> session starts ======</span><br><span class="line">platform darwin -- Python 3.6.5, pytest-3.5.1, py-1.5.3, pluggy-0.6.0</span><br><span class="line">rootdir: /Users/reed/Documents/dev/pytest_proj, inifile:</span><br><span class="line">collected 6 items</span><br><span class="line">&lt;Module <span class="string">'tests/test_api01.py'</span>&gt;</span><br><span class="line">  &lt;Class <span class="string">'TestLogin'</span>&gt;</span><br><span class="line">    &lt;Instance <span class="string">'()'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[WAN]'</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>在slave主机上执行</p>
+<blockquote>
+<p>mkdir ~/bin<br>cd bin<br>wget <a href="http://master_ip:8080/jnlpJars/slave.jar" target="_blank" rel="noopener">http://master_ip:8080/jnlpJars/slave.jar</a></p>
+</blockquote>
+<p>打开运行master主机上的Jenkins主页，登陆后新建一个node，Remote root directory可填<code>/var/jenkins</code>，Launch command填<code>ssh root@slave_ip java -jar /root/bin/slave.jar</code>，保存后刷新页面，slave node应该就连接上了。后面就应该就简单了，可以继续配置slave node的lable，然后配置job在具体某个lable上执行。</p>
+<p>第一部分普通jenkins pipeline的建立，还需要再复习一下。</p>
+<p>完成课程后可以拿个证书。<br><img src="/images/UC-TG6ZI0V3.png" alt=""></p>
 
       
     </div>
@@ -330,11 +358,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
           
-            <a href="/tags/pytest/" rel="tag"># pytest</a>
+            <a href="/tags/CI/" rel="tag"># CI</a>
           
-            <a href="/tags/重构/" rel="tag"># 重构</a>
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
           
         </div>
       
@@ -347,8 +375,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/08/pytest测试框架中的setup和tearDown/" rel="next" title="pytest测试框架中的setup和tearDown">
-                <i class="fa fa-chevron-left"></i> pytest测试框架中的setup和tearDown
+              <a href="/2018/04/01/Enrolled-Master-Jenkins-CI-For-DevOps-and-Developers-！/" rel="next" title="Enrolled 'Master Jenkins CI For DevOps and Developers'！">
+                <i class="fa fa-chevron-left"></i> Enrolled 'Master Jenkins CI For DevOps and Developers'！
               </a>
             
           </div>
@@ -356,6 +384,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/" rel="prev" title="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
+                在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -412,8 +444,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -478,6 +519,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins-master和slave结构的建立"><span class="nav-number">1.</span> <span class="nav-text">Jenkins master和slave结构的建立</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -656,9 +713,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = '2018/05/13/重构一份应用pytest框架的测试代码/';
-        var commenthub_url = 'http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/';
-        var commenthub_title = '重构一份应用pytest框架的测试代码';
+        var commenthub_identifier = '2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/';
+        var commenthub_url = 'http://yoursite.com/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/';
+        var commenthub_title = '\'Master Jenkins CI For DevOps and Developers\'课程总结';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;

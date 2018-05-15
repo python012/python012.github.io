@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="python,pytest,重构," />
+  <meta name="keywords" content="Jenkins,CI," />
 
 
 
@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
-<meta name="keywords" content="python,pytest,重构">
+<meta name="description" content="Build job在pipeline的最上游的Build job里的Configure里做如下设置，可使该job以1分钟1次的频率，去轮询Git repository里的代码，如果有更新，则即刻开始build。* * * * *表示轮询频率是每一天的每一分钟，这里是用的Cron表达式，具体可见Cron Format。  Continous Delivery（持续交付），里面当然包含了自动化部署，以">
+<meta name="keywords" content="Jenkins,CI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重构一份应用pytest框架的测试代码">
-<meta property="og:url" content="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/index.html">
+<meta property="og:title" content="CI&#x2F;CD在Jenkins上的简易实现">
+<meta property="og:url" content="http://yoursite.com/2018/04/05/CI-CD在Jenkins上的简易实现/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
+<meta property="og:description" content="Build job在pipeline的最上游的Build job里的Configure里做如下设置，可使该job以1分钟1次的频率，去轮询Git repository里的代码，如果有更新，则即刻开始build。* * * * *表示轮询频率是每一天的每一分钟，这里是用的Cron表达式，具体可见Cron Format。  Continous Delivery（持续交付），里面当然包含了自动化部署，以">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-14T15:01:17.303Z">
+<meta property="og:image" content="http://yoursite.com/images/20180405214711474.png">
+<meta property="og:image" content="http://yoursite.com/images/20180407001336964.png">
+<meta property="og:updated_time" content="2018-05-15T13:08:45.540Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重构一份应用pytest框架的测试代码">
-<meta name="twitter:description" content="项目中有份API测试的代码的结构大致如下  /api_test    – test_device_api01_via_lan.py    – test_device_api02_via_lan.py    – test_device_api03_via_lan.py    – test_device_api01_via_wan.py    – test_device_api02_via_wan.p">
+<meta name="twitter:title" content="CI&#x2F;CD在Jenkins上的简易实现">
+<meta name="twitter:description" content="Build job在pipeline的最上游的Build job里的Configure里做如下设置，可使该job以1分钟1次的频率，去轮询Git repository里的代码，如果有更新，则即刻开始build。* * * * *表示轮询频率是每一天的每一分钟，这里是用的Cron表达式，具体可见Cron Format。  Continous Delivery（持续交付），里面当然包含了自动化部署，以">
+<meta name="twitter:image" content="http://yoursite.com/images/20180405214711474.png">
 
 
 
@@ -120,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/05/CI-CD在Jenkins上的简易实现/"/>
 
 
 
 
 
-  <title>重构一份应用pytest框架的测试代码 | 小码奔腾</title>
+  <title>CI/CD在Jenkins上的简易实现 | 小码奔腾</title>
   
 
 
@@ -233,7 +236,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/CI-CD在Jenkins上的简易实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
@@ -250,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">重构一份应用pytest框架的测试代码</h1>
+          <h1 class="post-title" itemprop="name headline">CI/CD在Jenkins上的简易实现</h1>
         
 
         <div class="post-meta">
@@ -262,8 +265,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-13T22:27:15+08:00">
-                2018-05-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T21:42:19+08:00">
+                2018-04-05
               </time>
             
 
@@ -300,19 +303,16 @@
       
 
       
-        <p>项目中有份API测试的代码的结构大致如下</p>
-<blockquote>
-<p>/api_test<br>    – test_device_api01_via_lan.py<br>    – test_device_api02_via_lan.py<br>    – test_device_api03_via_lan.py<br>    – test_device_api01_via_wan.py<br>    – test_device_api02_via_wan.py<br>    – test_device_api03_via_wan.py</p>
-</blockquote>
-<p>很容易猜到其实这里是重复的2份代码，只是因为执行测试的时候，有一份是通过lan测试，另一份是通过wan测试。每次修改代码，还需要把修改同步到相应的lan或者wan的代码上去……</p>
-<p>但是又不能简单的做个循环，把lan/wan的地址丢进去当参数，因为项目目前运行是需要收集JUnit格式的测试报告的，优化代码后，还需要拿到和之前一样或者差不多的报告，好显示在Jenkins上。</p>
-<p>今天实在不能忍了，花点时间研究了下，有如下解决办法。</p>
-<p>项目根目录上新建一个conftest.py，内容如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pytest_generate_tests</span><span class="params">(metafunc)</span>:</span></span><br><span class="line">    idlist = []</span><br><span class="line">    argvalues = []</span><br><span class="line">    <span class="keyword">for</span> scenario <span class="keyword">in</span> metafunc.cls.scenarios:</span><br><span class="line">        idlist.append(scenario[<span class="number">0</span>])</span><br><span class="line">        items = scenario[<span class="number">1</span>].items()</span><br><span class="line">        argnames = [x[<span class="number">0</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]</span><br><span class="line">        argvalues.append(([x[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]))</span><br><span class="line">    metafunc.parametrize(argnames, argvalues, ids=idlist, scope=<span class="string">"class"</span>)</span><br><span class="line"></span><br><span class="line">scenario1 = (<span class="string">'LAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.baidu.com'</span>&#125;)</span><br><span class="line">scenario2 = (<span class="string">'WAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.sohu.com'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<p>tests目录下任一个test模块，大致做如下修改</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> conftest <span class="keyword">import</span> scenario1, scenario2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestLogin</span><span class="params">(object)</span>:</span></span><br><span class="line">    scenarios = [scenario1, scenario2]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_01</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"www"</span> <span class="keyword">in</span> URL</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_02</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"ok"</span> == <span class="string">"ok"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_03</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"sohu"</span> <span class="keyword">in</span> URL</span><br></pre></td></tr></table></figure>
-<p>然后执行以上测试的时候，虽然代码里只写了3个测试，实际上pytest会生成以下6个测试，生成的JUnit测试报告也会有这6个测试的测试结果。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ pytest --collect-only tests/test_api01.py</span><br><span class="line">============= <span class="built_in">test</span> session starts ======</span><br><span class="line">platform darwin -- Python 3.6.5, pytest-3.5.1, py-1.5.3, pluggy-0.6.0</span><br><span class="line">rootdir: /Users/reed/Documents/dev/pytest_proj, inifile:</span><br><span class="line">collected 6 items</span><br><span class="line">&lt;Module <span class="string">'tests/test_api01.py'</span>&gt;</span><br><span class="line">  &lt;Class <span class="string">'TestLogin'</span>&gt;</span><br><span class="line">    &lt;Instance <span class="string">'()'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[WAN]'</span>&gt;</span><br></pre></td></tr></table></figure>
+        <h2 id="Build-job"><a href="#Build-job" class="headerlink" title="Build job"></a>Build job</h2><p>在pipeline的最上游的Build job里的Configure里做如下设置，可使该job以1分钟1次的频率，去轮询Git repository里的代码，如果有更新，则即刻开始build。<code>* * * * *</code>表示轮询频率是每一天的每一分钟，这里是用的Cron表达式，具体可见<a href="http://www.nncron.ru/help/EN/working/cron-format.htm" target="_blank" rel="noopener">Cron Format</a>。</p>
+<p><img src="/images/20180405214711474.png" alt=""></p>
+<p>Continous Delivery（持续交付），里面当然包含了自动化部署，以Java实现的web app项目为例，部署就需要拿到编译通过并打包好的war包文件，并部署到Tomcat服务器上。</p>
+<p>在job Configure -&gt; Build -&gt; <strong>Invoke top-level Maven targets</strong>里填入 <code>clean package</code>，然后在Post-build Actions里添加<strong>Archive the artifacts</strong>，填入<code>**/*.war</code>，表示寻找所有war文件并存档到workspace里。</p>
+<p>当然Build job里也是可以跑单元测试和做静态代码检查的。</p>
+<p>继续在Configure -&gt; Post-build Actions里添加<strong>Build other projects</strong>，在这里填入下游的staging job的名字。</p>
+<h2 id="Staging-job"><a href="#Staging-job" class="headerlink" title="Staging job"></a>Staging job</h2><p>在用来部署staging环境的job里，需要用到<a href="https://plugins.jenkins.io/copyartifact" target="_blank" rel="noopener">Copy Artifact</a>插件，和<a href="https://plugins.jenkins.io/deploy" target="_blank" rel="noopener">Deploy to container</a>插件。</p>
+<p>Configure-&gt;Build里添加<strong>Copy artifacts from another project</strong>，Artifact to copy里填<code>**/*.war</code>，Post-build Actions里添加<strong>Deploy war/ear to a container</strong>，Container里选择合适的容器，比如Tomcat 8.x，设置好Credentials和Tomcat URL，保存。顺利的话，至此，启动上游Build job成功后，会拉起这个staging job，会把war包部署到Tomcat里，这时候打开Tomcat下的web app的链接，就能看到运行的web app了，这也意味着可以开始下一步的产品测试，比如接口测试和Selenium实现的Web UI测试。</p>
+<p>最后使用<a href="https://wiki.jenkins-ci.org/display/JENKINS/Build+Pipeline+Plugin" target="_blank" rel="noopener">Build Pipeline Plugin</a>插件，新建pipeline view，可获得下面的可视化的pipeline效果。</p>
+<p><img src="/images/20180407001336964.png" alt=""></p>
 
       
     </div>
@@ -330,11 +330,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
           
-            <a href="/tags/pytest/" rel="tag"># pytest</a>
-          
-            <a href="/tags/重构/" rel="tag"># 重构</a>
+            <a href="/tags/CI/" rel="tag"># CI</a>
           
         </div>
       
@@ -347,8 +345,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/08/pytest测试框架中的setup和tearDown/" rel="next" title="pytest测试框架中的setup和tearDown">
-                <i class="fa fa-chevron-left"></i> pytest测试框架中的setup和tearDown
+              <a href="/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/" rel="next" title="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
+                <i class="fa fa-chevron-left"></i> 在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告
               </a>
             
           </div>
@@ -356,6 +354,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/" rel="prev" title="使用unittest做print这样无return返回值函数的单元测试">
+                使用unittest做print这样无return返回值函数的单元测试 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -412,8 +414,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -478,6 +489,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-job"><span class="nav-number">1.</span> <span class="nav-text">Build job</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Staging-job"><span class="nav-number">2.</span> <span class="nav-text">Staging job</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -656,9 +683,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = '2018/05/13/重构一份应用pytest框架的测试代码/';
-        var commenthub_url = 'http://yoursite.com/2018/05/13/重构一份应用pytest框架的测试代码/';
-        var commenthub_title = '重构一份应用pytest框架的测试代码';
+        var commenthub_identifier = '2018/04/05/CI-CD在Jenkins上的简易实现/';
+        var commenthub_url = 'http://yoursite.com/2018/04/05/CI-CD在Jenkins上的简易实现/';
+        var commenthub_title = 'CI/CD在Jenkins上的简易实现';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;

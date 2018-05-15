@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="Part 1前面一篇博文简单说了使用1234567891011121314151617181920212223### 被测函数中使用到了input需要自动化输入``` python#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom unittest import maindef">
+<meta name="description" content="Part One前面一篇博文简单说了使用unittest.mock对无返回值的函数做单元测试，这里是更多一些例子的总结。 被测函数中使用到了input需要自动化输入12345678910111213141516171819#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom un">
 <meta name="keywords" content="python,unittest">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python的单元测试unittest中的Mock使用小结">
 <meta property="og:url" content="http://yoursite.com/2018/04/14/Python的单元测试unittest中的Mock使用小结/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="Part 1前面一篇博文简单说了使用1234567891011121314151617181920212223### 被测函数中使用到了input需要自动化输入``` python#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom unittest import maindef">
+<meta property="og:description" content="Part One前面一篇博文简单说了使用unittest.mock对无返回值的函数做单元测试，这里是更多一些例子的总结。 被测函数中使用到了input需要自动化输入12345678910111213141516171819#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom un">
 <meta property="og:locale" content="zh">
-<meta property="og:image" content="https://img-blog.csdn.net/20180416203026947?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3B5dGhvbjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2018-05-14T15:21:50.928Z">
+<meta property="og:image" content="http://yoursite.com/images/20180416203026947.png">
+<meta property="og:updated_time" content="2018-05-15T12:31:51.597Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的单元测试unittest中的Mock使用小结">
-<meta name="twitter:description" content="Part 1前面一篇博文简单说了使用1234567891011121314151617181920212223### 被测函数中使用到了input需要自动化输入``` python#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom unittest import maindef">
-<meta name="twitter:image" content="https://img-blog.csdn.net/20180416203026947?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3B5dGhvbjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta name="twitter:description" content="Part One前面一篇博文简单说了使用unittest.mock对无返回值的函数做单元测试，这里是更多一些例子的总结。 被测函数中使用到了input需要自动化输入12345678910111213141516171819#!/usr/bin/env python3from unittest import TestCasefrom unittest.mock import patchfrom un">
+<meta name="twitter:image" content="http://yoursite.com/images/20180416203026947.png">
 
 
 
@@ -240,7 +240,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/python012.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -302,7 +302,8 @@
       
 
       
-        <h1 id="Part-1"><a href="#Part-1" class="headerlink" title="Part 1"></a>Part 1</h1><p>前面一篇博文简单说了使用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 被测函数中使用到了input需要自动化输入</span><br><span class="line"></span><br><span class="line">``` python</span><br><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">from unittest import TestCase</span><br><span class="line">from unittest.mock import patch</span><br><span class="line">from unittest import main</span><br><span class="line"></span><br><span class="line">def func_input():</span><br><span class="line">    name = input(&quot;Enter your name: &quot;)</span><br><span class="line">    print(&apos;Your name is &#123;&#125;&apos;.format(name))</span><br><span class="line"></span><br><span class="line">def test_func_input():</span><br><span class="line">    with patch(&apos;builtins.input&apos;) as mocked_input:</span><br><span class="line">        mocked_input.side_effect = (&apos;Jo&apos;,)  #当input的时候会输入Jo</span><br><span class="line">        with patch(&apos;builtins.print&apos;) as mocked_print:</span><br><span class="line">            func_input()</span><br><span class="line">            mocked_print.assert_called_with(&apos;Your name is Jo&apos;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+        <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>前面一篇博文简单说了使用<code>unittest.mock</code>对无返回值的函数做单元测试，这里是更多一些例子的总结。</p>
+<h2 id="被测函数中使用到了input需要自动化输入"><a href="#被测函数中使用到了input需要自动化输入" class="headerlink" title="被测函数中使用到了input需要自动化输入"></a>被测函数中使用到了input需要自动化输入</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_input</span><span class="params">()</span>:</span></span><br><span class="line">    name = input(<span class="string">"Enter your name: "</span>)</span><br><span class="line">    print(<span class="string">'Your name is &#123;&#125;'</span>.format(name))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_input</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">        mocked_input.side_effect = (<span class="string">'Jo'</span>,)  <span class="comment">#当input的时候会输入Jo</span></span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">            func_input()</span><br><span class="line">            mocked_print.assert_called_with(<span class="string">'Your name is Jo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <h2 id="需要验证函数是否被“被测函数“调用"><a href="#需要验证函数是否被“被测函数“调用" class="headerlink" title="需要验证函数是否被“被测函数“调用"></a>需要验证函数是否被“被测函数“调用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">    func_2()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"It's func 2!"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'func_2'</span>) <span class="keyword">as</span> mocked_func_2:</span><br><span class="line">        func_1()</span><br><span class="line">        mocked_func_2.assert_called_once()  <span class="comment">#断言mocked_func_2被调用过一次，在执行func_1()后</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <h2 id="mock-patch-和mock-patch-object-的区别"><a href="#mock-patch-和mock-patch-object-的区别" class="headerlink" title="mock.patch()和mock.patch.object()的区别"></a>mock.patch()和mock.patch.object()的区别</h2><p>这一块我还不是特别明白，搜索了下，大致区别如下</p>
 <blockquote>
@@ -310,11 +311,10 @@
 </blockquote>
 <p>有一个遗留问题，如下代码中，完全不能使用mock.patch()吗？</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># py_unittest.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'My name is '</span> + self.name)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        mother = input(<span class="string">"Enter mother's name: "</span>)</span><br><span class="line">        father = input(<span class="string">"Enter father's name: "</span>)</span><br><span class="line">     </span><br><span class="line">        print(<span class="string">"&#123;&#125;'s parents are &#123;&#125; and &#123;&#125;."</span>.format(self.name, mother, father))</span><br><span class="line">        self.fake_func()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fake_func</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FuncTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        john = Person(<span class="string">'John'</span>)</span><br><span class="line">             </span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">            mocked_input.side_effect = (<span class="string">'Jo'</span>, <span class="string">'Lee'</span>)</span><br><span class="line">            <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">                <span class="keyword">with</span> patch.object(Person, <span class="string">"fake_func"</span>) <span class="keyword">as</span> mocked_fake_func:</span><br><span class="line">                <span class="comment"># with patch('Person.fake_func') as mocked_fake_func: 启用这里的话，会报</span></span><br><span class="line">                <span class="comment"># 错 ModuleNotFoundError: No module named 'Person'</span></span><br><span class="line">                    john.print_parents()</span><br><span class="line">                    mocked_print.assert_called_with(<span class="string">"John's parents are Jo and Lee."</span>)</span><br><span class="line">                    mocked_fake_func.assert_called_once()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h1 id="Part-2"><a href="#Part-2" class="headerlink" title="Part 2"></a>Part 2</h1><p>今天研究了下，问题解决了，关键还是一个查找module的问题。</p>
-<p>##小结一个import的基础用法</p>
-<p>很多源代码里看到这样的用法，<code>from flask import Flask</code>，<code>from models.item import ItemModel</code>，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用<code>from person import Person</code>来导入<code>Person</code>类的话，可以这样做。</p>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>今天研究了下，问题解决了，关键还是一个查找module的问题。</p>
+<h2 id="小结一个import的基础用法"><a href="#小结一个import的基础用法" class="headerlink" title="小结一个import的基础用法"></a>小结一个import的基础用法</h2><p>很多源代码里看到这样的用法，<code>from flask import Flask</code>，<code>from models.item import ItemModel</code>，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用<code>from person import Person</code>来导入<code>Person</code>类的话，可以这样做。</p>
 <p>创建person目录，同时目录下有<code>__init__.py</code>和<code>person.py</code>两个文件，</p>
-<p><img src="https://img-blog.csdn.net/20180416203026947?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3B5dGhvbjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p><img src="/images/20180416203026947.png" alt=""></p>
 <p><code>person.py</code>中定义了一个<code>Person</code>类，有<code>__init__.py</code>文件存在，则会定义这个目录是一个module，同时文件内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__all__ = [<span class="string">'Person'</span>,]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .person <span class="keyword">import</span> Person</span><br></pre></td></tr></table></figure>
 <p>这样在其他module或者python代码里，就可以通过<code>from person import Person</code>来导入<code>Person</code>类了，假如<code>__init__.py</code>是空的，则需要使用<code>from person.person import Person</code>来导入<code>Person</code>类。</p>
@@ -434,6 +434,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
               <p class="site-author-name" itemprop="name">Reed Xia</p>
               <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
           </div>
@@ -445,7 +449,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -458,7 +462,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -468,6 +472,16 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pytho012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -491,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-1"><span class="nav-number">1.</span> <span class="nav-text">Part 1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要验证函数是否被“被测函数“调用"><span class="nav-number">1.1.</span> <span class="nav-text">需要验证函数是否被“被测函数“调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mock-patch-和mock-patch-object-的区别"><span class="nav-number">1.2.</span> <span class="nav-text">mock.patch()和mock.patch.object()的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-2"><span class="nav-number">2.</span> <span class="nav-text">Part 2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-One"><span class="nav-number">1.</span> <span class="nav-text">Part One</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#被测函数中使用到了input需要自动化输入"><span class="nav-number">1.1.</span> <span class="nav-text">被测函数中使用到了input需要自动化输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要验证函数是否被“被测函数“调用"><span class="nav-number">1.2.</span> <span class="nav-text">需要验证函数是否被“被测函数“调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mock-patch-和mock-patch-object-的区别"><span class="nav-number">1.3.</span> <span class="nav-text">mock.patch()和mock.patch.object()的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Part-Two"><span class="nav-number">2.</span> <span class="nav-text">Part Two</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#小结一个import的基础用法"><span class="nav-number">2.1.</span> <span class="nav-text">小结一个import的基础用法</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -521,17 +535,13 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
-
-
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
 
 
         
