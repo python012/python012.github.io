@@ -4,11 +4,11 @@ date: 2018-04-14 23:17:45
 tags: [python, unittest]
 ---
 
-# Part 1
+# Part One
 
-前面一篇博文简单说了使用```unittest.mock```对无返回值的函数做单元测试。这里是更多一些例子的总结。
+前面一篇博文简单说了使用`unittest.mock`对无返回值的函数做单元测试，这里是更多一些例子的总结。
 
-### 被测函数中使用到了input需要自动化输入
+## 被测函数中使用到了input需要自动化输入
 
 ``` python
 #!/usr/bin/env python3
@@ -109,17 +109,18 @@ if __name__ == '__main__':
 
 ```
 
-# Part 2
+# Part Two
 
 今天研究了下，问题解决了，关键还是一个查找module的问题。
 
-##小结一个import的基础用法
+## 小结一个import的基础用法
 
 很多源代码里看到这样的用法，`from flask import Flask`，`from models.item import ItemModel`，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用`from person import Person`来导入`Person`类的话，可以这样做。
 
 创建person目录，同时目录下有`__init__.py`和`person.py`两个文件，
 
-![这里写图片描述](https://img-blog.csdn.net/20180416203026947?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3B5dGhvbjAxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+![](/images/20180416203026947.png)
 
 `person.py`中定义了一个`Person`类，有`__init__.py`文件存在，则会定义这个目录是一个module，同时文件内容如下：
 

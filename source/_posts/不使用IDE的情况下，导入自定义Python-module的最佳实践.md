@@ -4,7 +4,7 @@ date: 2018-05-04 21:38:19
 tags: [python]
 ---
 
-# Part 1
+# Part One
 
 微软出的Visual Studio Code这个代码编辑器很好用，和Sublime有点相似，但是用起来更方便一些。和PyCharm不一样，用VS code写自定义module的时候，会出现找不到module的报错，原因是VS code不会像IDE那样，帮用户把项目目录临时性加入到系统PATH中去。
 
@@ -23,7 +23,7 @@ sys.path.append(base_path) #这里临时性的把项目目录加入到系统路�
 from utils.config_reader import ConfigReader #这样才可以导入位置在 ../utils/config_reader.py 里的 ConfigReader 类
 print(ConfigReader)
 ```
-# Part 2
+# Part Two
 
 CPyUG确实是个挺好的组织，Python方面的问题一般都会有热心又专业的小伙伴帮忙回答，针对上次导入自定义Python module的问题，目前有两个可行的办法。
 

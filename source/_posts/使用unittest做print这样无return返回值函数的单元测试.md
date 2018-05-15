@@ -50,6 +50,6 @@ Ran 2 tests in 0.001s
 OK
 ```
 
-其中的```with patch('builtins.print') as mocked_print:``` 语句是在with的block里，将内置函数print替换为mocked_print函数，再去block里执行print，实际也就是在执行mocked_print函数，然后去检查mocked_print函数是否收到同样的传入参数，也即检查了print语句的输出（print语句自然是传入什么样的字符串，就输出打印出什么样的字符串）。
+其中的`with patch('builtins.print') as mocked_print:` 语句是在with的block里，将内置函数print替换为mocked_print函数，再去block里执行print，实际也就是在执行mocked_print函数，然后去检查mocked_print函数是否收到同样的传入参数，也即检查了print语句的输出（print语句自然是传入什么样的字符串，就输出打印出什么样的字符串）。
 
 显而易见，这就是去验证目标函数或者方法的传入参数，单元测试里可以应用的范围很广。

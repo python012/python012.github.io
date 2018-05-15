@@ -4,7 +4,7 @@ date: 2018-05-08 21:51:19
 tags: [pytest, python]
 ---
 
-# Part 1
+# Part One
 
 最近对pytest比较感兴趣，看了pytest的文档[classic xunit-style setup](https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup)，这里做个小结，直接看代码。
 
@@ -87,7 +87,7 @@ class TestSohu(object):
 
 pytest中的setup/teardown还有一个更推荐的实现方法是去使用pytest.fixture特性，上面这种经典的setup/teardown，pytest表示也会继续支持。下面准备总结下用pytest.fixture实现setup/teardown的方法。
 
-# Part 2
+# Part Two
 
 下面内容是阅读文档[pytest fixtures: explicit, modular, scalable](https://docs.pytest.org/en/latest/fixture.html)的一些总结，pytest fixture功能很丰富，功能远不止用来构建测试中传统的setup/teardown。
 
