@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="接口测试,Python,Linux,Shell," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这两天收到一个任务，某接口测试的测试用例需要更新，需要在测试中修改开发板中的文件。 先白话下上层的一些东西，包括这套接口测试在内，可见的全部测试都挂在Jenkins上，测试对象是某刷了OpenWRT修改版的智能设备，Jenkins上游自然是自动编译生成build文件的各种job（有主线和针对不同需求的分支），一旦成功生成新的build文件，就会触发下游各种各样的测试，其中包括接口测试。 挂在Jen">
+<meta name="keywords" content="接口测试,Python,Linux,Shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远程修改OpenWRT开发板中的文件">
+<meta property="og:url" content="http://python012.github.io/2017/12/26/远程修改OpenWRT开发板中的文件/index.html">
+<meta property="og:site_name" content="小码奔腾">
+<meta property="og:description" content="这两天收到一个任务，某接口测试的测试用例需要更新，需要在测试中修改开发板中的文件。 先白话下上层的一些东西，包括这套接口测试在内，可见的全部测试都挂在Jenkins上，测试对象是某刷了OpenWRT修改版的智能设备，Jenkins上游自然是自动编译生成build文件的各种job（有主线和针对不同需求的分支），一旦成功生成新的build文件，就会触发下游各种各样的测试，其中包括接口测试。 挂在Jen">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-05-17T14:23:33.408Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="远程修改OpenWRT开发板中的文件">
+<meta name="twitter:description" content="这两天收到一个任务，某接口测试的测试用例需要更新，需要在测试中修改开发板中的文件。 先白话下上层的一些东西，包括这套接口测试在内，可见的全部测试都挂在Jenkins上，测试对象是某刷了OpenWRT修改版的智能设备，Jenkins上游自然是自动编译生成build文件的各种job（有主线和针对不同需求的分支），一旦成功生成新的build文件，就会触发下游各种各样的测试，其中包括接口测试。 挂在Jen">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://python012.github.io/2017/12/26/远程修改OpenWRT开发板中的文件/"/>
+
+
+
+
+
+  <title>远程修改OpenWRT开发板中的文件 | 小码奔腾</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码奔腾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录一些和自动化测试、CI有关的想法</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2017/12/26/远程修改OpenWRT开发板中的文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">远程修改OpenWRT开发板中的文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-26T23:46:44+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这两天收到一个任务，某接口测试的测试用例需要更新，需要在测试中修改开发板中的文件。</p>
+<p>先白话下上层的一些东西，包括这套接口测试在内，可见的全部测试都挂在Jenkins上，测试对象是某刷了OpenWRT修改版的智能设备，Jenkins上游自然是自动编译生成build文件的各种job（有主线和针对不同需求的分支），一旦成功生成新的build文件，就会触发下游各种各样的测试，其中包括接口测试。</p>
+<p>挂在Jenkins上的所有测试大都基于一个公司内部用shell实现的基础测试框架，包含了很多基本函数，像刷build，ssh连接执行命令，试探主机是否在线，获取主机版本号等等，然后到了具体测试的实现的时候，就各显神通了，大部分测试都由shell实现，web页面测试的有Selenium Webdriver和Casperjs。</p>
+<p>废话完了说重点，要解决的问题就是要远程登录到OpenWRT开发板（智能硬件）上修改某文件( /etc/config/fw )，要找到该文件后在文件中某行下添加一行语句，比如找到 /etc/config/fw 文件，在文件找到 config firewall 这一行，再在这一行下插入一条 option blacklist ‘1’。</p>
+<p>测试中是在基础测试框架中的 control.sh 里执行 python3 -m py.test –junitxml=./result/results.xml 来把测试拉起来，于是就查找python里做远程ssh登录执行Linux的方法，找到paramiko模块，最后实现代码大致以下，sed那一段挺麻烦，不过总算是找到解决方法了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sshclient_execmd</span><span class="params">(cmd)</span>:</span></span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">    s = paramiko.SSHClient()</span><br><span class="line">    s.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">    s.connect(hostname=list.host_ip, port=<span class="number">22</span>, username=list.username, password=list.password,timeout=<span class="number">5</span>)</span><br><span class="line">    stdin, stdout, stderr = s.exec_command(command=cmd,timeout=<span class="number">30</span>)</span><br><span class="line">    <span class="keyword">return</span> s,stdout</span><br><span class="line">  <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(e)</span><br><span class="line">    s.close()</span><br><span class="line">  <span class="keyword">return</span> s, <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">sshclient_execmd(<span class="string">'''sed -i '/^config.*firewall/a\        option blacklist '"'1'"'' /etc/config/fw'''</span>)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/接口测试/" rel="tag"># 接口测试</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Shell/" rel="tag"># Shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/05/用shell中用jq解析json遇到compile-error/" rel="next" title="用shell中用jq解析json遇到compile error">
+                <i class="fa fa-chevron-left"></i> 用shell中用jq解析json遇到compile error
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/16/让JUnit4里的test运行时动态决定执行或不执行-Skip/" rel="prev" title="让JUnit4里的test运行时动态决定执行或Skip">
+                让JUnit4里的test运行时动态决定执行或Skip <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
+              <p class="site-author-name" itemprop="name">Reed Xia</p>
+              <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/python012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:python012@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reed Xia</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+      <script type="text/javascript">
+        var commenthub_id = '2948441';
+        var commenthub_website = 'https://python012.github.io/';
+        var commenthub_identifier = '2017/12/26/远程修改OpenWRT开发板中的文件/';
+        var commenthub_url = 'http://python012.github.io/2017/12/26/远程修改OpenWRT开发板中的文件/';
+        var commenthub_title = '远程修改OpenWRT开发板中的文件';
+        var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = 'https://commenthub.herokuapp.com/js/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      </script>
+  
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

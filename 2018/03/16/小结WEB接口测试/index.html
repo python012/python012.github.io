@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="接口测试,Python," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近在做一个接口测试的更新，往里面添加了很多新的测试，连续加班两周，这里做一些总结。 被测设备介绍这是一个针对某款智能设备的WEB API的测试，设备内运行OpenWRT系统，内部使用一套节点来记录很多设备信息和配置信息，设备也提供一个WEB GUI页面，可以通过打开其主页来做配置，也提供了一套WEB 接口API，来实现远程设置功能（其实就是给WEB GUI页面来调用） 测试框架介绍测试用pyth">
+<meta name="keywords" content="接口测试,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小结WEB接口测试">
+<meta property="og:url" content="http://python012.github.io/2018/03/16/小结WEB接口测试/index.html">
+<meta property="og:site_name" content="小码奔腾">
+<meta property="og:description" content="最近在做一个接口测试的更新，往里面添加了很多新的测试，连续加班两周，这里做一些总结。 被测设备介绍这是一个针对某款智能设备的WEB API的测试，设备内运行OpenWRT系统，内部使用一套节点来记录很多设备信息和配置信息，设备也提供一个WEB GUI页面，可以通过打开其主页来做配置，也提供了一套WEB 接口API，来实现远程设置功能（其实就是给WEB GUI页面来调用） 测试框架介绍测试用pyth">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-05-17T14:43:25.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小结WEB接口测试">
+<meta name="twitter:description" content="最近在做一个接口测试的更新，往里面添加了很多新的测试，连续加班两周，这里做一些总结。 被测设备介绍这是一个针对某款智能设备的WEB API的测试，设备内运行OpenWRT系统，内部使用一套节点来记录很多设备信息和配置信息，设备也提供一个WEB GUI页面，可以通过打开其主页来做配置，也提供了一套WEB 接口API，来实现远程设置功能（其实就是给WEB GUI页面来调用） 测试框架介绍测试用pyth">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://python012.github.io/2018/03/16/小结WEB接口测试/"/>
+
+
+
+
+
+  <title>小结WEB接口测试 | 小码奔腾</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码奔腾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录一些和自动化测试、CI有关的想法</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/03/16/小结WEB接口测试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">小结WEB接口测试</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-16T22:20:12+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在做一个接口测试的更新，往里面添加了很多新的测试，连续加班两周，这里做一些总结。</p>
+<h2 id="被测设备介绍"><a href="#被测设备介绍" class="headerlink" title="被测设备介绍"></a>被测设备介绍</h2><p>这是一个针对某款智能设备的WEB API的测试，设备内运行OpenWRT系统，内部使用一套节点来记录很多设备信息和配置信息，设备也提供一个WEB GUI页面，可以通过打开其主页来做配置，也提供了一套WEB 接口API，来实现远程设置功能（其实就是给WEB GUI页面来调用）</p>
+<h2 id="测试框架介绍"><a href="#测试框架介绍" class="headerlink" title="测试框架介绍"></a>测试框架介绍</h2><p>测试用python实现，主要用到的有单元测试框架pytest，HTTP库requests，还有ssh连接用的pamamiko。</p>
+<h2 id="工作背景"><a href="#工作背景" class="headerlink" title="工作背景"></a>工作背景</h2><p>这次工作之前，这套接口测试已经基本成型，运行了一段时间，最近是根据客户要求，往其中添加更多的set测试。可以理解为，已经有的测试多数是get测试，使用类似于cgi?get=wifi_status这样的query去获WEB的response，也即一个json串，再继续解析出设备上Wi-Fi的具体信息的值，再针对这些值做一些验证（和通过ssh登陆上设备调用shell命令获取的信息进行对比）。</p>
+<h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
+<li>设计测试后的时候，有些是简单的举一反三和想当然，因此浪费了一些时间。测试中获取的信息有这样几个途径：一是向设备发送get请求，会收到带json串的response，json串中即是返回的信息，这一点是API文档中认可的。二是向设备发送set请求（确实是发送GET请求而不是POST，设计如此，也即发送GET请求，该请求中包含类似于&amp;act=set&amp;service=wifi&amp;enabled=0这样的信息），也会收到带json串的response，也可以解析出返回的信息。然后我最开始错误的认为，这里json串的信息是可以用来验证结果，实际上这一点是API文档中并没有提到的，这里完全是我想当然，没有事先验证我的想法的结果就是，白白浪费了一些时间，走了弯路。</li>
+<li>加set测试的时候，我基本是一气code完，事后证明，还是应该做完一个后，想办法在本地跑起来，和熟悉这部分的同事做一个简单的评审，确保我的理解是和大家一致的，然后再继续做其他的部分。</li>
+<li>格式良好、易读的log打印会帮助迅速定位失败的测试，了解到测试执行的时候到底发生了什么事情。这点太重要了，这套接口测试其实也由我维护的（分析失败的测试，报bug或者更新测试代码），以前我就加了一个log打印，比如这个函数Util.printQueryAndJson()，望文生义，就是当发送一个request请求后，执行这个函数，把刚刚发送的request请求里的query字符串，和返回的response的json串打印出来。这里我就犯了个错误，以为set请求返回的json串是可以和get请求后返回的json一样，可以拿来做验证，实际上却不是。</li>
+</ul>
+<p>下面是重构测试代码的时候，用到的一段python代码，用到函数里的内部函数特性，也称为闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">        a = &#123;<span class="string">"name"</span>:<span class="string">"Li Ming"</span>, <span class="string">"age"</span>:<span class="number">23</span>&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">()</span>:</span></span><br><span class="line">                a.clear()<span class="comment">#此处python自动识别出这是一个外部变量a</span></span><br><span class="line">                a.update(&#123;<span class="string">"language"</span>:<span class="string">"python"</span>&#125;)</span><br><span class="line">        inner_func()</span><br><span class="line">        print(a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">new_inner_func</span><span class="params">()</span>:</span></span><br><span class="line">                a = &#123;<span class="string">"language"</span>:<span class="string">"java"</span>&#125; <span class="comment">#此处未能影响外部的变量a，只是一个内部函数里变量</span></span><br><span class="line"></span><br><span class="line">        new_inner_func()</span><br><span class="line">        print(a)</span><br><span class="line"></span><br><span class="line">run()</span><br></pre></td></tr></table></figure>
+<p>执行结果是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'language'</span>: <span class="string">'python'</span>&#125;</span><br><span class="line">&#123;<span class="string">'language'</span>: <span class="string">'python'</span>&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/接口测试/" rel="tag"># 接口测试</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/28/测试框架设计学习笔记/" rel="next" title="测试框架设计学习笔记">
+                <i class="fa fa-chevron-left"></i> 测试框架设计学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/" rel="prev" title="Jenkins执行完构建后testng插件找不到testng-results.xml">
+                Jenkins执行完构建后testng插件找不到testng-results.xml <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
+              <p class="site-author-name" itemprop="name">Reed Xia</p>
+              <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/python012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:python012@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#被测设备介绍"><span class="nav-number">1.</span> <span class="nav-text">被测设备介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试框架介绍"><span class="nav-number">2.</span> <span class="nav-text">测试框架介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作背景"><span class="nav-number">3.</span> <span class="nav-text">工作背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结与反思"><span class="nav-number">4.</span> <span class="nav-text">总结与反思</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reed Xia</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+      <script type="text/javascript">
+        var commenthub_id = '2948441';
+        var commenthub_website = 'https://python012.github.io/';
+        var commenthub_identifier = '2018/03/16/小结WEB接口测试/';
+        var commenthub_url = 'http://python012.github.io/2018/03/16/小结WEB接口测试/';
+        var commenthub_title = '小结WEB接口测试';
+        var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = 'https://commenthub.herokuapp.com/js/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      </script>
+  
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

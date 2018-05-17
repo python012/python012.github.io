@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Jenkins,TesgNG," />
 
 
 
@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="记录一些和自动化测试、CI有关的想法">
-<meta name="keywords" content="自动化测试 Python CI Jenkins Java">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小码奔腾">
-<meta property="og:url" content="http://python012.github.io/tags/python/page/2/index.html">
+<meta name="description" content="昨天把Jenkins(ver. 2.107.1，此处注意，这几乎是一个最新的Jenkins版本)安装在mac上，并建了一个简单的job，来体验下Jenkins+Maven+TestNG的效果，遇到这样一个有意思的问题，就是使用默认设置，也配置了TestNG的测试结果报告插件。  当Jenkins构建执行后，也可以正常找到指定的pom.xml文件，并执行Maven命令mvn test -PmyTes">
+<meta name="keywords" content="Jenkins,TesgNG">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins执行完构建后testng插件找不到testng-results.xml">
+<meta property="og:url" content="http://python012.github.io/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="记录一些和自动化测试、CI有关的想法">
+<meta property="og:description" content="昨天把Jenkins(ver. 2.107.1，此处注意，这几乎是一个最新的Jenkins版本)安装在mac上，并建了一个简单的job，来体验下Jenkins+Maven+TestNG的效果，遇到这样一个有意思的问题，就是使用默认设置，也配置了TestNG的测试结果报告插件。  当Jenkins构建执行后，也可以正常找到指定的pom.xml文件，并执行Maven命令mvn test -PmyTes">
 <meta property="og:locale" content="zh">
+<meta property="og:image" content="http://python012.github.io/images/20180323203141603.png">
+<meta property="og:image" content="http://python012.github.io/images/20180323202739548.png">
+<meta property="og:updated_time" content="2018-05-17T14:43:04.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小码奔腾">
-<meta name="twitter:description" content="记录一些和自动化测试、CI有关的想法">
+<meta name="twitter:title" content="Jenkins执行完构建后testng插件找不到testng-results.xml">
+<meta name="twitter:description" content="昨天把Jenkins(ver. 2.107.1，此处注意，这几乎是一个最新的Jenkins版本)安装在mac上，并建了一个简单的job，来体验下Jenkins+Maven+TestNG的效果，遇到这样一个有意思的问题，就是使用默认设置，也配置了TestNG的测试结果报告插件。  当Jenkins构建执行后，也可以正常找到指定的pom.xml文件，并执行Maven命令mvn test -PmyTes">
+<meta name="twitter:image" content="http://python012.github.io/images/20180323203141603.png">
 
 
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://python012.github.io/tags/python/page/2/"/>
+  <link rel="canonical" href="http://python012.github.io/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/"/>
 
 
 
 
 
-  <title>Tag: python | 小码奔腾</title>
+  <title>Jenkins执行完构建后testng插件找不到testng-results.xml | 小码奔腾</title>
   
 
 
@@ -144,7 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,86 +222,163 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>python<small>Tag</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/04/14/Python的单元测试unittest中的Mock使用小结/" itemprop="url">
-              
-                <span itemprop="name">Python的单元测试unittest中的Mock使用小结</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Jenkins执行完构建后testng插件找不到testng-results.xml</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-04-14T23:17:45+08:00"
-              content="2018-04-14" >
-          04-14
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-23T21:34:47+08:00">
+                2018-03-23
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/11/使用unittest做print这样无return返回值函数的单元测试/" itemprop="url">
-              
-                <span itemprop="name">使用unittest做print这样无return返回值函数的单元测试</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-04-11T21:40:29+08:00"
-              content="2018-04-11" >
-          04-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <p>昨天把Jenkins(ver. 2.107.1，此处注意，这几乎是一个最新的Jenkins版本)安装在mac上，并建了一个简单的job，来体验下Jenkins+Maven+TestNG的效果，遇到这样一个有意思的问题，就是使用默认设置，也配置了TestNG的测试结果报告插件。</p>
+<p><img src="/images/20180323203141603.png" alt=""></p>
+<p>当Jenkins构建执行后，也可以正常找到指定的pom.xml文件，并执行Maven命令mvn test -PmyTestngProfile.xml来启动测试，但是测试完成后，却显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TestNG Reports Processing: START</span><br><span class="line">Looking for TestNG results report in workspace using pattern: **/target/surefire-reports/testng-results.xml</span><br><span class="line">Did not find any matching files.</span><br></pre></td></tr></table></figure>
+<p>花了点时间研究下，在Configure里的TestNG XML report pattern里，只有设置为完全绝对路径的时候，才能找到testng-results.xml。</p>
+<p>揭晓答案吧，其实就是当构建进行到去寻找testng-results.xml的时候，当前目录并不是最开始的项目代码目录（pom.xml所在的目录），而是下面这个Jenkins在mac上安装后的一个默认workspace，然后以此为当前目录继续构建工作。</p>
+<blockquote>
+<p>/Users/Shared/Jenkins/Home/workspace/myProject</p>
+</blockquote>
+<p>解决办法是去构建的Configure -&gt; General -&gt; Advanced… -&gt; Use custom workspace，也即使用自定义的工作空间目录，把这个目录设置为项目代码的真实地址，然后构建就会以此为当前目录，然后就可以顺利找到testng的报告文件了。</p>
+<p><img src="/images/20180323202739548.png" alt=""></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          
+            <a href="/tags/TesgNG/" rel="tag"># TesgNG</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/小结WEB接口测试/" rel="next" title="小结WEB接口测试">
+                <i class="fa fa-chevron-left"></i> 小结WEB接口测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/01/Enrolled-Master-Jenkins-CI-For-DevOps-and-Developers-！/" rel="prev" title="Enrolled 'Master Jenkins CI For DevOps and Developers'！">
+                Enrolled 'Master Jenkins CI For DevOps and Developers'！ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/tags/python/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/tags/python/">1</a><span class="page-number current">2</span>
-  </nav>
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -305,6 +386,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -345,7 +435,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -358,7 +448,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -526,6 +616,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -571,9 +665,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = 'tags/python/page/2/index.html';
-        var commenthub_url = '';
-        var commenthub_title = '';
+        var commenthub_identifier = '2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/';
+        var commenthub_url = 'http://python012.github.io/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/';
+        var commenthub_title = 'Jenkins执行完构建后testng插件找不到testng-results.xml';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;
