@@ -233,6 +233,129 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/17/virtualenv的使用小记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/17/virtualenv的使用小记/" itemprop="url">virtualenv的使用小记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-17T20:48:50+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>virtualenv可以用来创建一套虚拟的、独立的、干净python环境，如果系统中安装有多个python版本，则还可以指定版本。</p>
+<p><code>pip install virtualenv</code>  pip安装virtualenv。<br><code>virtualenv venv --python=python3.6</code> 创建一个名字叫venv的python环境，python版本指定为3.6，然后virtualenv会在当前目录下创建名为venv的目录。<br><code>virtualenv --no-site-packages venv</code> 创建一个名字叫venv的，无第三方包的干净的python环境，python版本与系统中的版本一致。<br><code>source venv/bin/activate</code> 启用venv环境。<br><code>pip install -r requirements.txt</code> 安装文件requirements.txt里列举的第三方python模块，也即是当前的venv环境中安装。</p>
+<p>在PyCharm中使用virtualenv作为项目解释器（Project Interpreter）时，选择Add Local -&gt; Exisiting environment，Interpreter再定位到venv/bin/python并选中即可。</p>
+<p><code>deactivate</code> 关闭venv环境。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/14/Python的单元测试unittest中的Mock使用小结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -908,126 +1031,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/01/Enrolled-Master-Jenkins-CI-For-DevOps-and-Developers-！/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/01/Enrolled-Master-Jenkins-CI-For-DevOps-and-Developers-！/" itemprop="url">Enrolled 'Master Jenkins CI For DevOps and Developers'！</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-01T23:26:38+08:00">
-                2018-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在Thoughtworks第一次接触pipeline等概念后，非常认同由Jenkins pipeline串联起来的开发-测试-部署这个工作模式，试听了下这个课程，instructor是James Lee，可能是位华裔，口音好听多了，而且课程设计可称的上是精致，确实是认真备课过的。目前已经完成了好几章了，很是喜欢。目前的问题的是学的太快，急需总结。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1082,7 +1085,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1095,7 +1098,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

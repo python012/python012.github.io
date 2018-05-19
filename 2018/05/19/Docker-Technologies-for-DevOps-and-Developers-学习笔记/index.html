@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Jenkins,Maven," />
+  <meta name="keywords" content="Docker," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
-<meta name="keywords" content="Jenkins,Maven">
+<meta name="description" content="ConceptsImages  which are read only templates used to create containers. are created with the docker build command by docker user.  Containers  container is an instance of an image(like an instance of">
+<meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
-<meta property="og:url" content="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/index.html">
+<meta property="og:title" content="&#39;Docker Technologies for DevOps and Developers&#39;学习笔记">
+<meta property="og:url" content="http://python012.github.io/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
+<meta property="og:description" content="ConceptsImages  which are read only templates used to create containers. are created with the docker build command by docker user.  Containers  container is an instance of an image(like an instance of">
 <meta property="og:locale" content="zh">
-<meta property="og:image" content="http://python012.github.io/images/20180405202722385.png">
-<meta property="og:image" content="http://python012.github.io/images/20180405202740728.png">
-<meta property="og:updated_time" content="2018-05-15T13:21:12.232Z">
+<meta property="og:updated_time" content="2018-05-19T14:08:54.644Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
-<meta name="twitter:description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
-<meta name="twitter:image" content="http://python012.github.io/images/20180405202722385.png">
+<meta name="twitter:title" content="&#39;Docker Technologies for DevOps and Developers&#39;学习笔记">
+<meta name="twitter:description" content="ConceptsImages  which are read only templates used to create containers. are created with the docker build command by docker user.  Containers  container is an instance of an image(like an instance of">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/"/>
+  <link rel="canonical" href="http://python012.github.io/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/"/>
 
 
 
 
 
-  <title>在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告 | 小码奔腾</title>
+  <title>'Docker Technologies for DevOps and Developers'学习笔记 | 小码奔腾</title>
   
 
 
@@ -236,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
@@ -253,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告</h1>
+          <h1 class="post-title" itemprop="name headline">'Docker Technologies for DevOps and Developers'学习笔记</h1>
         
 
         <div class="post-meta">
@@ -265,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T18:11:08+08:00">
-                2018-04-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-19T22:04:59+08:00">
+                2018-05-19
               </time>
             
 
@@ -303,28 +300,38 @@
       
 
       
-        <p>需要的插件：</p>
+        <h2 id="Concepts"><a href="#Concepts" class="headerlink" title="Concepts"></a>Concepts</h2><p>Images</p>
 <ul>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Maven+Project+Plugin" target="_blank" rel="noopener">Maven Integration plugin</a></li>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin" target="_blank" rel="noopener">Checkstyle Plug-in</a></li>
+<li>which are read only templates used to create containers.</li>
+<li>are created with the docker build command by docker user.</li>
 </ul>
-<p>具体步骤：</p>
-<ol>
-<li>新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。</li>
-<li>Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Jenkins-&gt;Gloabl Tool Configuration里设置的Maven name.</li>
-<li>Goals里填入Maven命令，比如clean package，这里为了添加Java静态代码检查功能，实际设置为<code>clean package checkstyle:checkstyle</code>。</li>
-<li>Post build actions里添加Publish Checkstyle analysis results，再Save。</li>
-<li>下次build即可见到代码质量报告，和非常具体的错误提示。</li>
-</ol>
-<p>效果如图</p>
-<p><img src="/images/20180405202722385.png" alt=""></p>
-<p><img src="/images/20180405202740728.png" alt=""></p>
-<hr>
-<p> 可选的其他静态代码检查工具插件：</p>
+<p>Containers</p>
 <ul>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin" target="_blank" rel="noopener">PMD Jenkins plugin</a></li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin" target="_blank" rel="noopener">Findbugs Jenkins Plugin</a></li>
+<li>container is an instance of an image(like an instance of a class - a runtime object)</li>
 </ul>
+<p>Official Docker images website -&gt; <a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></p>
+<h2 id="Basic-commands"><a href="#Basic-commands" class="headerlink" title="Basic commands"></a>Basic commands</h2><p>ls本机上的docker image -&gt; <code>docker images</code></p>
+<p>创建一个有busybox的的docker container 并执行 <code>echo &quot;hello docker&quot;</code> -&gt; <code>docker run busybox:1.24 echo &quot;hello docker&quot;</code></p>
+<p>ls docker container中的根目录 -&gt; <code>docker run busybox:1.24 ls /</code></p>
+<p>进入docker container -&gt; <code>docker run -i -t busybox:1.24</code>，执行<code>exit</code>可退出container，每一次都是一个新的image</p>
+<p>使用<code>docker ps -a</code>来查看创建过的历史container -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                 CREATED             STATUS                         PORTS               NAMES</span><br><span class="line">d46a47c46f34        busybox:1.24        <span class="string">"sleep 1000"</span>            3 minutes ago       Up 3 minutes                                       wonderful_shockley</span><br><span class="line">180a27bc3ba4        busybox:1.24        <span class="string">"sh"</span>                    4 minutes ago       Exited (0) 4 minutes ago                           nostalgic_ritchie</span><br><span class="line">901dec3242bb        busybox:1.24        <span class="string">"ls /"</span>                  26 minutes ago      Exited (0) 26 minutes ago                          pensive_keldysh</span><br></pre></td></tr></table></figure>
+<p>新建一个container执行命令，完成后自动删除这个container -&gt; <code>docker run --rm busybox:1.24 sleep 1</code></p>
+<p>新建一个指定名字的docker container -&gt; <code>run --name my_docker_container busybox:1.24 ls</code></p>
+<p>inspect一个container的底层信息 -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker run -d busybox:1.24 sleep 100</span><br><span class="line">7dd3d07d1ae16e0ccd042c62cc08a2523dc3dbf325ea9f957ff49fcf1e414645</span><br><span class="line">rx:dev reed$ docker inspect 7dd3d07d1ae16e0ccd042c62cc08a2523dc3dbf325ea9f957ff49fcf1e414645</span><br></pre></td></tr></table></figure>
+<p>拉取tomcat 8.0 image，并创建一个container，同时将container的8080端口映射到主机的8888端口 -&gt;</p>
+<ul>
+<li>从国内docker image源中下载tomcat 8.0 image -&gt; <code>docker pull registry.docker-cn.com/library/tomcat:8.0</code></li>
+<li>创建container并映射端口 -&gt; <code>docker run -it -p 8888:8080 registry.docker-cn.com/library/tomcat:8.0</code></li>
+<li>运行container并在后台运行 -&gt; <code>docker run -it -d -p 8888:8080 registry.docker-cn.com/library/tomcat:8.0</code> 执行后会显示container ID</li>
+<li>查看后台运行的container的运行log -&gt; <code>docker logs DOCKER_CONTAINER_ID</code></li>
+<li>停止一个后台运行的container -&gt; <code>docker stop DOCKER_CONTAINER_NAME</code></li>
+</ul>
+<h2 id="Run-Container-in-Foreground-or-Background"><a href="#Run-Container-in-Foreground-or-Background" class="headerlink" title="Run Container in Foreground or Background"></a>Run Container in Foreground or Background</h2><p>run container in foreground -&gt; default mode</p>
+<p>run container in background -&gt; <code>-d</code>(dispatch) option</p>
+<p>建一个container在后台运行，并用<code>ps</code>查看运行中的container -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker run -d busybox:1.24 sleep 1000</span><br><span class="line">d46a47c46f34cbec69dc6ce04e9674a74f81d5bea17b93a8d441c4a88c8ba056</span><br><span class="line">rx:dev reed$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">d46a47c46f34        busybox:1.24        <span class="string">"sleep 1000"</span>        1 second ago        Up 2 seconds                            wonderful_shockley</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -342,9 +349,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
-          
-            <a href="/tags/Maven/" rel="tag"># Maven</a>
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
           
         </div>
       
@@ -357,8 +362,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/" rel="next" title="'Master Jenkins CI For DevOps and Developers'课程总结">
-                <i class="fa fa-chevron-left"></i> 'Master Jenkins CI For DevOps and Developers'课程总结
+              <a href="/2018/05/13/重构一份应用pytest框架的测试代码/" rel="next" title="重构一份应用pytest框架的测试代码">
+                <i class="fa fa-chevron-left"></i> 重构一份应用pytest框架的测试代码
               </a>
             
           </div>
@@ -366,10 +371,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/05/CI-CD在Jenkins上的简易实现/" rel="prev" title="CI/CD在Jenkins上的简易实现">
-                CI/CD在Jenkins上的简易实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -426,8 +427,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -498,6 +508,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Concepts"><span class="nav-number">1.</span> <span class="nav-text">Concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-commands"><span class="nav-number">2.</span> <span class="nav-text">Basic commands</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Run-Container-in-Foreground-or-Background"><span class="nav-number">3.</span> <span class="nav-text">Run Container in Foreground or Background</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -676,9 +702,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = '2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/';
-        var commenthub_url = 'http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/';
-        var commenthub_title = '在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告';
+        var commenthub_identifier = '2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/';
+        var commenthub_url = 'http://python012.github.io/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/';
+        var commenthub_title = '\'Docker Technologies for DevOps and Developers\'学习笔记';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;
