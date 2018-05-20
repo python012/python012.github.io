@@ -1,5 +1,5 @@
 ---
-title: '''Docker Technologies for DevOps and Developers''学习笔记'
+title: Docker Technologies for DevOps and Developers学习笔记 - 1
 date: 2018-05-19 22:04:59
 tags: [Docker]
 ---
