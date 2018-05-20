@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Jenkins,Maven," />
+  <meta name="keywords" content="docker," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
-<meta name="keywords" content="Jenkins,Maven">
+<meta name="description" content="Build custom docker image使用docker commit命令来创建docker imageGeneral steps:  Spin up a container from a base image. Install Git package in the container. Commit changes made in the container.  把Docker国内镜像">
+<meta name="keywords" content="docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
-<meta property="og:url" content="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/index.html">
+<meta property="og:title" content="Docker Technologies for DevOps and Developers学习笔记 - 2">
+<meta property="og:url" content="http://python012.github.io/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
+<meta property="og:description" content="Build custom docker image使用docker commit命令来创建docker imageGeneral steps:  Spin up a container from a base image. Install Git package in the container. Commit changes made in the container.  把Docker国内镜像">
 <meta property="og:locale" content="zh">
-<meta property="og:image" content="http://python012.github.io/images/20180405202722385.png">
-<meta property="og:image" content="http://python012.github.io/images/20180405202740728.png">
-<meta property="og:updated_time" content="2018-05-15T13:21:12.232Z">
+<meta property="og:updated_time" content="2018-05-20T09:34:15.940Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告">
-<meta name="twitter:description" content="需要的插件：  Maven Integration plugin Checkstyle Plug-in  具体步骤：  新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。 Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Je">
-<meta name="twitter:image" content="http://python012.github.io/images/20180405202722385.png">
+<meta name="twitter:title" content="Docker Technologies for DevOps and Developers学习笔记 - 2">
+<meta name="twitter:description" content="Build custom docker image使用docker commit命令来创建docker imageGeneral steps:  Spin up a container from a base image. Install Git package in the container. Commit changes made in the container.  把Docker国内镜像">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/"/>
+  <link rel="canonical" href="http://python012.github.io/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/"/>
 
 
 
 
 
-  <title>在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告 | 小码奔腾</title>
+  <title>Docker Technologies for DevOps and Developers学习笔记 - 2 | 小码奔腾</title>
   
 
 
@@ -236,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reed Xia">
@@ -253,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告</h1>
+          <h1 class="post-title" itemprop="name headline">Docker Technologies for DevOps and Developers学习笔记 - 2</h1>
         
 
         <div class="post-meta">
@@ -265,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T18:11:08+08:00">
-                2018-04-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-20T17:28:10+08:00">
+                2018-05-20
               </time>
             
 
@@ -303,28 +300,33 @@
       
 
       
-        <p>需要的插件：</p>
+        <h1 id="Build-custom-docker-image"><a href="#Build-custom-docker-image" class="headerlink" title="Build custom docker image"></a>Build custom docker image</h1><h2 id="使用docker-commit命令来创建docker-image"><a href="#使用docker-commit命令来创建docker-image" class="headerlink" title="使用docker commit命令来创建docker image"></a>使用docker commit命令来创建docker image</h2><p><strong>General steps</strong>:</p>
 <ul>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Maven+Project+Plugin" target="_blank" rel="noopener">Maven Integration plugin</a></li>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin" target="_blank" rel="noopener">Checkstyle Plug-in</a></li>
+<li>Spin up a container from a base image.</li>
+<li>Install Git package in the container.</li>
+<li>Commit changes made in the container.</li>
 </ul>
-<p>具体步骤：</p>
-<ol>
-<li>新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。</li>
-<li>Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Jenkins-&gt;Gloabl Tool Configuration里设置的Maven name.</li>
-<li>Goals里填入Maven命令，比如clean package，这里为了添加Java静态代码检查功能，实际设置为<code>clean package checkstyle:checkstyle</code>。</li>
-<li>Post build actions里添加Publish Checkstyle analysis results，再Save。</li>
-<li>下次build即可见到代码质量报告，和非常具体的错误提示。</li>
-</ol>
-<p>效果如图</p>
-<p><img src="/images/20180405202722385.png" alt=""></p>
-<p><img src="/images/20180405202740728.png" alt=""></p>
-<hr>
-<p> 可选的其他静态代码检查工具插件：</p>
-<ul>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin" target="_blank" rel="noopener">PMD Jenkins plugin</a></li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin" target="_blank" rel="noopener">Findbugs Jenkins Plugin</a></li>
-</ul>
+<p>把Docker国内镜像<code>https://registry.docker-cn.com</code>添加至docker <code>registry-mirrors</code>。</p>
+<p>或者可直接用命令拉取镜像，例如<code>docker pull registry.docker-cn.com/library/ubuntu:16.04</code></p>
+<p>国内镜像配置好后，执行<code>docker run -it debian:jessie</code>，拉取debian镜像并进入container。</p>
+<p>在debian container后，执行<code>apt-get update &amp;&amp; apt-get install -y git</code>，在container中安装Git。</p>
+<p>安装完成后执行<code>exit</code>退出，再执行<code>docker images -a</code>查找刚刚安装了git的debian container的ID。</p>
+<p>执行<code>docker commit GIT_DEBIAN_CONTAINER_ID reed/debian:1.00</code>来新建一个安装了Git的debian docker image，完成后可使用<code>docker images</code>来查看本地image列表。</p>
+<p>完成以上后，就可以在本地执行<code>docker run -it reed/debian:1.00</code> 来<strong>新建一个debian container并进入</strong>，可以发现<strong>container中已经安装好了Git</strong>。</p>
+<h2 id="使用Dockerfile来创建docker-image"><a href="#使用Dockerfile来创建docker-image" class="headerlink" title="使用Dockerfile来创建docker image"></a>使用Dockerfile来创建docker image</h2><p>以debian:jessie为base image，新建一个安装了Git和vim的image，以下是Dockerfile。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update</span><br><span class="line">RUN apt-get install -y git</span><br><span class="line">RUN apt-get install -y vim</span><br></pre></td></tr></table></figure>
+<p>然后执行<code>docker build -t reed/gitvim/debian .</code>，表示在当前目录下搜索Dockerfile，新image的REPOSITORY名字为reed/gitvim/debian。</p>
+<p>但是，实践中可能会遇到因为网络等问题引起的安装不顺利，感觉还是直接用commit命令来手动创建custom image比较合适。</p>
+<p>==Good Practice== -&gt; Dockerfile也可这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
+<p>-&gt; 避免重复的package同时让列表易于更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
+<p>-&gt; 另一个例子，CMD中的命令仅当container运行的时候执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br><span class="line">CMD [&quot;echo&quot;, &quot;hello docker&quot;]</span><br></pre></td></tr></table></figure>
+<p>-&gt; 为保证apt-get update是最新的，运行Dockerfile的时候可以关闭docker cache -&gt; <code>docker build -t reed/debian . --no-cache=true</code></p>
+<p>-&gt; CMD中加入copy命令，复制文件到container中去，下面Dockerfile生成的container将会从当前目录中复制文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br><span class="line">COPY abc.txt /src/abc.txt</span><br></pre></td></tr></table></figure>
+<p>-&gt; CMD中还有ADD命令，ADD可以理解是升级版的COPY，可以从网上下载文件，也可以自动化解压缩文件，通常优先使用COPY，除非非常肯定没问题的情况下则使用ADD。</p>
 
       
     </div>
@@ -342,9 +344,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
-          
-            <a href="/tags/Maven/" rel="tag"># Maven</a>
+            <a href="/tags/docker/" rel="tag"># docker</a>
           
         </div>
       
@@ -357,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/" rel="next" title="'Master Jenkins CI For DevOps and Developers'课程总结">
-                <i class="fa fa-chevron-left"></i> 'Master Jenkins CI For DevOps and Developers'课程总结
+              <a href="/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/" rel="next" title="Docker Technologies for DevOps and Developers学习笔记 - 1">
+                <i class="fa fa-chevron-left"></i> Docker Technologies for DevOps and Developers学习笔记 - 1
               </a>
             
           </div>
@@ -366,10 +366,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/05/CI-CD在Jenkins上的简易实现/" rel="prev" title="CI/CD在Jenkins上的简易实现">
-                CI/CD在Jenkins上的简易实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -426,8 +422,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -498,6 +503,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-custom-docker-image"><span class="nav-number">1.</span> <span class="nav-text">Build custom docker image</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用docker-commit命令来创建docker-image"><span class="nav-number">1.1.</span> <span class="nav-text">使用docker commit命令来创建docker image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Dockerfile来创建docker-image"><span class="nav-number">1.2.</span> <span class="nav-text">使用Dockerfile来创建docker image</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -676,9 +697,9 @@
       <script type="text/javascript">
         var commenthub_id = '2948441';
         var commenthub_website = 'https://python012.github.io/';
-        var commenthub_identifier = '2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/';
-        var commenthub_url = 'http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/';
-        var commenthub_title = '在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告';
+        var commenthub_identifier = '2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/';
+        var commenthub_url = 'http://python012.github.io/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/';
+        var commenthub_title = 'Docker Technologies for DevOps and Developers学习笔记 - 2';
         var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;

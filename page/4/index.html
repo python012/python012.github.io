@@ -233,6 +233,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/01/16/让JUnit4里的test运行时动态决定执行或不执行-Skip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/16/让JUnit4里的test运行时动态决定执行或不执行-Skip/" itemprop="url">让JUnit4里的test运行时动态决定执行或Skip</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-16T17:34:55+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>一组应用了Junit4的测试，需要增加一个动态判断，来决定是否跑test。我知道这组测试其实已经应用了junit的Category功能，来做测试组的初期分类，在跑这一整套测试的时候，执行环节会针对不同的被测产品给出一个custom参数，测试代码跑起来后会根据这个custom的值，来选择排除某些category和包括哪些category。</p>
+<p>现在这个策略不够用了，因为之前标记好的category，同一个分类下还是有动态选择执行的需求，于是这次用到了Junit4中rule特性。</p>
+<p>下面代码就实现了一个JUnit4中的rule。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ibm.robot.web.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ibm.robot.web.util.WebPropertiesLoader;</span><br><span class="line"><span class="keyword">import</span> org.junit.rules.TestRule;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.Description;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.Statement;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotRun5gCase</span> <span class="keyword">implements</span> <span class="title">TestRule</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Statement <span class="title">apply</span><span class="params">(<span class="keyword">final</span> Statement base, <span class="keyword">final</span> Description description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Statement() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluate</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                String methodName = description.getMethodName();</span><br><span class="line">                loader = <span class="keyword">new</span> WebPropertiesLoader();</span><br><span class="line">                String ap_2g = loader.getString(<span class="string">"WIFI.ap.2G"</span>, <span class="string">"unknow"</span>);</span><br><span class="line">                String ap_5g = loader.getString(<span class="string">"WIFI.ap.5G"</span>, <span class="string">"unknow"</span>);</span><br><span class="line">                <span class="keyword">if</span> (!(ap_2G.equals(ap_5G) &amp;&amp; methodName.contains(<span class="string">"5GHz"</span>))) &#123;</span><br><span class="line">                        base.evaluate();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中可见，这条rule规定当ap_2g的值与ap_5g相等，同时test的方法名中包含5GHz的话，则不执行这个test。 然后把这条rule应用到具体的test中即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WiFiTest</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Rule</span></span><br><span class="line">	<span class="keyword">public</span> TestRule notRun5gCase = <span class="keyword">new</span> NotRun5gCase ();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Before</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"setup actions"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@After</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tearDown</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"tearDown actions"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWiFi2GHz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//to test wi-fi 2g</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWiFi5GHz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//to test wi-fi 5g</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>其实还是上次的问题，在上一篇中提到解决办法是应用JUnit4里的Rule来实现，今天继续研究了下，觉得还是不够好，因为实际需求是，需要在运行测试的时候去动态skip某些test，今天请教了下一位朋友，就有了如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.junit4test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(MyRunner.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AprilTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.junit4test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.runners.BlockJUnit4ClassRunner;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.FrameworkMethod;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.InitializationError;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunner</span> <span class="keyword">extends</span> <span class="title">BlockJUnit4ClassRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyRunner</span><span class="params">(Class&lt;?&gt; klass)</span> <span class="keyword">throws</span> InitializationError </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(klass);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isIgnored</span><span class="params">(FrameworkMethod child)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (child.getName().contains(<span class="string">"3"</span>)) &#123; <span class="comment">// 此处可做动态判断，来觉得是否skip该test</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2017/12/26/远程修改OpenWRT开发板中的文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -767,7 +895,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -780,7 +908,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
