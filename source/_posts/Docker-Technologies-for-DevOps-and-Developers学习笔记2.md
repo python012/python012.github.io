@@ -41,7 +41,7 @@ RUN apt-get install -y vim
 
 但是，实践中可能会遇到因为网络等问题引起的安装不顺利，感觉还是直接用commit命令来手动创建custom image比较合适。
 
-==Good Practice== -> Dockerfile也可这样写：
+**Good Practice** -> Dockerfile也可这样写：
 
 ```
 FROM debian:jessie
