@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小码奔腾">
 <meta property="og:description" content="Build custom docker image使用docker commit命令来创建docker imageGeneral steps:  Spin up a container from a base image. Install Git package in the container. Commit changes made in the container.  把Docker国内镜像">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-20T09:34:15.940Z">
+<meta property="og:updated_time" content="2018-05-21T13:34:57.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Technologies for DevOps and Developers学习笔记 - 2">
 <meta name="twitter:description" content="Build custom docker image使用docker commit命令来创建docker imageGeneral steps:  Spin up a container from a base image. Install Git package in the container. Commit changes made in the container.  把Docker国内镜像">
@@ -317,7 +317,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update</span><br><span class="line">RUN apt-get install -y git</span><br><span class="line">RUN apt-get install -y vim</span><br></pre></td></tr></table></figure>
 <p>然后执行<code>docker build -t reed/gitvim/debian .</code>，表示在当前目录下搜索Dockerfile，新image的REPOSITORY名字为reed/gitvim/debian。</p>
 <p>但是，实践中可能会遇到因为网络等问题引起的安装不顺利，感觉还是直接用commit命令来手动创建custom image比较合适。</p>
-<p>==Good Practice== -&gt; Dockerfile也可这样写：</p>
+<p><strong>Good Practice</strong> -&gt; Dockerfile也可这样写：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
 <p>-&gt; 避免重复的package同时让列表易于更新：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
