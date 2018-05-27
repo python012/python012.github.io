@@ -233,6 +233,137 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/03/16/小结WEB接口测试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/16/小结WEB接口测试/" itemprop="url">小结WEB接口测试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-16T22:20:12+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近在做一个接口测试的更新，往里面添加了很多新的测试，连续加班两周，这里做一些总结。</p>
+<h2 id="被测设备介绍"><a href="#被测设备介绍" class="headerlink" title="被测设备介绍"></a>被测设备介绍</h2><p>这是一个针对某款智能设备的WEB API的测试，设备内运行OpenWRT系统，内部使用一套节点来记录很多设备信息和配置信息，设备也提供一个WEB GUI页面，可以通过打开其主页来做配置，也提供了一套WEB 接口API，来实现远程设置功能（其实就是给WEB GUI页面来调用）</p>
+<h2 id="测试框架介绍"><a href="#测试框架介绍" class="headerlink" title="测试框架介绍"></a>测试框架介绍</h2><p>测试用python实现，主要用到的有单元测试框架pytest，HTTP库requests，还有ssh连接用的pamamiko。</p>
+<h2 id="工作背景"><a href="#工作背景" class="headerlink" title="工作背景"></a>工作背景</h2><p>这次工作之前，这套接口测试已经基本成型，运行了一段时间，最近是根据客户要求，往其中添加更多的set测试。可以理解为，已经有的测试多数是get测试，使用类似于cgi?get=wifi_status这样的query去获WEB的response，也即一个json串，再继续解析出设备上Wi-Fi的具体信息的值，再针对这些值做一些验证（和通过ssh登陆上设备调用shell命令获取的信息进行对比）。</p>
+<h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><ul>
+<li>设计测试后的时候，有些是简单的举一反三和想当然，因此浪费了一些时间。测试中获取的信息有这样几个途径：一是向设备发送get请求，会收到带json串的response，json串中即是返回的信息，这一点是API文档中认可的。二是向设备发送set请求（确实是发送GET请求而不是POST，设计如此，也即发送GET请求，该请求中包含类似于&amp;act=set&amp;service=wifi&amp;enabled=0这样的信息），也会收到带json串的response，也可以解析出返回的信息。然后我最开始错误的认为，这里json串的信息是可以用来验证结果，实际上这一点是API文档中并没有提到的，这里完全是我想当然，没有事先验证我的想法的结果就是，白白浪费了一些时间，走了弯路。</li>
+<li>加set测试的时候，我基本是一气code完，事后证明，还是应该做完一个后，想办法在本地跑起来，和熟悉这部分的同事做一个简单的评审，确保我的理解是和大家一致的，然后再继续做其他的部分。</li>
+<li>格式良好、易读的log打印会帮助迅速定位失败的测试，了解到测试执行的时候到底发生了什么事情。这点太重要了，这套接口测试其实也由我维护的（分析失败的测试，报bug或者更新测试代码），以前我就加了一个log打印，比如这个函数Util.printQueryAndJson()，望文生义，就是当发送一个request请求后，执行这个函数，把刚刚发送的request请求里的query字符串，和返回的response的json串打印出来。这里我就犯了个错误，以为set请求返回的json串是可以和get请求后返回的json一样，可以拿来做验证，实际上却不是。</li>
+</ul>
+<p>下面是重构测试代码的时候，用到的一段python代码，用到函数里的内部函数特性，也称为闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">        a = &#123;<span class="string">"name"</span>:<span class="string">"Li Ming"</span>, <span class="string">"age"</span>:<span class="number">23</span>&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">()</span>:</span></span><br><span class="line">                a.clear()<span class="comment">#此处python自动识别出这是一个外部变量a</span></span><br><span class="line">                a.update(&#123;<span class="string">"language"</span>:<span class="string">"python"</span>&#125;)</span><br><span class="line">        inner_func()</span><br><span class="line">        print(a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">new_inner_func</span><span class="params">()</span>:</span></span><br><span class="line">                a = &#123;<span class="string">"language"</span>:<span class="string">"java"</span>&#125; <span class="comment">#此处未能影响外部的变量a，只是一个内部函数里变量</span></span><br><span class="line"></span><br><span class="line">        new_inner_func()</span><br><span class="line">        print(a)</span><br><span class="line"></span><br><span class="line">run()</span><br></pre></td></tr></table></figure>
+<p>执行结果是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'language'</span>: <span class="string">'python'</span>&#125;</span><br><span class="line">&#123;<span class="string">'language'</span>: <span class="string">'python'</span>&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/01/28/测试框架设计学习笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -887,130 +1018,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2016/11/29/用Shell精简log文件(shell的字符串和文件操作)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/29/用Shell精简log文件(shell的字符串和文件操作)/" itemprop="url">用Shell精简log文件(shell的字符串和文件操作)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-29T16:31:15+08:00">
-                2016-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>当前目录下有文件log，内容大致如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2015-11-29 54144a04ad4asd044a4s CSeq:1 INVITE sip:2112@sipserver.com:5060 SIP/2.0</span><br><span class="line">2015-11-29 54144a04ad4asd045457 CSeq:1 INVITE SIP/2.0 200 OK</span><br></pre></td></tr></table></figure>
-<p>将此log文件做精简，创建文件minilog内容如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 INVITE sip:2112@sipserver.com:5060 SIP/2.0</span><br><span class="line">1 INVITE SIP/2.0 200 OK</span><br></pre></td></tr></table></figure>
-<p>Shell脚本代码如下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">shortLog</span></span>() &#123;</span><br><span class="line">  <span class="keyword">while</span> <span class="built_in">read</span> line</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      <span class="built_in">echo</span> <span class="variable">$&#123;line#*CSeq:&#125;</span> &gt;&gt; <span class="variable">$2</span></span><br><span class="line">  <span class="keyword">done</span> &lt; <span class="variable">$1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">shortLog <span class="built_in">log</span> miniLog</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1065,7 +1072,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1078,7 +1085,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

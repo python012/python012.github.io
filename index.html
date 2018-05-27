@@ -233,6 +233,132 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/27/使用Git制作patch文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/27/使用Git制作patch文件/" itemprop="url">使用Git制作patch文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T22:04:12+08:00">
+                2018-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>项目中是用<a href="https://www.reviewboard.org/" target="_blank" rel="noopener">Review board</a>来做code review，用Git来管理代码，所以每次提交之前，需要把修改的代码做成patch文件，上传到Review board里去，再发给相关同事检查。</p>
+<p>这里简单记录下制作patch文件的过程。</p>
+<p>假设大家一直工作在master分支上，现在当前目录下的repo已经<code>git pull</code>到最新，同时需要提交的代码已经完成，检查<code>git status</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with <span class="string">'origin/master'</span>.</span><br><span class="line">Untracked files:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to include <span class="keyword">in</span> what will be committed)</span><br><span class="line"></span><br><span class="line">	change.txt</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use <span class="string">"git add"</span> to track)</span><br></pre></td></tr></table></figure>
+<p>执行<code>git branch patch</code>生成一个名为patch的分支，再<code>git checkout patch</code>切换到patch分支。</p>
+<p>在patch分支上<code>git add .</code>，继续<code>git commit</code>，完成commit后再执行<code>git format-patch -M master</code>生成patch文件，其含义是将当前分支上的，所有的，更加新的提交（和master分支相比）打包成patch文件，然后可见当前目录下会生成一个<code>.patch</code>文件。</p>
+<p>然后这个patch文件即可上交了，最后需要把当前repo拆回原状，注意当前分支还是patch分支，需要先<code>get reset --soft 上次commit的hash</code>，再继续<code>git reset HEAD .</code>，最后切回最开始工作的master分支即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/27/Java中的Mock测试框架Mockito/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -906,136 +1032,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/08/pytest测试框架中的setup和tearDown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/08/pytest测试框架中的setup和tearDown/" itemprop="url">pytest测试框架中的setup和tearDown</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-08T21:51:19+08:00">
-                2018-05-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>最近对pytest比较感兴趣，看了pytest的文档<a href="https://docs.pytest.org/en/3.5.1/xunit_setup.html#classic-xunit-style-setup" target="_blank" rel="noopener">classic xunit-style setup</a>，这里做个小结，直接看代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># content of test_websites.py</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Setup/teardown in pytest, see https://docs.pytest.org/en/3.5.1/xunit_setup.html</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Remarks:</span></span><br><span class="line"><span class="string">1. setup/teardown的结对函数在测试进程中可以被调用多次的。</span></span><br><span class="line"><span class="string">2. 如果setup函数在执行时失败或被skipped了，相应的tearDown函数不会被调用。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setup_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的setup，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行之前，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print()</span><br><span class="line">    print(<span class="string">"-------------- setup before module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">teardown_module</span><span class="params">(module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    这是一个module级别的teardown，它会在本module(test_website.py)里</span></span><br><span class="line"><span class="string">    所有test执行完成之后，被调用一次。</span></span><br><span class="line"><span class="string">    注意，它是直接定义为一个module里的函数"""</span></span><br><span class="line">    print(<span class="string">"-------------- teardown after module --------------"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBaidu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"test baidu login function"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSohu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个class级别的setup函数，它会在这个测试类TestSohu里</span></span><br><span class="line"><span class="string">        所有test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ setup before class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">         <span class="string">""" 这是一个class级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里所有test执行完之后，被调用一次.</span></span><br><span class="line"><span class="string">        注意它是一个@classmethod</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"------ teardown after class TestSohu ------"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的setup函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之前，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- setup before each method ---"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">teardown_method</span><span class="params">(self, method)</span>:</span></span><br><span class="line">        <span class="string">""" 这是一个method级别的teardown函数，它会在这个测试</span></span><br><span class="line"><span class="string">         类TestSohu里，每一个test执行之后，被调用一次.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        print(<span class="string">"--- teardown after each method ---"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu login"</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="keyword">True</span> == <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_logout</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"sohu logout"</span>)</span><br><span class="line">        pytest.skip()</span><br></pre></td></tr></table></figure>
-<p>pytest中的setup/teardown还有一个更推荐的实现方法是去使用pytest.fixture特性，上面这种经典的setup/teardown，pytest表示也会继续支持。下面准备总结下用pytest.fixture实现setup/teardown的方法。</p>
-<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>下面内容是阅读文档<a href="https://docs.pytest.org/en/latest/fixture.html" target="_blank" rel="noopener">pytest fixtures: explicit, modular, scalable</a>的一些总结，pytest fixture功能很丰富，功能远不止用来构建测试中传统的setup/teardown。</p>
-<p>但是还是先看下用pytest.fixture特性写的setup/teardown，据<a href="https://stackoverflow.com/a/39401087/2526362" target="_blank" rel="noopener">stakoverflow上一哥们</a>说，这还是目前的最佳实践。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> utils.log <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">from</span> utils.config <span class="keyword">import</span> get_url</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.fixture()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chrome_driver</span><span class="params">(scope=<span class="string">"function"</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    scope="function"是scope的默认值，表示这是一个function级别的fixture</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(<span class="string">"setup() begin"</span>)</span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    driver.get(get_url())</span><br><span class="line">    print(<span class="string">"setup() end"</span>)</span><br><span class="line">    <span class="keyword">yield</span> driver </span><br><span class="line">    <span class="comment">#这里会返回driver，给使用这个fixture为参数的test_函数使用，</span></span><br><span class="line">    <span class="comment">#test_函数结束后，会回到这里，继续执行后面语句</span></span><br><span class="line">    print(<span class="string">"teardown() begin"</span>)</span><br><span class="line">    driver.close()</span><br><span class="line">    print(<span class="string">"teardown() end"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBaiDu</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    locator_kw = (By.ID, <span class="string">'kw'</span>)</span><br><span class="line">    locator_su = (By.ID, <span class="string">'su'</span>)</span><br><span class="line">    locator_result = (By.XPATH, <span class="string">'//div[contains(@class, "result")]/h3/a'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_search_0</span><span class="params">(self, chrome_driver)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        这里的chrome_driver是在本模块中定义的fixture，这里输入</span></span><br><span class="line"><span class="string">        的参数是上面yield driver中返回的driver</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        chrome_driver.find_element(*self.locator_kw).send_keys(<span class="string">u'selenium 测试'</span>)</span><br><span class="line">        chrome_driver.find_element(*self.locator_su).click()</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">        links = chrome_driver.find_elements(*self.locator_result)</span><br><span class="line">        <span class="keyword">for</span> link <span class="keyword">in</span> links:</span><br><span class="line">            logger.info(link.text)</span><br></pre></td></tr></table></figure>
-<p>这样写看起来有点pythonic的味道，我理解写这样fixture形式的setup/teardown函数，主要还是给那些需要打开然后关闭的资源，比如上面例子中的浏览器driver，确实需要收尾（<code>driver.quit()</code>）。</p>
-<p>可能还有其他应用，比如写一个数据库查询的函数，就可以把连接数据库，获得数据查询句柄，yield 句柄，关闭数据库句柄，关闭数据连接写成一个fixture，这样代码应该清爽多了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture(scope="module") #一个module里的所有函数共用一个句柄实例</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sql_query</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#连接数据库</span></span><br><span class="line">    <span class="comment">#获得数据库查询句柄</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">"查询句柄"</span></span><br><span class="line">    <span class="comment">#关闭句柄</span></span><br><span class="line">    <span class="comment">#关闭数据库连接</span></span><br></pre></td></tr></table></figure>
-<p>fixture如果不用到yield，则只是把fixture函数里返回的值，作为参数给到使用fixture的函数，代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pytest.fixture()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fruit_name</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span>  <span class="string">"apple"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_fruit</span><span class="params">(fruit_name)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"apple"</span> == fruit_name</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1090,7 +1086,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1103,7 +1099,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
