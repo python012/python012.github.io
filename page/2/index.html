@@ -233,6 +233,129 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/19/python程序中将常量放在同一个文件里并防止修改/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/19/python程序中将常量放在同一个文件里并防止修改/" itemprop="url">python程序中将常量放在同一个文件里并防止修改</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-19T20:31:30+08:00">
+                2018-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在看《编写高质量代码-改善Python程序的91个建议》一书，是国内Python圈和CPyUG里的名人赖总和人合著的，里面建议了很多比较好，比较Pythonic的代码写法，打算边看边实践，挑选一些记录下，这算是第一篇吧。</p>
+<p>常量也就是那些一般不会变的数据，建议的做法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Best practice 01</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Put all constants in one file, and protect them from changing value.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># File name: constants.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Const</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ConstError</span><span class="params">(TypeError)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ConstCaseError</span><span class="params">(ConstError)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, name, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> name <span class="keyword">in</span> self.__dict__: <span class="comment"># 判断是否已经被赋值，如果是则报错</span></span><br><span class="line">            <span class="keyword">raise</span> self.ConstError(<span class="string">"Can't change const.%s"</span> % name)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> name.isupper(): <span class="comment"># 判断所赋值是否是全部大写，用来做第一次赋值的格式判断，也可以根据需要改成其他判断条件</span></span><br><span class="line">            <span class="keyword">raise</span> self.ConstCaseError(<span class="string">'const name "%s" is not all supercase'</span> % name)</span><br><span class="line"></span><br><span class="line">        self.__dict__[name] = value</span><br><span class="line"></span><br><span class="line">const = Const()</span><br><span class="line">const.MY_CONSTANT = <span class="string">"CHINA"</span></span><br><span class="line">const.MY_SECOND_CONSTANT = <span class="string">"RUSSIA"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#File name: test.py</span></span><br><span class="line"><span class="keyword">from</span> constants <span class="keyword">import</span> const</span><br><span class="line">print(const.MY_CONSTANT)</span><br><span class="line">const.MY_CONSTANT = <span class="number">2</span> <span class="comment">#此处尝试再赋值会触发ConstError</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/17/转一篇关于Python类属性与实例属性的博文/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -859,147 +982,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/" itemprop="url">在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T18:11:08+08:00">
-                2018-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>需要的插件：</p>
-<ul>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Maven+Project+Plugin" target="_blank" rel="noopener">Maven Integration plugin</a></li>
-<li><a href="https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin" target="_blank" rel="noopener">Checkstyle Plug-in</a></li>
-</ul>
-<p>具体步骤：</p>
-<ol>
-<li>新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。</li>
-<li>Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Jenkins-&gt;Gloabl Tool Configuration里设置的Maven name.</li>
-<li>Goals里填入Maven命令，比如clean package，这里为了添加Java静态代码检查功能，实际设置为<code>clean package checkstyle:checkstyle</code>。</li>
-<li>Post build actions里添加Publish Checkstyle analysis results，再Save。</li>
-<li>下次build即可见到代码质量报告，和非常具体的错误提示。</li>
-</ol>
-<p>效果如图</p>
-<p><img src="/images/20180405202722385.png" alt=""></p>
-<p><img src="/images/20180405202740728.png" alt=""></p>
-<hr>
-<p> 可选的其他静态代码检查工具插件：</p>
-<ul>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin" target="_blank" rel="noopener">PMD Jenkins plugin</a></li>
-<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin" target="_blank" rel="noopener">Findbugs Jenkins Plugin</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1054,7 +1036,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

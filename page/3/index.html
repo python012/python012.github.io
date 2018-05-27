@@ -233,6 +233,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/在Maven项目里添加Java静态代码质量检查并发布报告/" itemprop="url">在Maven+Jenkins项目里添加Java静态代码质量检查并发布报告</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-05T18:11:08+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>需要的插件：</p>
+<ul>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Maven+Project+Plugin" target="_blank" rel="noopener">Maven Integration plugin</a></li>
+<li><a href="https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin" target="_blank" rel="noopener">Checkstyle Plug-in</a></li>
+</ul>
+<p>具体步骤：</p>
+<ol>
+<li>新建job，选择Freestyle project。 Source Code Management选择Git，填入Repository URL。</li>
+<li>Build中添加Invoke top-level Maven targets，Maven Version里选择之前在Manage Jenkins-&gt;Gloabl Tool Configuration里设置的Maven name.</li>
+<li>Goals里填入Maven命令，比如clean package，这里为了添加Java静态代码检查功能，实际设置为<code>clean package checkstyle:checkstyle</code>。</li>
+<li>Post build actions里添加Publish Checkstyle analysis results，再Save。</li>
+<li>下次build即可见到代码质量报告，和非常具体的错误提示。</li>
+</ol>
+<p>效果如图</p>
+<p><img src="/images/20180405202722385.png" alt=""></p>
+<p><img src="/images/20180405202740728.png" alt=""></p>
+<hr>
+<p> 可选的其他静态代码检查工具插件：</p>
+<ul>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin" target="_blank" rel="noopener">PMD Jenkins plugin</a></li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin" target="_blank" rel="noopener">Findbugs Jenkins Plugin</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -926,130 +1067,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/01/23/实现Selenium-Webdriver自动化测试中对失败测试进行截图并发布到Jenkins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/23/实现Selenium-Webdriver自动化测试中对失败测试进行截图并发布到Jenkins/" itemprop="url">实现Selenium Webdriver自动化测试中对失败测试进行截图并发布到Jenkins</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-23T22:40:38+08:00">
-                2018-01-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在基于Selenium Webdriver(Java) + Junit4 + Jenkins 的web 自动化测试中，进行失败test的截图，同时发布到Jenkins上。</p>
-<p>这两天在研究这个问题，这是一点总结，首先需要版本够高的Jenkins，并安装<a href="https://plugins.jenkins.io/junit-attachments" target="_blank" rel="noopener">Junit Attachments plugin</a>，同时注意要去Jenkins配置Additional test report features，选择启用 Publish test attachments，这样这个Junit Attachments插件可以帮助检查标准输出中，是否有特定格式的关于附件的log，然后依据log中的附件文件的地址，把该附件上传至Jenkins中。</p>
-<p>还需要代码里的支持，我手上的web自动化测试，是基于Selenium Webdriver(Java) + Junit4实现的，这里需要实现一个Junit4里的 rule，我这是ScreenshotRule，继承于TestWatcher，改写其中的failed()方法，也即当 test case failed 的时候，执行截图操作，具体代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ibm.robot.web.testrules;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.io.FileUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.rules.TestWatcher;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.Description;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.openqa.selenium.OutputType;</span><br><span class="line"><span class="keyword">import</span> org.openqa.selenium.TakesScreenshot;</span><br><span class="line"><span class="keyword">import</span> org.openqa.selenium.WebDriver;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScreenshotRule</span> <span class="keyword">extends</span> <span class="title">TestWatcher</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> WebDriver driver = <span class="keyword">null</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ScreenshotRule</span><span class="params">(WebDriver driver)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.driver = driver;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(<span class="keyword">final</span> Throwable e, <span class="keyword">final</span> Description description)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		String userDir = System.getProperty(<span class="string">"user.dir"</span>);</span><br><span class="line">		String baseDir = userDir + <span class="string">"/failed-screenshots/"</span> </span><br><span class="line">				+ description.getClassName() + <span class="string">"/"</span>;</span><br><span class="line">		String screenshotName = description.getClassName() + <span class="string">"."</span> </span><br><span class="line">				+ description.getMethodName() + <span class="string">".png"</span>;</span><br><span class="line"></span><br><span class="line">		File screen = <span class="keyword">null</span>;</span><br><span class="line">		screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			File dir = <span class="keyword">new</span> File(baseDir);</span><br><span class="line">			<span class="keyword">if</span>(!dir.exists()) FileUtils.forceMkdir(dir);</span><br><span class="line">			File localFile = <span class="keyword">new</span> File(baseDir + screenshotName);</span><br><span class="line">			FileUtils.copyFile(screen, localFile);</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Work with JUnit Attachments plugin to attach the files </span></span><br><span class="line">			<span class="comment">// produced by Junit to Jenkins</span></span><br><span class="line">			System.out.println(<span class="string">"[[ATTACHMENT|"</span> + baseDir + screenshotName + <span class="string">"]]"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException ioe) &#123;</span><br><span class="line">			ioe.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最后还要去test的基类中，启用这个rule，注意这个rule类在使用的时候，需要传入test的基类中使用的driver，也即：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Rule</span></span><br><span class="line"><span class="keyword">public</span> ScreenshotRule screenshotRule = <span class="keyword">new</span> ScreenshotRule(driver);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1104,7 +1121,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
