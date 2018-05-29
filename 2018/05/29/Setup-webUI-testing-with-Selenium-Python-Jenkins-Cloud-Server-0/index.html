@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小码奔腾">
 <meta property="og:description" content="在www.digitalocean.com上租了个Ubuntu 16.04的云服务器，用优惠码可以新用户送15刀，大约是最小配置的服务器可以用3个月，而且是按分钟算钱，除了网速有时候可能慢点，实在是没有其他缺点了。 有云服务器后，还需要安装以下一些软件：  Firefox, 普通的sudo apt-get install firefox会安装最新版本的Firefox，正确的做法是去Mozilla的">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-05-29T10:28:16.026Z">
+<meta property="og:updated_time" content="2018-05-29T11:09:04.972Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在云服务器上使用Python+Selenium+Jenkins搭建webUI测试 - 0">
 <meta name="twitter:description" content="在www.digitalocean.com上租了个Ubuntu 16.04的云服务器，用优惠码可以新用户送15刀，大约是最小配置的服务器可以用3个月，而且是按分钟算钱，除了网速有时候可能慢点，实在是没有其他缺点了。 有云服务器后，还需要安装以下一些软件：  Firefox, 普通的sudo apt-get install firefox会安装最新版本的Firefox，正确的做法是去Mozilla的">
@@ -307,10 +307,10 @@
 <li>Xvfb, <code>sudo apt-get install xvfb</code>，解决没有主机没有屏幕可能会导致的无法连接Firefox的异常。</li>
 <li>geckodriver, Firefox浏览器的webdriver驱动，需要去<a href="https://github.com/mozilla/geckodriver/releases" target="_blank" rel="noopener">Github-geckodriver-releases</a>，比如下载0.19.0版本的geckodriver，wget到主机上后，添加执行权限，再mv到<code>/usr/bin</code>目录。</li>
 <li>Jenkins, JDK。</li>
-<li>Jenkins安装<a href="https://wiki.jenkins.io/display/JENKINS/Xvfb+Plugin" target="_blank" rel="noopener">Xvfb Plugin</a>，还需要去Jekins的全局工具设置中配置Xvfb的安装目录，在webUI job里需要配置启动Xvfb。</li>
+<li>Jenkins安装<a href="https://wiki.jenkins.io/display/JENKINS/Xvfb+Plugin" target="_blank" rel="noopener">Xvfb Plugin</a>，还需要去Jenkins的全局工具设置中配置Xvfb的安装目录，在webUI job里需要配置启动Xvfb。</li>
 <li><code>pip install</code>安装Python3、pytest、selenium等依赖。</li>
 </ul>
-<p>搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后适配成功。</p>
+<p>搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后geckodriver 0.19.0和Firefox 46.0适配成功。</p>
 <p>至此，环境配置部分基本完成了，如果Selenium代码ok的话应该是可以正常运行，后续打算继续给套测试添砖加瓦，完善test case基类，页面对象等工作。</p>
 
       
