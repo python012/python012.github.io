@@ -12,9 +12,9 @@ tags: [Selenium, Python, Xvfb, Jenkins]
 - Xvfb, `sudo apt-get install xvfb`，解决没有主机没有屏幕可能会导致的无法连接Firefox的异常。
 - geckodriver, Firefox浏览器的webdriver驱动，需要去[Github-geckodriver-releases](https://github.com/mozilla/geckodriver/releases)，比如下载0.19.0版本的geckodriver，wget到主机上后，添加执行权限，再mv到`/usr/bin`目录。
 - Jenkins, JDK。
-- Jenkins安装[Xvfb Plugin](https://wiki.jenkins.io/display/JENKINS/Xvfb+Plugin)，还需要去Jekins的全局工具设置中配置Xvfb的安装目录，在webUI job里需要配置启动Xvfb。
+- Jenkins安装[Xvfb Plugin](https://wiki.jenkins.io/display/JENKINS/Xvfb+Plugin)，还需要去Jenkins的全局工具设置中配置Xvfb的安装目录，在webUI job里需要配置启动Xvfb。
 - `pip install`安装Python3、pytest、selenium等依赖。
 
-搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后适配成功。
+搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后geckodriver 0.19.0和Firefox 46.0适配成功。
 
 至此，环境配置部分基本完成了，如果Selenium代码ok的话应该是可以正常运行，后续打算继续给套测试添砖加瓦，完善test case基类，页面对象等工作。
