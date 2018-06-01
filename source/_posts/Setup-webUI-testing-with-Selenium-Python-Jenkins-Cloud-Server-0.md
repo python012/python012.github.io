@@ -4,7 +4,7 @@ date: 2018-05-29 17:41:34
 tags: [Selenium, Python, Xvfb, Jenkins]
 ---
 
-在[www.digitalocean.com](www.digitalocean.com)上租了个Ubuntu 16.04的云服务器，用优惠码可以新用户送15刀，大约是最小配置的服务器可以用3个月，而且是按分钟算钱，除了网速有时候可能慢点，实在是没有其他缺点了。
+在[Digitalocean.com](https://www.digitalocean.com)上租了个Ubuntu 16.04的云服务器，用优惠码可以新用户送15刀，大约是最小配置的服务器可以用3个月，而且是按分钟算钱，除了网速有时候可能慢点，实在是没有其他缺点了。
 
 有云服务器后，还需要安装以下一些软件：
 
@@ -15,6 +15,6 @@ tags: [Selenium, Python, Xvfb, Jenkins]
 - Jenkins安装[Xvfb Plugin](https://wiki.jenkins.io/display/JENKINS/Xvfb+Plugin)，还需要去Jenkins的全局工具设置中配置Xvfb的安装目录，在webUI job里需要配置启动Xvfb。
 - `pip install`安装Python3、pytest、selenium等依赖。
 
-搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后geckodriver 0.15.0和Firefox 46.0适配成功。
+搭建过程中遇到最耗时间的还是geckodriver和Firefox版本匹配的问题，最开始安装的最新的60的Firefox和最新版本的geckodriver，几次尝试后发现应该是geckodriver支持不了这么高版本的Firefox，然后对Firefox进行降级，最后**geckodriver 0.15.0**和**Firefox 46.0**适配成功。
 
 至此，环境配置部分基本完成了，如果Selenium代码ok的话应该是可以正常运行，后续打算继续给这套测试添砖加瓦，完善test case基类，页面对象，静态代码检查等工作。
