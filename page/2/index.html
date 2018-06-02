@@ -233,6 +233,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/Docker-Technologies-for-DevOps-and-Developers-学习笔记/" itemprop="url">Docker Technologies for DevOps and Developers学习笔记 - 1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-19T22:04:59+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Concepts"><a href="#Concepts" class="headerlink" title="Concepts"></a>Concepts</h2><p>Images</p>
+<ul>
+<li>which are read only templates used to create containers.</li>
+<li>are created with the docker build command by docker user.</li>
+</ul>
+<p>Containers</p>
+<ul>
+<li>container is an instance of an image(like an instance of a class - a runtime object)</li>
+</ul>
+<p>Official Docker images website -&gt; <a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></p>
+<h2 id="Basic-commands"><a href="#Basic-commands" class="headerlink" title="Basic commands"></a>Basic commands</h2><p>ls本机上的docker image -&gt; <code>docker images</code></p>
+<p>创建一个有busybox的的docker container 并执行 <code>echo &quot;hello docker&quot;</code> -&gt; <code>docker run busybox:1.24 echo &quot;hello docker&quot;</code></p>
+<p>ls docker container中的根目录 -&gt; <code>docker run busybox:1.24 ls /</code></p>
+<p>进入docker container -&gt; <code>docker run -i -t busybox:1.24</code>，执行<code>exit</code>可退出container，每一次都是一个新的image</p>
+<p>使用<code>docker ps -a</code>来查看创建过的历史container -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                 CREATED             STATUS                         PORTS               NAMES</span><br><span class="line">d46a47c46f34        busybox:1.24        <span class="string">"sleep 1000"</span>            3 minutes ago       Up 3 minutes                                       wonderful_shockley</span><br><span class="line">180a27bc3ba4        busybox:1.24        <span class="string">"sh"</span>                    4 minutes ago       Exited (0) 4 minutes ago                           nostalgic_ritchie</span><br><span class="line">901dec3242bb        busybox:1.24        <span class="string">"ls /"</span>                  26 minutes ago      Exited (0) 26 minutes ago                          pensive_keldysh</span><br></pre></td></tr></table></figure>
+<p>新建一个container执行命令，完成后自动删除这个container -&gt; <code>docker run --rm busybox:1.24 sleep 1</code></p>
+<p>新建一个指定名字的docker container -&gt; <code>run --name my_docker_container busybox:1.24 ls</code></p>
+<p>inspect一个container的底层信息 -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker run -d busybox:1.24 sleep 100</span><br><span class="line">7dd3d07d1ae16e0ccd042c62cc08a2523dc3dbf325ea9f957ff49fcf1e414645</span><br><span class="line">rx:dev reed$ docker inspect 7dd3d07d1ae16e0ccd042c62cc08a2523dc3dbf325ea9f957ff49fcf1e414645</span><br></pre></td></tr></table></figure>
+<p>拉取tomcat 8.0 image，并创建一个container，同时将container的8080端口映射到主机的8888端口 -&gt;</p>
+<ul>
+<li>从国内docker image源中下载tomcat 8.0 image -&gt; <code>docker pull registry.docker-cn.com/library/tomcat:8.0</code></li>
+<li>创建container并映射端口 -&gt; <code>docker run -it -p 8888:8080 registry.docker-cn.com/library/tomcat:8.0</code></li>
+<li>运行container并在后台运行 -&gt; <code>docker run -it -d -p 8888:8080 registry.docker-cn.com/library/tomcat:8.0</code> 执行后会显示container ID</li>
+<li>查看后台运行的container的运行log -&gt; <code>docker logs DOCKER_CONTAINER_ID</code></li>
+<li>停止一个后台运行的container -&gt; <code>docker stop DOCKER_CONTAINER_NAME</code></li>
+</ul>
+<h2 id="Run-Container-in-Foreground-or-Background"><a href="#Run-Container-in-Foreground-or-Background" class="headerlink" title="Run Container in Foreground or Background"></a>Run Container in Foreground or Background</h2><p>run container in foreground -&gt; default mode</p>
+<p>run container in background -&gt; <code>-d</code>(dispatch) option</p>
+<p>建一个container在后台运行，并用<code>ps</code>查看运行中的container -&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rx:dev reed$ docker run -d busybox:1.24 sleep 1000</span><br><span class="line">d46a47c46f34cbec69dc6ce04e9674a74f81d5bea17b93a8d441c4a88c8ba056</span><br><span class="line">rx:dev reed$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">d46a47c46f34        busybox:1.24        <span class="string">"sleep 1000"</span>        1 second ago        Up 2 seconds                            wonderful_shockley</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/13/重构一份应用pytest框架的测试代码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -860,129 +1011,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/17/virtualenv的使用小记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/17/virtualenv的使用小记/" itemprop="url">virtualenv的使用小记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-17T20:48:50+08:00">
-                2018-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>virtualenv可以用来创建一套虚拟的、独立的、干净python环境，如果系统中安装有多个python版本，则还可以指定版本。</p>
-<p><code>pip install virtualenv</code>  pip安装virtualenv。<br><code>virtualenv venv --python=python3.6</code> 创建一个名字叫venv的python环境，python版本指定为3.6，然后virtualenv会在当前目录下创建名为venv的目录。<br><code>virtualenv --no-site-packages venv</code> 创建一个名字叫venv的，无第三方包的干净的python环境，python版本与系统中的版本一致。<br><code>source venv/bin/activate</code> 启用venv环境。<br><code>pip install -r requirements.txt</code> 安装文件requirements.txt里列举的第三方python模块，也即是当前的venv环境中安装。</p>
-<p>在PyCharm中使用virtualenv作为项目解释器（Project Interpreter）时，选择Add Local -&gt; Exisiting environment，Interpreter再定位到venv/bin/python并选中即可。</p>
-<p><code>deactivate</code> 关闭venv环境。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1037,7 +1065,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1050,7 +1078,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,Django," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="买到一本有趣的关于Django开发和接口测试的书，写的很棒，这里随手记录以下Django开发的要点。 项目的启动 推荐用Python 3.x，pip install django==1.10.3. 安装成功后，如果django-admin程序在PATH目录的话，运行django-admin可以看到命令列表。 执行django-admin guest来创建一个叫guest的项目。 进入guest目录">
+<meta name="keywords" content="Python,Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django development实践笔记">
+<meta property="og:url" content="http://python012.github.io/2018/06/02/django-development/index.html">
+<meta property="og:site_name" content="小码奔腾">
+<meta property="og:description" content="买到一本有趣的关于Django开发和接口测试的书，写的很棒，这里随手记录以下Django开发的要点。 项目的启动 推荐用Python 3.x，pip install django==1.10.3. 安装成功后，如果django-admin程序在PATH目录的话，运行django-admin可以看到命令列表。 执行django-admin guest来创建一个叫guest的项目。 进入guest目录">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-06-02T13:12:57.125Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django development实践笔记">
+<meta name="twitter:description" content="买到一本有趣的关于Django开发和接口测试的书，写的很棒，这里随手记录以下Django开发的要点。 项目的启动 推荐用Python 3.x，pip install django==1.10.3. 安装成功后，如果django-admin程序在PATH目录的话，运行django-admin可以看到命令列表。 执行django-admin guest来创建一个叫guest的项目。 进入guest目录">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://python012.github.io/2018/06/02/django-development/"/>
+
+
+
+
+
+  <title>Django development实践笔记 | 小码奔腾</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码奔腾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录一些和自动化测试、CI有关的想法</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/06/02/django-development/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Django development实践笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T20:38:00+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>买到一本有趣的关于Django开发和接口测试的书，写的很棒，这里随手记录以下Django开发的要点。</p>
+<h2 id="项目的启动"><a href="#项目的启动" class="headerlink" title="项目的启动"></a>项目的启动</h2><ol>
+<li>推荐用Python 3.x，<code>pip install django==1.10.3</code>.</li>
+<li>安装成功后，如果django-admin程序在PATH目录的话，运行<code>django-admin</code>可以看到命令列表。</li>
+<li>执行<code>django-admin guest</code>来创建一个叫guest的项目。</li>
+<li>进入guest目录，执行<code>python3 manage.py</code>来查看manage所提供的命令列表。</li>
+<li>执行<code>python3 manage.py startapp appname</code>，创建一个app，名为<code>appname</code>。</li>
+</ol>
+<h2 id="Django中的app"><a href="#Django中的app" class="headerlink" title="Django中的app"></a>Django中的app</h2><p>Django框架下的Web开发有很多有意思的概念，比如这个<strong>app</strong>概念，我理解就是完成一个比较独立的功能的模块。</p>
+<p>创建了名为<code>appname</code>的app后，会有appname目录生成，其中会有以下文件或者目录：</p>
+<ul>
+<li>migrations/  用来记录modles中的数据变更</li>
+<li>admin.py     映射modles中的数据到Django自带的admin后台</li>
+<li>apps.py      用于app的配置</li>
+<li>modles.py    Django模型文件，创建app的数据表模型，对应数据库的相关操作</li>
+<li>tests.py     创建测试用例</li>
+<li>views.py     Django的视图文件，控制向前段页面显示的内容</li>
+<li>templates/   用来放HTML模版文件</li>
+</ul>
+<p>app创建之后，还需要去项目目录下的<code>settings.py</code>，把app名字添加到<code>INSTALLED_APPS</code>中。</p>
+<h2 id="一次具体的网站页面访问到底是怎样一个过程呢？"><a href="#一次具体的网站页面访问到底是怎样一个过程呢？" class="headerlink" title="一次具体的网站页面访问到底是怎样一个过程呢？"></a>一次具体的网站页面访问到底是怎样一个过程呢？</h2><p>假设有一个登陆后可以看到图片列表的网站，现在开始打开浏览器，输入<code>http://localhost/login/</code>敲回车开始访问，这里我尝试用在Django框架里发生的一系列事件来解释下这个过程。</p>
+<ol>
+<li>Django框架下的服务器程序会接受到一个针对<code>/login/</code>的HTTP GET request。</li>
+<li>Django会依据项目目录下的<code>urls.py</code>中的<code>urlpatterns</code>(如下)来查找<strong>/login/</strong>所绑定的视图函数。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</span><br><span class="line">    url(<span class="string">r'^$'</span>, views.login),</span><br><span class="line">    url(<span class="string">r'^login/$'</span>, views.login),</span><br><span class="line">    url(<span class="string">r'^login_action/$'</span>, views.login_action),</span><br><span class="line">    url(<span class="string">r'^image_list/$'</span>, views.image_list),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>查找后发现<strong>/login/</strong>绑定的是函数<code>views.login(request)</code>(存在于<code>/appname/views.py</code>)，然后会把这个http request对象作为参数传给<code>views.login(request)</code>。</li>
+<li>函数<code>views.login(request)</code>的内容如下，它会返回index.html文件，这是事先写好放在<code>/appname/templates</code>目录里的。没有学习Web开发之前，可能会认为URL名字总是有相应的HTML文件，实际在Django Web开发中却不是这样的。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">"index.html"</span>)</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>index.html中的内容会呈现在浏览器中，此刻浏览器的地址栏还是<code>http://localhost/login/</code>。</li>
+<li>这里需要说下index.html，源文件中多半有下面这样的代码.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;form class=&quot;center&quot; action=&quot;/login_action/&quot; method=&quot;POST&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;username&quot;&gt;</span><br><span class="line">    &lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;password&quot;&gt;</span><br><span class="line">    &lt;br&gt; &#123;&#123; error_message &#125;&#125;</span><br><span class="line">    &lt;br&gt;</span><br><span class="line">    &lt;button id=&quot;btn&quot; type=&quot;submit&quot;&gt;登录&lt;/button&gt;</span><br><span class="line">    </span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>填写用户名和密码，并提交的页面元素是一个<code>form</code>，填好后点击按钮，form里定义的<code>action=&quot;/login_action/&quot; method=&quot;POST&quot;</code>，决定了填好的这些username和password信息，是向<code>http://localhost/login_action/</code>提交(POST方法)。这里的<code>error_message</code>和<code>csrf_token</code>，一个是预备载入错误信息的地方，一个是django中的防止跨站请求伪造的token，先不展开了。</p>
+<ol start="7">
+<li>然后就重复之前的步骤，服务器会从<code>urls.py</code>中查找路径<strong>/login_action/</strong>所绑定的视图函数，这里是<code>views.login_action</code>，然后把http request对象传过去作为参数。</li>
+<li>来看下<code>login_action()</code>函数的细节</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_action</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        username = request.POST.get(<span class="string">'username'</span>, <span class="string">''</span>)</span><br><span class="line">        password = request.POST.get(<span class="string">'password'</span>, <span class="string">''</span>)</span><br><span class="line">        user = auth.authenticate(username=username, password=password)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> user <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            auth.login(request, user)</span><br><span class="line">            request.session[<span class="string">'user'</span>] = username</span><br><span class="line">            response = HttpResponseRedirect(<span class="string">'/image_list/'</span>)</span><br><span class="line">            <span class="keyword">return</span> response</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> render(request, <span class="string">'index.html'</span>, &#123;<span class="string">'error_message'</span>: <span class="string">'username or password is not correct!'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>如果<code>login_action()</code>函数收到的http request是一个POST，就会从rquest中解析出username/password信息，然后用Django提供的通用认证方法进行检查，如果一切ok，user变量就不为空，然后把request session中的user置为username的值(刚刚由request中解析出来)，再把request重定向到<code>/image_list/</code>。</p>
+<ol start="9">
+<li>再一次重复上面的步骤，服务器会从<code>urls.py</code>中查找路径<code>/image_list/</code>所绑定的视图函数，此处是<code>views.image_list</code>，然后把http request对象传过去作为参数。</li>
+<li>看一下<code>views.image_list(request)</code>函数：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_list</span><span class="params">(request)</span>:</span></span><br><span class="line">    username = request.session.get(<span class="string">'user'</span>, <span class="string">''</span>)</span><br><span class="line">    image_list = Image.objects.all()</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">"image_list.html"</span>, &#123;<span class="string">"user"</span>: username, <span class="string">"images"</span>: image_list&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>views.image_list</code>收到http request后，先从session中获得user变量的值，也即最开始用户登陆的时候输入的用户名，再从系统中的Image modle(定义在项目根目录的models.py里)获取到所有的Image对象列表(这里有很多Django的辅助实施)，然后把user变量的值，和Image对象列表组成一个字典(或可称为json串?)传给<code>/appname/templates</code>里image_list.html，Django会使用字典作为参数对html文件进行加工，比如把user变量的值放在网页右上角显示为<code>欢迎 User</code>,然后依据Image对象列表找到所有Image的地址，生成一些列li标签，每个li带一个image，最后看起来像一个相册。</p>
+<ol start="11">
+<li>最后浏览器的地址栏会停留在<code>http://localhost/image_list/</code>，浏览器的主页面会显示经过Django处理过的，以image_list.html为模板的网页。</li>
+</ol>
+<p>最后一点题外话，发现hexo似乎有个bug，blog的md文本中里不能出现用<code>%{</code>包围的<strong>csrf_token</strong>，否则会<code>hexo s</code>失败，报错<code>Template render error: unknown block tag: csrf_token</code>，所以文中引用的第一段HTML代码中button tag下原本是有csrf_token的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/29/Setup-webUI-testing-with-Selenium-Python-Jenkins-Cloud-Server-0/" rel="next" title="在云服务器上使用Python+Selenium+Jenkins搭建webUI测试">
+                <i class="fa fa-chevron-left"></i> 在云服务器上使用Python+Selenium+Jenkins搭建webUI测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
+              <p class="site-author-name" itemprop="name">Reed Xia</p>
+              <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/python012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:python012@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目的启动"><span class="nav-number">1.</span> <span class="nav-text">项目的启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Django中的app"><span class="nav-number">2.</span> <span class="nav-text">Django中的app</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一次具体的网站页面访问到底是怎样一个过程呢？"><span class="nav-number">3.</span> <span class="nav-text">一次具体的网站页面访问到底是怎样一个过程呢？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reed Xia</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+      <script type="text/javascript">
+        var commenthub_id = '2948441';
+        var commenthub_website = 'https://python012.github.io/';
+        var commenthub_identifier = '2018/06/02/django-development/';
+        var commenthub_url = 'http://python012.github.io/2018/06/02/django-development/';
+        var commenthub_title = 'Django development实践笔记';
+        var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = 'https://commenthub.herokuapp.com/js/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      </script>
+  
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
