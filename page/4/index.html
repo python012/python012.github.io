@@ -233,6 +233,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/04/Master-Jenkins-CI-For-DevOps-and-Developers-课程总结/" itemprop="url">'Master Jenkins CI For DevOps and Developers'课程总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T00:07:47+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个课程的内容不算多，不到一个星期就看完了，赶紧来做个总结和笔记。</p>
+<p>课程中的内容大致分为3部分。</p>
+<ul>
+<li>普通的Jenkins pipeline的创建。从github（git）上pull代码，触发的时间设置（Poll SCM），配置JDK、Maven、Git，配置Maven项目，Maven项目中clean package后收集生成的war包，job之间的触发的互相依赖，使用pipeline插件，让pipeline更加的可视化。</li>
+<li>Jenkins pipeline as code的实现，就是把pipeline的建立、各项具体配置都写在jenkinsfile里。在创建job的时候，选择pipeline而不是freestyle。</li>
+<li>Jenkins master和slave结构的建立。</li>
+</ul>
+<h2 id="Jenkins-master和slave结构的建立"><a href="#Jenkins-master和slave结构的建立" class="headerlink" title="Jenkins master和slave结构的建立"></a>Jenkins master和slave结构的建立</h2><p>重点记一下这部分。</p>
+<p>课程中的目标是，使用两台ubuntu主机，一台作为master，一台作为slave。为了方便起见，这里是申请了<a href="https://www.digitalocean.com/" target="_blank" rel="noopener">https://www.digitalocean.com/</a> 里的两台ubuntu 16.04LTS主机。</p>
+<p>先登陆master主机上安装Jenkins，具体命令</p>
+<ol>
+<li><code>wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -</code></li>
+<li><code>echo deb http://pkg.jenkins-ci.org/debian binary/ &gt; /etc/apt/sources.list.d/jenkins.list</code></li>
+<li><code>apt-get update</code></li>
+<li><code>apt-get install jenkins</code></li>
+</ol>
+<p>参考链接<a href="https://jenkins.io/doc/book/installing/#debian-ubuntu" target="_blank" rel="noopener">https://jenkins.io/doc/book/installing/#debian-ubuntu</a>，注意默认会去安装Jenkins的最新版，安装指定版本可用<code>apt-get install jenkins=2.67</code>。</p>
+<p>实际验证中发现Ubuntu主机上没有安装JDK，所以还要先安装jdk8。命令如下</p>
+<ol>
+<li><code>sudo add-apt-repository ppa:webupd8team/java</code></li>
+<li><code>sudo apt update</code></li>
+<li><code>sudo apt install oracle-java8-installer</code></li>
+</ol>
+<p>参考链接是<a href="http://tipsonubuntu.com/2016/07/31/install-oracle-java-8-9-ubuntu-16-04-linux-mint-18/" target="_blank" rel="noopener">http://tipsonubuntu.com/2016/07/31/install-oracle-java-8-9-ubuntu-16-04-linux-mint-18/</a></p>
+<p>还可以继续安装jre，命令是<code>sudo apt install oracle-java8-set-default</code>。</p>
+<p>另外在master的Ubuntu上安装Maven后，还需要去Global Tool Configuration里去配置JDK，Git和Maven的路径，下面是我配置的默认路径：</p>
+<p><img src="/images/20180429212000957.png" alt=""></p>
+<p>然后需要master主机上生成一对rsa密钥，再在master和slave上执行以下命令，达到可以无密码访问slave主机效果</p>
+<blockquote>
+<p>sudo -iu jenkins<br>ssh root@slave_ip mkdir -p .ssh<br>cat .ssh/id_rsa.pub | ssh root@slave_ip ‘cat &gt;&gt; .ssh/authorized_keys’</p>
+</blockquote>
+<p>在slave主机上执行</p>
+<blockquote>
+<p>mkdir ~/bin<br>cd bin<br>wget <a href="http://master_ip:8080/jnlpJars/slave.jar" target="_blank" rel="noopener">http://master_ip:8080/jnlpJars/slave.jar</a></p>
+</blockquote>
+<p>打开运行master主机上的Jenkins主页，登陆后新建一个node，Remote root directory可填<code>/var/jenkins</code>，Launch command填<code>ssh root@slave_ip java -jar /root/bin/slave.jar</code>，保存后刷新页面，slave node应该就连接上了。后面就应该就简单了，可以继续配置slave node的lable，然后配置job在具体某个lable上执行。</p>
+<p>第一部分普通jenkins pipeline的建立，还需要再复习一下。</p>
+<p>完成课程后可以拿个证书。<br><img src="/images/UC-TG6ZI0V3.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/01/Enrolled-Master-Jenkins-CI-For-DevOps-and-Developers-！/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -893,134 +1050,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/01/16/让JUnit4里的test运行时动态决定执行或不执行-Skip/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/16/让JUnit4里的test运行时动态决定执行或不执行-Skip/" itemprop="url">让JUnit4里的test运行时动态决定执行或Skip</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-16T17:34:55+08:00">
-                2018-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>一组应用了Junit4的测试，需要增加一个动态判断，来决定是否跑test。我知道这组测试其实已经应用了junit的Category功能，来做测试组的初期分类，在跑这一整套测试的时候，执行环节会针对不同的被测产品给出一个custom参数，测试代码跑起来后会根据这个custom的值，来选择排除某些category和包括哪些category。</p>
-<p>现在这个策略不够用了，因为之前标记好的category，同一个分类下还是有动态选择执行的需求，于是这次用到了Junit4中rule特性。</p>
-<p>下面代码就实现了一个JUnit4中的rule。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ibm.robot.web.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ibm.robot.web.util.WebPropertiesLoader;</span><br><span class="line"><span class="keyword">import</span> org.junit.rules.TestRule;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.Description;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.Statement;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotRun5gCase</span> <span class="keyword">implements</span> <span class="title">TestRule</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Statement <span class="title">apply</span><span class="params">(<span class="keyword">final</span> Statement base, <span class="keyword">final</span> Description description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Statement() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluate</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                String methodName = description.getMethodName();</span><br><span class="line">                loader = <span class="keyword">new</span> WebPropertiesLoader();</span><br><span class="line">                String ap_2g = loader.getString(<span class="string">"WIFI.ap.2G"</span>, <span class="string">"unknow"</span>);</span><br><span class="line">                String ap_5g = loader.getString(<span class="string">"WIFI.ap.5G"</span>, <span class="string">"unknow"</span>);</span><br><span class="line">                <span class="keyword">if</span> (!(ap_2G.equals(ap_5G) &amp;&amp; methodName.contains(<span class="string">"5GHz"</span>))) &#123;</span><br><span class="line">                        base.evaluate();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从代码中可见，这条rule规定当ap_2g的值与ap_5g相等，同时test的方法名中包含5GHz的话，则不执行这个test。 然后把这条rule应用到具体的test中即可。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WiFiTest</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Rule</span></span><br><span class="line">	<span class="keyword">public</span> TestRule notRun5gCase = <span class="keyword">new</span> NotRun5gCase ();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Before</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"setup actions"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@After</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tearDown</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"tearDown actions"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWiFi2GHz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//to test wi-fi 2g</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWiFi5GHz</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//to test wi-fi 5g</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>其实还是上次的问题，在上一篇中提到解决办法是应用JUnit4里的Rule来实现，今天继续研究了下，觉得还是不够好，因为实际需求是，需要在运行测试的时候去动态skip某些test，今天请教了下一位朋友，就有了如下代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.junit4test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(MyRunner.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AprilTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">assert</span>(<span class="string">"abc"</span>.equals(<span class="string">"abc"</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.junit4test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.runners.BlockJUnit4ClassRunner;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.FrameworkMethod;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.model.InitializationError;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunner</span> <span class="keyword">extends</span> <span class="title">BlockJUnit4ClassRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyRunner</span><span class="params">(Class&lt;?&gt; klass)</span> <span class="keyword">throws</span> InitializationError </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>(klass);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isIgnored</span><span class="params">(FrameworkMethod child)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (child.getName().contains(<span class="string">"3"</span>)) &#123; <span class="comment">// 此处可做动态判断，来觉得是否skip该test</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1075,7 +1104,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1088,7 +1117,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

@@ -233,6 +233,137 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/06/26/import-django-rest-framwork-to-existing-django-project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/26/import-django-rest-framwork-to-existing-django-project/" itemprop="url">为Django项目应用Django REST framework实现REST风格的Web API</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-26T23:05:47+08:00">
+                2018-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是<a href="https://restframework.herokuapp.com/users/" target="_blank" rel="noopener">https://restframework.herokuapp.com/users/</a>，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。</p>
+<p>假如基于Djiango已经实现了一个简单的Web项目（项目中实现了一个app，名为api，<code>./project_name/api/models.py</code>中已经定义了api中用到的model数据表<code>class Person(models.Model)</code>）。</p>
+<p><strong>STEP 1</strong> - 首先去<code>./project_name/project_name/settings.py</code>，在INSTALLED_APPS中添加rest_framework：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">'django.contrib.admin'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth'</span>,</span><br><span class="line">    <span class="string">'django.contrib.contenttypes'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages'</span>,</span><br><span class="line">    <span class="string">'django.contrib.staticfiles'</span>,</span><br><span class="line">    <span class="string">'api'</span>,</span><br><span class="line">    <span class="string">'bootstrap3'</span>,</span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>STEP 2</strong> - 创建<code>./project_name/api/serializers.py</code>，基本代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User, Group</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> serializers</span><br><span class="line"><span class="keyword">from</span> api.models <span class="keyword">import</span> Person</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSerializer</span><span class="params">(serializers.HyperlinkedModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = User</span><br><span class="line">        fields = (<span class="string">'url'</span>, <span class="string">'username'</span>, <span class="string">'email'</span>, <span class="string">'groups'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupSerializer</span><span class="params">(serializers.HyperlinkedModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = Group</span><br><span class="line">        fields = (<span class="string">'url'</span>, <span class="string">'name'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonSerializer</span><span class="params">(serializers.HyperlinkedModelSerializer)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        model = Person</span><br><span class="line">        fields = (<span class="string">'name'</span>, <span class="string">'address'</span>, <span class="string">'status'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>STEP 3</strong> - 创建<code>./project_name/api/view_interface_rest.py</code>，基本代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> Group, User</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> viewsets</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> api.models <span class="keyword">import</span> Person</span><br><span class="line"><span class="keyword">from</span> api.serializers <span class="keyword">import</span> GroupSerializer, UserSerializer, PersonSerializer</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserViewSet</span><span class="params">(viewsets.ModelViewSet)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    API endpoint that allows users to viewed or edited.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    queryset = User.objects.all().order_by(<span class="string">'-date_joined'</span>)</span><br><span class="line">    serializer_class = UserSerializer</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupViewSet</span><span class="params">(viewsets.ModelViewSet)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    API endpoint that allows groups to viewed or edited.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    queryset = Group.objects.all()</span><br><span class="line">    serializer_class = GroupSerializer</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonViewSet</span><span class="params">(viewsets.ModelViewSet)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    API endpoint that allows events to viewed or edited.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    queryset = Person.objects.all()</span><br><span class="line">    serializer_class = PersonSerializer</span><br></pre></td></tr></table></figure>
+<p><strong>STEP 4</strong> - 打开<code>./project_name/perject_name/urls.py</code>，添加REST API的路由信息，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> url, include</span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> api <span class="keyword">import</span> views, views_interface_rest</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> routers</span><br><span class="line"></span><br><span class="line">router = routers.DefaultRouter()</span><br><span class="line">router.register(<span class="string">r'users'</span>, views_interface_rest.UserViewSet)</span><br><span class="line">router.register(<span class="string">r'groups'</span>, views_interface_rest.GroupViewSet)</span><br><span class="line">router.register(<span class="string">r'persons'</span>, views_interface_rest.EventViewSet)</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</span><br><span class="line">    url(<span class="string">r'^$'</span>, views.index),</span><br><span class="line">    url(<span class="string">r'^index/$'</span>, views.index),</span><br><span class="line">    url(<span class="string">r'^login_action/$'</span>, views.login_action),</span><br><span class="line">    url(<span class="string">r'^accounts/login/$'</span>, views.index),</span><br><span class="line">    url(<span class="string">r'^logout/$'</span>, views.logout),</span><br><span class="line"></span><br><span class="line">    url(<span class="string">r'^rest/'</span>, include(router.urls)),</span><br><span class="line">    url(<span class="string">r'^api-auth/'</span>, include(<span class="string">'rest_framework.urls'</span>, namespace=<span class="string">'rest_framework'</span>))</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>THE END</strong> - 此时代码工作应该是完成了，登陆访问<code>http://127.0.0.1:8000/rest/</code>就可以打开api root的页面，使用PostMan或者HTTPie等工具向<code>http://127.0.0.1:8000/rest/</code>发送GET请求，同时带上basic auth的用户名密码，就能拿到类似如下的response。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">rx:guest reed$ http -a admin:password http://127.0.0.1:8000/rest/</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Allow: GET, HEAD, OPTIONS</span><br><span class="line">Content-Length: 183</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Date: Wed, 27 Jun 2018 01:17:15 GMT</span><br><span class="line">Server: WSGIServer/0.2 CPython/3.6.5</span><br><span class="line">Vary: Accept, Cookie</span><br><span class="line">X-Frame-Options: SAMEORIGIN</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"persons"</span>: <span class="string">"http://127.0.0.1:8000/rest/persons/"</span>,</span><br><span class="line">    <span class="string">"groups"</span>: <span class="string">"http://127.0.0.1:8000/rest/groups/"</span>,</span><br><span class="line">    <span class="string">"users"</span>: <span class="string">"http://127.0.0.1:8000/rest/users/"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/06/02/django-development/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -906,152 +1037,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/20/Docker-Technologies-for-DevOps-and-Developers学习笔记2/" itemprop="url">Docker Technologies for DevOps and Developers学习笔记 - 2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-20T17:28:10+08:00">
-                2018-05-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Build-custom-docker-image"><a href="#Build-custom-docker-image" class="headerlink" title="Build custom docker image"></a>Build custom docker image</h1><h2 id="使用docker-commit命令来创建docker-image"><a href="#使用docker-commit命令来创建docker-image" class="headerlink" title="使用docker commit命令来创建docker image"></a>使用docker commit命令来创建docker image</h2><p><strong>General steps</strong>:</p>
-<ul>
-<li>Spin up a container from a base image.</li>
-<li>Install Git package in the container.</li>
-<li>Commit changes made in the container.</li>
-</ul>
-<p>把Docker国内镜像<code>https://registry.docker-cn.com</code>添加至docker <code>registry-mirrors</code>。</p>
-<p>或者可直接用命令拉取镜像，例如<code>docker pull registry.docker-cn.com/library/ubuntu:16.04</code></p>
-<p>国内镜像配置好后，执行<code>docker run -it debian:jessie</code>，拉取debian镜像并进入container。</p>
-<p>在debian container后，执行<code>apt-get update &amp;&amp; apt-get install -y git</code>，在container中安装Git。</p>
-<p>安装完成后执行<code>exit</code>退出，再执行<code>docker images -a</code>查找刚刚安装了git的debian container的ID。</p>
-<p>执行<code>docker commit GIT_DEBIAN_CONTAINER_ID reed/debian:1.00</code>来新建一个安装了Git的debian docker image，完成后可使用<code>docker images</code>来查看本地image列表。</p>
-<p>完成以上后，就可以在本地执行<code>docker run -it reed/debian:1.00</code> 来<strong>新建一个debian container并进入</strong>，可以发现<strong>container中已经安装好了Git</strong>。</p>
-<h2 id="使用Dockerfile来创建docker-image"><a href="#使用Dockerfile来创建docker-image" class="headerlink" title="使用Dockerfile来创建docker image"></a>使用Dockerfile来创建docker image</h2><p>以debian:jessie为base image，新建一个安装了Git和vim的image，以下是Dockerfile。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update</span><br><span class="line">RUN apt-get install -y git</span><br><span class="line">RUN apt-get install -y vim</span><br></pre></td></tr></table></figure>
-<p>然后执行<code>docker build -t reed/gitvim/debian .</code>，表示在当前目录下搜索Dockerfile，新image的REPOSITORY名字为reed/gitvim/debian。</p>
-<p>但是，实践中可能会遇到因为网络等问题引起的安装不顺利，感觉还是直接用commit命令来手动创建custom image比较合适。</p>
-<p><strong>Good Practice</strong> -&gt; Dockerfile也可这样写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
-<p>-&gt; 避免重复的package同时让列表易于更新：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br></pre></td></tr></table></figure>
-<p>-&gt; 另一个例子，CMD中的命令仅当container运行的时候执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br><span class="line">CMD [&quot;echo&quot;, &quot;hello docker&quot;]</span><br></pre></td></tr></table></figure>
-<p>-&gt; 为保证apt-get update是最新的，运行Dockerfile的时候可以关闭docker cache -&gt; <code>docker build -t reed/debian . --no-cache=true</code></p>
-<p>-&gt; CMD中加入copy命令，复制文件到container中去，下面Dockerfile生成的container将会从当前目录中复制文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:jessie</span><br><span class="line">RUN apt-get update &amp;&amp; apt-get install -y \</span><br><span class="line">  git \</span><br><span class="line">  python \</span><br><span class="line">  vim</span><br><span class="line">COPY abc.txt /src/abc.txt</span><br></pre></td></tr></table></figure>
-<p>-&gt; CMD中还有ADD命令，ADD可以理解是升级版的COPY，可以从网上下载文件，也可以自动化解压缩文件，通常优先使用COPY，除非非常肯定没问题的情况下则使用ADD。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1106,7 +1091,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1119,7 +1104,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
