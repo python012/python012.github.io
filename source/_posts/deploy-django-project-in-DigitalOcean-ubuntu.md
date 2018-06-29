@@ -4,11 +4,11 @@ date: 2018-06-28 19:52:19
 tags: [Django, Python]
 ---
 
-首先得有一份Django项目代码，在本地调试模式下(`python manage.py runserver`)跑起来各种没问题。
+首先得有一份Django app项目代码，在本地调试模式下(`python manage.py runserver`)跑起来各种没问题。
 
 ## 配置云服务器
 
-在DigitalOcean上申请Ubuntu 16.04LTS的Droplet，拿到IP和root密码，登陆后安装Django项目中用到的数据库软件，比如MySql:
+在DigitalOcean上申请Ubuntu 16.04LTS的Droplet，拿到公网IP和root密码，登陆后安装Django项目中用到的数据库软件，比如MySql:
 
 ```text
 sudo apt-get update
@@ -20,7 +20,7 @@ sudo apt install libmysqlclient-dev
 
 执行命令`sudo netstat -tap | grep mysql`来检查MySql是否在运行，登录打开MySql提示符执行`mysql> create database proj_db_name character set utf8;`来预创建Django项目要用到的数据库，这里数据库名字为**proj_db_name**。
 
-执行`sudo apt-get -y install nginx`安装NGINX，用来服务支持静态组件(css,js, images)，还可以在代理服务器下运行Django app。
+执行`sudo apt-get -y install nginx`安装NGINX，用来服务支持静态文件(css,js, images)，还可以在代理服务器下运行Django app。
 
 安装Supervisor，用来启动和管理Django应用程序服务。
 
@@ -30,9 +30,9 @@ sudo systemctl enable supervisor
 sudo systemctl start supervisor
 ```
 
-安装Python 3.x，我实践中是安装的3.6版本，那就需要去下载3.6源码做编译安装。
+安装Python 3.x，我实践中是安装的3.6版本，那就需要去下载Python 3.6源码做编译安装。
 
-执行`sudo apt-get -y install python-virtualenv`安装Python Virtualenv，这个似乎已经是Python项目的最佳实践之一，virtualenv可以方便的建立独立python依赖空间，避免项目之间可能的依赖冲突问题。
+执行`sudo apt-get -y install python-virtualenv`安装Python Virtualenv，使用virtualenv已然是Python项目的最佳实践之一，它可以方便的建立独立python依赖空间，避免项目之间可能的依赖冲突问题。一般实践中是`virtualenv venv`在项目根目录下生成保存独立python环境与依赖的venv目录。
 
 添加项目专用的用户，执行`adduser joe`，这里joe就是用户名，然后`gpasswd -a joe sudo`加入到sudo用户列表。
 
@@ -42,23 +42,23 @@ sudo systemctl start supervisor
 joe@ubuntu-s-1vcpu-1gb-sfo2:~$ source bin/activate
 (joe) joe@ubuntu-s-1vcpu-1gb-sfo2:~$ ls
 bin  include  lib  logs  pip-selfcheck.json  run
-(joe) joe@ubuntu-s-1vcpu-1gb-sfo2-jk:~$
+(joe) joe@ubuntu-s-1vcpu-1gb-sfo2:~$
 ```
 
 ## 设置Django项目
 
 git clone项目代码到`/home/joe`，执行`git clone https://github.com/python012/guest.git`，继续执行`pip install -r guest/requirements.txt`安装所有依赖。
 
-注意这里**guest**是Django项目（as Django app）名字。
+注意这里**guest**是Django项目(as Django app)名字。
 
 修改Django项目中的`./guest/guest/settings.py`，以下是修改后的一个diff：
 
 ```bash
 -DEBUG = True
-+DEBUG = False # Disable DEBUG mode in production server
++DEBUG = False # 在生产环境中必须关闭DEBUG模式
 
 -ALLOWED_HOSTS = []
-+ALLOWED_HOSTS = ['167.99.104.197',] # Your cloud server's public IP
++ALLOWED_HOSTS = ['167.99.104.197',] # 云主机的公网IP
 
 
  # Application definition
@@ -79,7 +79,7 @@ git clone项目代码到`/home/joe`，执行`git clone https://github.com/python
 
  STATIC_URL = '/static/'
 
-+STATIC_ROOT = '/home/joe/www/static'
++STATIC_ROOT = '/home/joe/www/static' # 静态文件目录
 ```
 
 回到当前目录`/home/joe`，生成静态文件目录`mkdir /home/joe/www/static`，执行`python manage.py migrate`连接MySql初始化各个数据表，再执行`python manage.py createsuperuser`来生成管理员账户，最后执行`python manage.py collectstatic`。
@@ -148,6 +148,7 @@ upstream app_server {
 }
 
 server {
+    # 如果设置为80则可以外网用户可以通过直接访问云主机的公网IP来打开Django app
     listen 8089;
 
     # add here the ip address of your server
@@ -178,4 +179,4 @@ server {
 }
 ```
 
-执行`sudo ln -s /etc/nginx/sites-available/guest /etc/nginx/sites-enabled/guest`创建符号链接，执行`sudo rm /etc/nginx/sites-enabled/default`删除NGINX默认的网站配置，最后执行`sudo service nginx restart`来重启nginx，这时候应该能够通过云服务器的公网IP访问Django app了，注意还需要加上配置的端口号8089，如果设置为80则可直接访问IP了。如果Django项目代码有更改，可以执行`sudo supervisorctl restart guest`来重启Djang app以应用最新项目代码。
+执行`sudo ln -s /etc/nginx/sites-available/guest /etc/nginx/sites-enabled/guest`创建符号链接，执行`sudo rm /etc/nginx/sites-enabled/default`删除NGINX默认的网站配置，最后执行`sudo service nginx restart`来重启nginx，这时候应该能够通过云服务器的公网IP访问Django app了，注意还需要加上配置的端口号8089，如果设置为80则可直接访问IP了。如果后期Django项目代码有更改，可以执行`sudo supervisorctl restart guest`来重启Djang app以应用最新项目代码。

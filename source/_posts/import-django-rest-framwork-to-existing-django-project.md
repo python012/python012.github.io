@@ -4,9 +4,9 @@ date: 2018-06-26 23:05:47
 tags: [Python, Django, Django Rest Framework]
 ---
 
-Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是[https://restframework.herokuapp.com/users/](https://restframework.herokuapp.com/users/)，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。
+Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是[https://restframework.herokuapp.com/users/](https://restframework.herokuapp.com/users/)，Django官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。
 
-假如基于Djiango已经实现了一个简单的Web项目（项目中实现了一个app，名为api，`./project_name/api/models.py`中已经定义了api中用到的model数据表`class Person(models.Model)`）。
+假如基于Django已经实现了一个简单的Web项目（项目中实现了一个app，名为api，`./project_name/api/models.py`中已经定义了api中用到的model数据表`class Person(models.Model)`）。
 
 **STEP 1** - 首先去`./project_name/project_name/settings.py`，在INSTALLED_APPS中添加rest_framework：
 
