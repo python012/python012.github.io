@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Python,Django,Django Rest Framework," />
+  <meta name="keywords" content="Django,Python,Django Rest Framework," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Djian">
-<meta name="keywords" content="Python,Django,Django Rest Framework">
+<meta name="description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Django官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Django">
+<meta name="keywords" content="Django,Python,Django Rest Framework">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为Django项目应用Django REST framework实现REST风格的Web API">
 <meta property="og:url" content="http://python012.github.io/2018/06/26/import-django-rest-framwork-to-existing-django-project/index.html">
 <meta property="og:site_name" content="小码奔腾">
-<meta property="og:description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Djian">
+<meta property="og:description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Django官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Django">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2018-06-27T01:19:56.880Z">
+<meta property="og:updated_time" content="2018-06-29T13:40:32.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为Django项目应用Django REST framework实现REST风格的Web API">
-<meta name="twitter:description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Djian">
+<meta name="twitter:description" content="Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是https://restframework.herokuapp.com/users/，Django官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。 假如基于Django">
 
 
 
@@ -300,8 +300,8 @@
       
 
       
-        <p>Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是<a href="https://restframework.herokuapp.com/users/" target="_blank" rel="noopener">https://restframework.herokuapp.com/users/</a>，Djiango官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。</p>
-<p>假如基于Djiango已经实现了一个简单的Web项目（项目中实现了一个app，名为api，<code>./project_name/api/models.py</code>中已经定义了api中用到的model数据表<code>class Person(models.Model)</code>）。</p>
+        <p>Django REST framework实现的REST风格的Web API，同时又可以用浏览器进行查看，一个快速的例子就是<a href="https://restframework.herokuapp.com/users/" target="_blank" rel="noopener">https://restframework.herokuapp.com/users/</a>，Django官方提供的一个范例，简洁明了，Django REST framework这套框架可以帮助Django项目快速实现REST风格的API，十分Pythonic。</p>
+<p>假如基于Django已经实现了一个简单的Web项目（项目中实现了一个app，名为api，<code>./project_name/api/models.py</code>中已经定义了api中用到的model数据表<code>class Person(models.Model)</code>）。</p>
 <p><strong>STEP 1</strong> - 首先去<code>./project_name/project_name/settings.py</code>，在INSTALLED_APPS中添加rest_framework：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">'django.contrib.admin'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth'</span>,</span><br><span class="line">    <span class="string">'django.contrib.contenttypes'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages'</span>,</span><br><span class="line">    <span class="string">'django.contrib.staticfiles'</span>,</span><br><span class="line">    <span class="string">'api'</span>,</span><br><span class="line">    <span class="string">'bootstrap3'</span>,</span><br><span class="line">    <span class="string">'rest_framework'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p><strong>STEP 2</strong> - 创建<code>./project_name/api/serializers.py</code>，基本代码如下：</p>
@@ -329,9 +329,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
-          
             <a href="/tags/Django/" rel="tag"># Django</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
             <a href="/tags/Django-Rest-Framework/" rel="tag"># Django Rest Framework</a>
           
