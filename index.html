@@ -233,6 +233,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/07/05/how-to-design-good-test-cases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/05/how-to-design-good-test-cases/" itemprop="url">怎么样设计更好的测试用例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T23:10:00+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="“好的”测试用例所具备的特点"><a href="#“好的”测试用例所具备的特点" class="headerlink" title="“好的”测试用例所具备的特点"></a>“好的”测试用例所具备的特点</h2><ul>
+<li><strong>整体完备性</strong>：好的测试用例是一个完备的整体，是有效测试用例组成的集合，能够完全覆盖测试需求</li>
+<li><strong>等价类划分的准确性</strong>：每个等价类都能保证只要其中一个输入通过，其他输入也一定测试通过</li>
+<li><strong>等价类集合的完备性</strong>：需要保证所有可能的边界值和边界条件都已经正确识别</li>
+</ul>
+<h2 id="三种最常用的测试用例设计方法"><a href="#三种最常用的测试用例设计方法" class="headerlink" title="三种最常用的测试用例设计方法"></a>三种最常用的测试用例设计方法</h2><ul>
+<li><strong>等价类划分方法</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">举例：学生信息系统的录入页面中“考试成绩”一项。</span><br><span class="line"></span><br><span class="line">成绩的取值范围是0~100之间的整数，考试成绩及格的分数线是60.</span><br><span class="line"></span><br><span class="line">有效等价类1：0-59之间的任意整数</span><br><span class="line">有效等价类2：59-100之间的任意整数</span><br><span class="line"></span><br><span class="line">无效等价类1：小于0的负数</span><br><span class="line">无效等价类2：大于100的整数</span><br><span class="line">无效等价类3：0-100之间的任何浮点数</span><br><span class="line">无效等价类4：其他任意非数字字符</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>边界值分析方法</strong> 边界值分析是对等价类划分的补充，从工程实践经验中可以发现，大量的错误发生在输入输出的边界值上，所以需要对边界值进行重点测试。通常选取正好等于、刚刚大于、刚刚小于边界的值，作为测试数据。针对上面的学生信息系统的例子，选取的边界值数据应该包括：</li>
+</ul>
+<blockquote>
+<p>-1<br>0<br>1<br>59<br>60<br>61<br>99<br>100<br>101</p>
+</blockquote>
+<ul>
+<li><strong>错误推测方法</strong> 错误推测方法是指基于对被测软件系统设计的理解、过去的经验和个人的自觉，推测出软件可能存在的缺陷，从而有针对性地设计测试用例的方法，这里强调的是对被测软件的需求理解以及设计实现的细节把握，还有个人的能力。在企业的具体实践中，通常会建立起常见缺陷知识库，在测试设计过程中，依据缺陷知识库作为checklist，来优化测试设计。同时，还需要组织和鼓励测试工程师之间的技术和技术交流，减少测试设计中可能存在盲点</li>
+</ul>
+<blockquote>
+<p>某些测试用例可能更依赖于过去发生过的问题，和测试人员的个人能力<br>举例：<br>web界面的GUI功能测试，需要对浏览器的缓存与否进行分支考虑<br>web service的API测试，需要考虑被测试的API所依赖的第三方API出错的情况下，所应有的处理逻辑<br>单元测试，需要考虑被测函数的输入参数为空的情况下，所应有的处理逻辑</p>
+</blockquote>
+<pre><code>- 测试基础架构比较成熟的大中型企业中，通常还会依据缺陷知识库，自动整理生成数据驱动测试中的测试输入数据
+</code></pre><h2 id="以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项"><a href="#以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项" class="headerlink" title="以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项"></a>以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项</h2><p>最核心的测试点是验证软件对需求的满足程度，这就要求QA人员对被测软件的需求有深入的理解。而理解需求最好的办法则是QA人员在需求分析和设计阶段就开始介入，因为这个阶段是理解和掌握软件的原始业务需求的最好时机。</p>
+<h2 id="朴素的测试用例设计流程"><a href="#朴素的测试用例设计流程" class="headerlink" title="朴素的测试用例设计流程"></a>朴素的测试用例设计流程</h2><p>首先搞清楚每一个业务需求说对应的多个软件功能需求点 –&gt; 分析出每个软件功能需求点对应的多个测试需求点 –&gt; 针对每个测试需求点设计测试用例</p>
+<h2 id="回到测试用例本身的设计"><a href="#回到测试用例本身的设计" class="headerlink" title="回到测试用例本身的设计"></a>回到测试用例本身的设计</h2><p>需要注意的关键点：</p>
+<ul>
+<li>从软件功能的需求触发，全面而细致地识别出测试需求，这会直接关系到测试用例的覆盖率</li>
+<li>对于识别出的每个测试需求点，要综合运用等价类划分和边界值分析，和错误推测方法来全面而灵活地设计测试用例</li>
+</ul>
+<h2 id="有关用例设计的其他经验总结"><a href="#有关用例设计的其他经验总结" class="headerlink" title="有关用例设计的其他经验总结"></a>有关用例设计的其他经验总结</h2><p>作为测试人员，只有深入理解被测软件的架构，才能设计出更加有目标性的测试用例集合，去发现系统边界和系统集成中的潜在缺陷。</p>
+<p>不可用开发代码的实现为依据设计测试用例或自动化测试代码，应该依据原始需求来设计。</p>
+<p>需要引入需求覆盖率和代码覆盖率来衡量测试执行的完备性，并以此为依据寻找遗漏的测试点。</p>
+<h2 id="更多的补充"><a href="#更多的补充" class="headerlink" title="更多的补充"></a>更多的补充</h2><p>测试用例本身也具有和被测试软件版本一一对应的版本属性，也即需要在软件需求变更等情况下，对测试用例进行更新和维护。同时测试用例的维护工作也是测试工作的重要组成部分，其花费的时间，也需要计入测试设计的整体考虑。</p>
+<p>测试用例的语言描写，需要简洁而明确，在测试部门可以使用一些公有缩写约定来简化测试用例的书写，提高测试用例的开发速度。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/07/05/test-case-desigin-for-user-login/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -923,132 +1076,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/27/使用Git制作patch文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/27/使用Git制作patch文件/" itemprop="url">使用Git制作patch文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T22:04:12+08:00">
-                2018-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>项目中是用<a href="https://www.reviewboard.org/" target="_blank" rel="noopener">Review board</a>来做code review，用Git来管理代码，所以每次提交之前，需要把修改的代码做成patch文件，上传到Review board里去，再发给相关同事检查。</p>
-<p>这里简单记录下制作patch文件的过程。</p>
-<p>假设大家一直工作在master分支上，现在当前目录下的repo已经<code>git pull</code>到最新，同时需要提交的代码已经完成，检查<code>git status</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with <span class="string">'origin/master'</span>.</span><br><span class="line">Untracked files:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to include <span class="keyword">in</span> what will be committed)</span><br><span class="line"></span><br><span class="line">	change.txt</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use <span class="string">"git add"</span> to track)</span><br></pre></td></tr></table></figure>
-<p>执行<code>git branch patch</code>生成一个名为patch的分支，再<code>git checkout patch</code>切换到patch分支。</p>
-<p>在patch分支上<code>git add .</code>，继续<code>git commit</code>，完成commit后再执行<code>git format-patch -M master</code>生成patch文件，其含义是将当前分支上的，所有的，更加新的提交（和master分支相比）打包成patch文件，然后可见当前目录下会生成一个<code>.patch</code>文件。</p>
-<p>然后这个patch文件即可上交了，最后需要把当前repo拆回原状，注意当前分支还是patch分支，需要先<code>get reset --soft 上次commit的hash</code>，再继续<code>git reset HEAD .</code>，最后切回最开始工作的master分支即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1103,7 +1130,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

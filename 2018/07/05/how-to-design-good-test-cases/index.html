@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Test Case," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="“好的”测试用例所具备的特点 整体完备性：好的测试用例是一个完备的整体，是有效测试用例组成的集合，能够完全覆盖测试需求 等价类划分的准确性：每个等价类都能保证只要其中一个输入通过，其他输入也一定测试通过 等价类集合的完备性：需要保证所有可能的边界值和边界条件都已经正确识别  三种最常用的测试用例设计方法 等价类划分方法  1234567891011举例：学生信息系统的录入页面中“考试成绩”一项。成">
+<meta name="keywords" content="Test Case">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎么样设计更好的测试用例">
+<meta property="og:url" content="http://python012.github.io/2018/07/05/how-to-design-good-test-cases/index.html">
+<meta property="og:site_name" content="小码奔腾">
+<meta property="og:description" content="“好的”测试用例所具备的特点 整体完备性：好的测试用例是一个完备的整体，是有效测试用例组成的集合，能够完全覆盖测试需求 等价类划分的准确性：每个等价类都能保证只要其中一个输入通过，其他输入也一定测试通过 等价类集合的完备性：需要保证所有可能的边界值和边界条件都已经正确识别  三种最常用的测试用例设计方法 等价类划分方法  1234567891011举例：学生信息系统的录入页面中“考试成绩”一项。成">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-07-05T15:21:50.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怎么样设计更好的测试用例">
+<meta name="twitter:description" content="“好的”测试用例所具备的特点 整体完备性：好的测试用例是一个完备的整体，是有效测试用例组成的集合，能够完全覆盖测试需求 等价类划分的准确性：每个等价类都能保证只要其中一个输入通过，其他输入也一定测试通过 等价类集合的完备性：需要保证所有可能的边界值和边界条件都已经正确识别  三种最常用的测试用例设计方法 等价类划分方法  1234567891011举例：学生信息系统的录入页面中“考试成绩”一项。成">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://python012.github.io/2018/07/05/how-to-design-good-test-cases/"/>
+
+
+
+
+
+  <title>怎么样设计更好的测试用例 | 小码奔腾</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小码奔腾</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录一些和自动化测试、CI有关的想法</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/07/05/how-to-design-good-test-cases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">怎么样设计更好的测试用例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T23:10:00+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="“好的”测试用例所具备的特点"><a href="#“好的”测试用例所具备的特点" class="headerlink" title="“好的”测试用例所具备的特点"></a>“好的”测试用例所具备的特点</h2><ul>
+<li><strong>整体完备性</strong>：好的测试用例是一个完备的整体，是有效测试用例组成的集合，能够完全覆盖测试需求</li>
+<li><strong>等价类划分的准确性</strong>：每个等价类都能保证只要其中一个输入通过，其他输入也一定测试通过</li>
+<li><strong>等价类集合的完备性</strong>：需要保证所有可能的边界值和边界条件都已经正确识别</li>
+</ul>
+<h2 id="三种最常用的测试用例设计方法"><a href="#三种最常用的测试用例设计方法" class="headerlink" title="三种最常用的测试用例设计方法"></a>三种最常用的测试用例设计方法</h2><ul>
+<li><strong>等价类划分方法</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">举例：学生信息系统的录入页面中“考试成绩”一项。</span><br><span class="line"></span><br><span class="line">成绩的取值范围是0~100之间的整数，考试成绩及格的分数线是60.</span><br><span class="line"></span><br><span class="line">有效等价类1：0-59之间的任意整数</span><br><span class="line">有效等价类2：59-100之间的任意整数</span><br><span class="line"></span><br><span class="line">无效等价类1：小于0的负数</span><br><span class="line">无效等价类2：大于100的整数</span><br><span class="line">无效等价类3：0-100之间的任何浮点数</span><br><span class="line">无效等价类4：其他任意非数字字符</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>边界值分析方法</strong> 边界值分析是对等价类划分的补充，从工程实践经验中可以发现，大量的错误发生在输入输出的边界值上，所以需要对边界值进行重点测试。通常选取正好等于、刚刚大于、刚刚小于边界的值，作为测试数据。针对上面的学生信息系统的例子，选取的边界值数据应该包括：</li>
+</ul>
+<blockquote>
+<p>-1<br>0<br>1<br>59<br>60<br>61<br>99<br>100<br>101</p>
+</blockquote>
+<ul>
+<li><strong>错误推测方法</strong> 错误推测方法是指基于对被测软件系统设计的理解、过去的经验和个人的自觉，推测出软件可能存在的缺陷，从而有针对性地设计测试用例的方法，这里强调的是对被测软件的需求理解以及设计实现的细节把握，还有个人的能力。在企业的具体实践中，通常会建立起常见缺陷知识库，在测试设计过程中，依据缺陷知识库作为checklist，来优化测试设计。同时，还需要组织和鼓励测试工程师之间的技术和技术交流，减少测试设计中可能存在盲点</li>
+</ul>
+<blockquote>
+<p>某些测试用例可能更依赖于过去发生过的问题，和测试人员的个人能力<br>举例：<br>web界面的GUI功能测试，需要对浏览器的缓存与否进行分支考虑<br>web service的API测试，需要考虑被测试的API所依赖的第三方API出错的情况下，所应有的处理逻辑<br>单元测试，需要考虑被测函数的输入参数为空的情况下，所应有的处理逻辑</p>
+</blockquote>
+<pre><code>- 测试基础架构比较成熟的大中型企业中，通常还会依据缺陷知识库，自动整理生成数据驱动测试中的测试输入数据
+</code></pre><h2 id="以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项"><a href="#以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项" class="headerlink" title="以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项"></a>以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项</h2><p>最核心的测试点是验证软件对需求的满足程度，这就要求QA人员对被测软件的需求有深入的理解。而理解需求最好的办法则是QA人员在需求分析和设计阶段就开始介入，因为这个阶段是理解和掌握软件的原始业务需求的最好时机。</p>
+<h2 id="朴素的测试用例设计流程"><a href="#朴素的测试用例设计流程" class="headerlink" title="朴素的测试用例设计流程"></a>朴素的测试用例设计流程</h2><p>首先搞清楚每一个业务需求说对应的多个软件功能需求点 –&gt; 分析出每个软件功能需求点对应的多个测试需求点 –&gt; 针对每个测试需求点设计测试用例</p>
+<h2 id="回到测试用例本身的设计"><a href="#回到测试用例本身的设计" class="headerlink" title="回到测试用例本身的设计"></a>回到测试用例本身的设计</h2><p>需要注意的关键点：</p>
+<ul>
+<li>从软件功能的需求触发，全面而细致地识别出测试需求，这会直接关系到测试用例的覆盖率</li>
+<li>对于识别出的每个测试需求点，要综合运用等价类划分和边界值分析，和错误推测方法来全面而灵活地设计测试用例</li>
+</ul>
+<h2 id="有关用例设计的其他经验总结"><a href="#有关用例设计的其他经验总结" class="headerlink" title="有关用例设计的其他经验总结"></a>有关用例设计的其他经验总结</h2><p>作为测试人员，只有深入理解被测软件的架构，才能设计出更加有目标性的测试用例集合，去发现系统边界和系统集成中的潜在缺陷。</p>
+<p>不可用开发代码的实现为依据设计测试用例或自动化测试代码，应该依据原始需求来设计。</p>
+<p>需要引入需求覆盖率和代码覆盖率来衡量测试执行的完备性，并以此为依据寻找遗漏的测试点。</p>
+<h2 id="更多的补充"><a href="#更多的补充" class="headerlink" title="更多的补充"></a>更多的补充</h2><p>测试用例本身也具有和被测试软件版本一一对应的版本属性，也即需要在软件需求变更等情况下，对测试用例进行更新和维护。同时测试用例的维护工作也是测试工作的重要组成部分，其花费的时间，也需要计入测试设计的整体考虑。</p>
+<p>测试用例的语言描写，需要简洁而明确，在测试部门可以使用一些公有缩写约定来简化测试用例的书写，提高测试用例的开发速度。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Test-Case/" rel="tag"># Test Case</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/05/test-case-desigin-for-user-login/" rel="next" title="有关用户登录场景的测试用例设计">
+                <i class="fa fa-chevron-left"></i> 有关用户登录场景的测试用例设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="commenthub_thread"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/python012.png"
+                alt="Reed Xia" />
+            
+              <p class="site-author-name" itemprop="name">Reed Xia</p>
+              <p class="site-description motion-element" itemprop="description">记录一些和自动化测试、CI有关的想法</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/python012" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:python012@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#“好的”测试用例所具备的特点"><span class="nav-number">1.</span> <span class="nav-text">“好的”测试用例所具备的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三种最常用的测试用例设计方法"><span class="nav-number">2.</span> <span class="nav-text">三种最常用的测试用例设计方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项"><span class="nav-number">3.</span> <span class="nav-text">以面向终端用户的GUI测试来讨论测试用例设计的流程、注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素的测试用例设计流程"><span class="nav-number">4.</span> <span class="nav-text">朴素的测试用例设计流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回到测试用例本身的设计"><span class="nav-number">5.</span> <span class="nav-text">回到测试用例本身的设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有关用例设计的其他经验总结"><span class="nav-number">6.</span> <span class="nav-text">有关用例设计的其他经验总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多的补充"><span class="nav-number">7.</span> <span class="nav-text">更多的补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Reed Xia</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+      <script type="text/javascript">
+        var commenthub_id = '2948441';
+        var commenthub_website = 'https://python012.github.io/';
+        var commenthub_identifier = '2018/07/05/how-to-design-good-test-cases/';
+        var commenthub_url = 'http://python012.github.io/2018/07/05/how-to-design-good-test-cases/';
+        var commenthub_title = '怎么样设计更好的测试用例';
+        var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = 'https://commenthub.herokuapp.com/js/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      </script>
+  
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
