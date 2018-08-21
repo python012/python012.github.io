@@ -233,6 +233,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/13/重构一份应用pytest框架的测试代码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/13/重构一份应用pytest框架的测试代码/" itemprop="url">重构一份应用pytest框架的测试代码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-13T22:27:15+08:00">
+                2018-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>项目中有份API测试的代码的结构大致如下</p>
+<blockquote>
+<p>/api_test<br>    – test_device_api01_via_lan.py<br>    – test_device_api02_via_lan.py<br>    – test_device_api03_via_lan.py<br>    – test_device_api01_via_wan.py<br>    – test_device_api02_via_wan.py<br>    – test_device_api03_via_wan.py</p>
+</blockquote>
+<p>很容易猜到其实这里是重复的2份代码，只是因为执行测试的时候，有一份是通过lan测试，另一份是通过wan测试。每次修改代码，还需要把修改同步到相应的lan或者wan的代码上去……</p>
+<p>但是又不能简单的做个循环，把lan/wan的地址丢进去当参数，因为项目目前运行是需要收集JUnit格式的测试报告的，优化代码后，还需要拿到和之前一样或者差不多的报告，好显示在Jenkins上。</p>
+<p>今天实在不能忍了，花点时间研究了下，有如下解决办法。</p>
+<p>项目根目录上新建一个conftest.py，内容如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pytest_generate_tests</span><span class="params">(metafunc)</span>:</span></span><br><span class="line">    idlist = []</span><br><span class="line">    argvalues = []</span><br><span class="line">    <span class="keyword">for</span> scenario <span class="keyword">in</span> metafunc.cls.scenarios:</span><br><span class="line">        idlist.append(scenario[<span class="number">0</span>])</span><br><span class="line">        items = scenario[<span class="number">1</span>].items()</span><br><span class="line">        argnames = [x[<span class="number">0</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]</span><br><span class="line">        argvalues.append(([x[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> items]))</span><br><span class="line">    metafunc.parametrize(argnames, argvalues, ids=idlist, scope=<span class="string">"class"</span>)</span><br><span class="line"></span><br><span class="line">scenario1 = (<span class="string">'LAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.baidu.com'</span>&#125;)</span><br><span class="line">scenario2 = (<span class="string">'WAN'</span>, &#123;<span class="string">'URL'</span>: <span class="string">'www.sohu.com'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>tests目录下任一个test模块，大致做如下修改</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> conftest <span class="keyword">import</span> scenario1, scenario2</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestLogin</span><span class="params">(object)</span>:</span></span><br><span class="line">    scenarios = [scenario1, scenario2]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_01</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"www"</span> <span class="keyword">in</span> URL</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_02</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"ok"</span> == <span class="string">"ok"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login_03</span><span class="params">(self, URL)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="string">"sohu"</span> <span class="keyword">in</span> URL</span><br></pre></td></tr></table></figure>
+<p>然后执行以上测试的时候，虽然代码里只写了3个测试，实际上pytest会生成以下6个测试，生成的JUnit测试报告也会有这6个测试的测试结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">rx:pytest_proj reed$ pytest --collect-only tests/test_api01.py</span><br><span class="line">============= <span class="built_in">test</span> session starts ======</span><br><span class="line">platform darwin -- Python 3.6.5, pytest-3.5.1, py-1.5.3, pluggy-0.6.0</span><br><span class="line">rootdir: /Users/reed/Documents/dev/pytest_proj, inifile:</span><br><span class="line">collected 6 items</span><br><span class="line">&lt;Module <span class="string">'tests/test_api01.py'</span>&gt;</span><br><span class="line">  &lt;Class <span class="string">'TestLogin'</span>&gt;</span><br><span class="line">    &lt;Instance <span class="string">'()'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[LAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_01[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_02[WAN]'</span>&gt;</span><br><span class="line">      &lt;Function <span class="string">'test_login_03[WAN]'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/05/08/pytest测试框架中的setup和tearDown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -851,142 +983,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/04/14/Python的单元测试unittest中的Mock使用小结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/14/Python的单元测试unittest中的Mock使用小结/" itemprop="url">Python的单元测试unittest中的Mock使用小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-14T23:17:45+08:00">
-                2018-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Part-One"><a href="#Part-One" class="headerlink" title="Part One"></a>Part One</h1><p>前面一篇博文简单说了使用<code>unittest.mock</code>对无返回值的函数做单元测试，这里是更多一些例子的总结。</p>
-<h2 id="被测函数中使用到了input需要自动化输入"><a href="#被测函数中使用到了input需要自动化输入" class="headerlink" title="被测函数中使用到了input需要自动化输入"></a>被测函数中使用到了input需要自动化输入</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_input</span><span class="params">()</span>:</span></span><br><span class="line">    name = input(<span class="string">"Enter your name: "</span>)</span><br><span class="line">    print(<span class="string">'Your name is &#123;&#125;'</span>.format(name))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_input</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">        mocked_input.side_effect = (<span class="string">'Jo'</span>,)  <span class="comment">#当input的时候会输入Jo</span></span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">            func_input()</span><br><span class="line">            mocked_print.assert_called_with(<span class="string">'Your name is Jo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h2 id="需要验证函数是否被“被测函数“调用"><a href="#需要验证函数是否被“被测函数“调用" class="headerlink" title="需要验证函数是否被“被测函数“调用"></a>需要验证函数是否被“被测函数“调用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">    func_2()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_2</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"It's func 2!"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func_1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> patch(<span class="string">'func_2'</span>) <span class="keyword">as</span> mocked_func_2:</span><br><span class="line">        func_1()</span><br><span class="line">        mocked_func_2.assert_called_once()  <span class="comment">#断言mocked_func_2被调用过一次，在执行func_1()后</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h2 id="mock-patch-和mock-patch-object-的区别"><a href="#mock-patch-和mock-patch-object-的区别" class="headerlink" title="mock.patch()和mock.patch.object()的区别"></a>mock.patch()和mock.patch.object()的区别</h2><p>这一块我还不是特别明白，搜索了下，大致区别如下</p>
-<blockquote>
-<p>mock.patch() doesn’t require that you import the object before patching, while mock.patch.object() does require that you import before patching</p>
-</blockquote>
-<p>有一个遗留问题，如下代码中，完全不能使用mock.patch()吗？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># py_unittest.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> TestCase</span><br><span class="line"><span class="keyword">from</span> unittest.mock <span class="keyword">import</span> patch</span><br><span class="line"><span class="keyword">from</span> unittest <span class="keyword">import</span> main</span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'My name is '</span> + self.name)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        mother = input(<span class="string">"Enter mother's name: "</span>)</span><br><span class="line">        father = input(<span class="string">"Enter father's name: "</span>)</span><br><span class="line">     </span><br><span class="line">        print(<span class="string">"&#123;&#125;'s parents are &#123;&#125; and &#123;&#125;."</span>.format(self.name, mother, father))</span><br><span class="line">        self.fake_func()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fake_func</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FuncTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_print_parents</span><span class="params">(self)</span>:</span></span><br><span class="line">        john = Person(<span class="string">'John'</span>)</span><br><span class="line">             </span><br><span class="line">        <span class="keyword">with</span> patch(<span class="string">'builtins.input'</span>) <span class="keyword">as</span> mocked_input:</span><br><span class="line">            mocked_input.side_effect = (<span class="string">'Jo'</span>, <span class="string">'Lee'</span>)</span><br><span class="line">            <span class="keyword">with</span> patch(<span class="string">'builtins.print'</span>) <span class="keyword">as</span> mocked_print:</span><br><span class="line">                <span class="keyword">with</span> patch.object(Person, <span class="string">"fake_func"</span>) <span class="keyword">as</span> mocked_fake_func:</span><br><span class="line">                <span class="comment"># with patch('Person.fake_func') as mocked_fake_func: 启用这里的话，会报</span></span><br><span class="line">                <span class="comment"># 错 ModuleNotFoundError: No module named 'Person'</span></span><br><span class="line">                    john.print_parents()</span><br><span class="line">                    mocked_print.assert_called_with(<span class="string">"John's parents are Jo and Lee."</span>)</span><br><span class="line">                    mocked_fake_func.assert_called_once()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h1 id="Part-Two"><a href="#Part-Two" class="headerlink" title="Part Two"></a>Part Two</h1><p>今天研究了下，问题解决了，关键还是一个查找module的问题。</p>
-<h2 id="小结一个import的基础用法"><a href="#小结一个import的基础用法" class="headerlink" title="小结一个import的基础用法"></a>小结一个import的基础用法</h2><p>很多源代码里看到这样的用法，<code>from flask import Flask</code>，<code>from models.item import ItemModel</code>，然后当我自己创建了一个名字叫person的module的时候，如果我也想在其他代码里方便的使用<code>from person import Person</code>来导入<code>Person</code>类的话，可以这样做。</p>
-<p>创建person目录，同时目录下有<code>__init__.py</code>和<code>person.py</code>两个文件，</p>
-<p><img src="/images/20180416203026947.png" alt=""></p>
-<p><code>person.py</code>中定义了一个<code>Person</code>类，有<code>__init__.py</code>文件存在，则会定义这个目录是一个module，同时文件内容如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">__all__ = [<span class="string">'Person'</span>,]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .person <span class="keyword">import</span> Person</span><br></pre></td></tr></table></figure>
-<p>这样在其他module或者python代码里，就可以通过<code>from person import Person</code>来导入<code>Person</code>类了，假如<code>__init__.py</code>是空的，则需要使用<code>from person.person import Person</code>来导入<code>Person</code>类。</p>
-<p>回到最开始mock.patch()的问题，解决代码可见于segmentfault上问题<a href="https://segmentfault.com/q/1010000014397382/a-1020000014409800" target="_blank" rel="noopener">关于mock.patch()和mock.patch.object()的区别的问题</a>的回答。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1041,7 +1037,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1054,7 +1050,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

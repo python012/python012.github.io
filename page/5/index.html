@@ -233,6 +233,136 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Reed Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/python012.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小码奔腾">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/23/Jenkins执行完构建后testng插件找不到testng-results-xml/" itemprop="url">Jenkins执行完构建后testng插件找不到testng-results.xml</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-23T21:34:47+08:00">
+                2018-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>昨天把Jenkins(ver. 2.107.1，此处注意，这几乎是一个最新的Jenkins版本)安装在mac上，并建了一个简单的job，来体验下Jenkins+Maven+TestNG的效果，遇到这样一个有意思的问题，就是使用默认设置，也配置了TestNG的测试结果报告插件。</p>
+<p><img src="/images/20180323203141603.png" alt=""></p>
+<p>当Jenkins构建执行后，也可以正常找到指定的pom.xml文件，并执行Maven命令mvn test -PmyTestngProfile.xml来启动测试，但是测试完成后，却显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TestNG Reports Processing: START</span><br><span class="line">Looking for TestNG results report in workspace using pattern: **/target/surefire-reports/testng-results.xml</span><br><span class="line">Did not find any matching files.</span><br></pre></td></tr></table></figure>
+<p>花了点时间研究下，在Configure里的TestNG XML report pattern里，只有设置为完全绝对路径的时候，才能找到testng-results.xml。</p>
+<p>揭晓答案吧，其实就是当构建进行到去寻找testng-results.xml的时候，当前目录并不是最开始的项目代码目录（pom.xml所在的目录），而是下面这个Jenkins在mac上安装后的一个默认workspace，然后以此为当前目录继续构建工作。</p>
+<blockquote>
+<p>/Users/Shared/Jenkins/Home/workspace/myProject</p>
+</blockquote>
+<p>解决办法是去构建的Configure -&gt; General -&gt; Advanced… -&gt; Use custom workspace，也即使用自定义的工作空间目录，把这个目录设置为项目代码的真实地址，然后构建就会以此为当前目录，然后就可以顺利找到testng的报告文件了。</p>
+<p><img src="/images/20180323202739548.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://python012.github.io/2018/03/16/小结WEB接口测试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -895,129 +1025,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://python012.github.io/2017/12/05/用shell中用jq解析json遇到compile-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Reed Xia">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/python012.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小码奔腾">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/05/用shell中用jq解析json遇到compile-error/" itemprop="url">用shell中用jq解析json遇到compile error</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-05T23:18:12+08:00">
-                2017-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前几天接到任务，需要完善一段shell写的测试脚本，其中的问题最后归结成这样一个问题，已知如下json格式的字符串：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    <span class="attr">"up"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"pending"</span>: <span class="literal">false</span>,  </span><br><span class="line">    <span class="attr">"available"</span>: <span class="literal">true</span>,  </span><br><span class="line">    <span class="attr">"autostart"</span>: <span class="literal">true</span>,  </span><br><span class="line">    <span class="attr">"dynamic"</span>: <span class="literal">false</span>,  </span><br><span class="line">    <span class="attr">"uptime"</span>: <span class="number">5217</span>,  </span><br><span class="line">    <span class="attr">"ipv4-address"</span>: [  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="attr">"address"</span>: <span class="string">"192.168.59.150"</span>,  </span><br><span class="line">            <span class="attr">"mask"</span>: <span class="number">24</span>  </span><br><span class="line">        &#125;  </span><br><span class="line">    ],  </span><br><span class="line">    <span class="attr">"ipv6-address"</span>: [  </span><br><span class="line">          </span><br><span class="line">    ],  </span><br><span class="line">    <span class="attr">"ipv6-prefix"</span>: [  </span><br><span class="line">          </span><br><span class="line">    ],  </span><br><span class="line">    <span class="attr">"ipv6-prefix-assignment"</span>: [  </span><br><span class="line">          </span><br><span class="line">    ],  </span><br><span class="line">    <span class="attr">"route"</span>: [  </span><br><span class="line">          </span><br><span class="line">    ]  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>目标是需要解析获得ipv4-address.address的值，网上搜了下，一般shell命令行里推荐使用jq，试用后发现一个有意思的问题，仿佛jq不太喜欢field name中间有dash，也就是那一小段横线，执行<code>cat data.json &gt; jq -r &#39;.ipv4-address.address&#39;</code> 就会报compile error。</p>
-<p>进一步搜索，用bing的国际版终于找到相关页面，见<a href="https://github.com/stedolan/jq/issues/38" target="_blank" rel="noopener">https://github.com/stedolan/jq/issues/38</a>，也即这是jq的bug。可用的解决方案最终如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat data.json &gt; jq -r <span class="string">'.["ipv4-address"][0].address'</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1072,7 +1079,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1085,7 +1092,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
