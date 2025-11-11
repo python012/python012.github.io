@@ -13,34 +13,33 @@ description: "当前目录下有文件log，内容大致如下 122015-11-29 5414
   <span class="tags">🏷️ 标签：<span class="tag">Shell</span></span>
 </div>
 
-当前目录下有文件log，内容大致如下
+当前目录下有文件 logFile1 ，内容大致如下
 
 ```text
 2015-11-29 54144a04ad4asd044a4s CSeq:1 INVITE sip:2112@sipserver.com:5060 SIP/2.0
 2015-11-29 54144a04ad4asd045457 CSeq:1 INVITE SIP/2.0 200 OK
+```
 
-```text
 
-将此log文件做精简，创建文件minilog内容如下
+将此log文件做精简，创建文件 minilog 内容如下
 
 ```text
 1 INVITE sip:2112@sipserver.com:5060 SIP/2.0
 1 INVITE SIP/2.0 200 OK
-
-```text
+```
 
 Shell脚本代码如下
 
 ```bash
 #!/bin/sh
 
-functionshortLog() {
-whilereadline
-do
-echo${line#*CSeq:}>>$2
-done<$1
+function shortLog() {
+  while readline
+  do
+    echo${line#*CSeq:}>>$2
+  done<$1
 }
 
-shortLoglogminiLog
+shortLog logFile1 miniLog
 
 ```

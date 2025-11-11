@@ -23,118 +23,115 @@ description: "Part One一组应用了Junit4的测试，需要增加一个动态�
 下面代码就实现了一个JUnit4中的rule。
 
 ```java
-packagecom.ibm.robot.web.util;
+package com.ibm.robot.web.util;
 
-importcom.ibm.robot.web.util.WebPropertiesLoader;
-importorg.junit.rules.TestRule;
-importorg.junit.runner.Description;
-importorg.junit.runners.model.Statement;
+import com.ibm.robot.web.util.WebPropertiesLoader;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
-publicclassNotRun5gCaseimplementsTestRule{
-@Override
-publicStatementapply(finalStatement base,finalDescription description){
-returnnewStatement() {
-@Override
-publicvoidevaluate()throwsThrowable{
-String methodName = description.getMethodName();
-loader =newWebPropertiesLoader();
-String ap_2g = loader.getString("WIFI.ap.2G","unknow");
-String ap_5g = loader.getString("WIFI.ap.5G","unknow");
-if(!(ap_2G.equals(ap_5G) && methodName.contains("5GHz"))) {
-base.evaluate();
-}
-}
-};
-}
-}
+public class NotRun5gCaseimplementsTestRule{
+  @Override
+  public Statementapply(finalStatement base,finalDescription description) {
+    return newStatement() {
 
-```text
+      @Override
+      public void evaluate()throwsThrowable{
+        String methodName = description.getMethodName();
+        loader =newWebPropertiesLoader();
+        String ap_2g = loader.getString("WIFI.ap.2G","unknow");
+        String ap_5g = loader.getString("WIFI.ap.5G","unknow");
+
+        if(!(ap_2G.equals(ap_5G) && methodName.contains("5GHz"))) {
+          base.evaluate();
+        }
+      }
+    };
+  }
+}
+```
 
 从代码中可见，这条rule规定当ap_2g的值与ap_5g相等，同时test的方法名中包含5GHz的话，则不执行这个test。 然后把这条rule应用到具体的test中即可。
 
-```text
-publicclassWiFiTest{
+```java
+public classWiFiTest{
 
-@Rule
-publicTestRule notRun5gCase =newNotRun5gCase ();
+  @Rule
+  public TestRule notRun5gCase =newNotRun5gCase ();
 
-@Before
-publicvoidsetUp()throwsException{
-System.out.println("setup actions");
+  @Before
+  public void setUp()throwsException{
+    System.out.println("setup actions");
+  }
+
+  @After
+  public void tearDown()throwsException{
+    System.out.println("tearDown actions");
+  }
+
+  @Test
+  public void testWiFi2GHz(){
+  //to test wi-fi 2g
+  }
+
+  @Test
+  public void testWiFi5GHz(){
+  //to test wi-fi 5g
+  }
 }
-
-@After
-publicvoidtearDown()throwsException{
-System.out.println("tearDown actions");
-}
-
-@Test
-publicvoidtestWiFi2GHz(){
-//to test wi-fi 2g
-}
-
-@Test
-publicvoidtestWiFi5GHz(){
-//to test wi-fi 5g
-}
-}
-
-```bash
+```
 
 # Part Two
 
 其实还是上次的问题，在上一篇中提到解决办法是应用JUnit4里的Rule来实现，今天继续研究了下，觉得还是不够好，因为实际需求是，需要在运行测试的时候去动态skip某些test，今天请教了下一位朋友，就有了如下代码：
 
-```text
-packagecom.junit4test;
+```java
+package com.junit4test;
 
-importorg.junit.Test;
-importorg.junit.runner.RunWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith(MyRunner.class)
-publicclassAprilTest{
+public classAprilTest{
 
-@Test
-publicvoidtest1(){
-assert("abc".equals("abc"));
+  @Test
+  public voidtest1(){
+    assert("abc".equals("abc"));
+  }
+
+  @Test
+  public voidtest2(){
+    assert("abc".equals("abc"));
+  }
+
+  @Test
+  public voidtest3(){
+    assert("abc".equals("abc"));
+  }
 }
-
-@Test
-publicvoidtest2(){
-assert("abc".equals("abc"));
-}
-
-@Test
-publicvoidtest3(){
-assert("abc".equals("abc"));
-}
-
-}
-
 ```
 
 ```java
-packagecom.junit4test;
+package com.junit4test;
 
-importorg.junit.runners.BlockJUnit4ClassRunner;
-importorg.junit.runners.model.FrameworkMethod;
-importorg.junit.runners.model.InitializationError;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
 
-publicclassMyRunnerextendsBlockJUnit4ClassRunner{
+public class MyRunner extends BlockJUnit4ClassRunner{
 
-publicMyRunner(Class<?> klass)throwsInitializationError{
-super(klass);
+  public MyRunner(Class<?> klass)throws InitializationError{
+    super(klass);
+  }
+
+  @Override
+  protected boolean isIgnored(FrameworkMethod child){
+    if(child.getName().contains("3")) {// 此处可做动态判断，来觉得是否skip该test
+      return true;
+    } else {
+      return  false;
+    }
+  }
+
 }
-
-@Override
-protectedbooleanisIgnored(FrameworkMethod child){
-if(child.getName().contains("3")) {// 此处可做动态判断，来觉得是否skip该test
-returntrue;
-}else{
-returnfalse;
-}
-}
-
-}
-
 ```

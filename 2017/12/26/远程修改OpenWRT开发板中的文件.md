@@ -27,18 +27,17 @@ description: "这两天收到一个任务，某接口测试的测试用例需要
 测试中是在基础测试框架中的 control.sh 里执行 python3 -m py.test –junitxml=./result/results.xml 来把测试拉起来，于是就查找python里做远程ssh登录执行Linux的方法，找到paramiko模块，最后实现代码大致以下，sed那一段挺麻烦，不过总算是找到解决方法了。
 
 ```python
-defsshclient_execmd(cmd):
-try:
-s = paramiko.SSHClient()
-s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-s.connect(hostname=list.host_ip, port=22, username=list.username, password=list.password,timeout=5)
-stdin, stdout, stderr = s.exec_command(command=cmd,timeout=30)
-returns,stdout
-exceptExceptionase:
-print(e)
-s.close()
-returns,None
+def sshclient_execmd(cmd):
+  try:
+    s = paramiko.SSHClient()
+    s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    s.connect(hostname=list.host_ip, port=22, username=list.username, password=list.password,timeout=5)
+    stdin, stdout, stderr = s.exec_command(command=cmd,timeout=30)
+    return s,stdout
+  except Exception as e:
+    print(e)
+    s.close()
+  return s,None
 
 sshclient_execmd('''sed -i '/^config.*firewall/a\        option blacklist '"'1'"'' /etc/config/fw''')
-
 ```
