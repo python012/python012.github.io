@@ -5,7 +5,7 @@
 
 ### 2025年
 
-- **"2025-11-11"** - [博客重启：从 Hexo 到 VitePress 的迁移之旅](/2025/11/11/blog-migration-to-vitepress)
+- **2025-11-11** - [博客重启：从 Hexo 到 VitePress 的迁移之旅](/2025/11/11/blog-migration-to-vitepress)
 
 ### 2018年
 
