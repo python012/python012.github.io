@@ -53,7 +53,7 @@ def collect_articles(base_dir):
     articles = []
     base_path = Path(base_dir)
     
-    for year_dir in ['2016', '2017', '2018']:
+    for year_dir in ['2016', '2017', '2018', '2025']:
         year_path = base_path / year_dir
         if not year_path.exists():
             continue
