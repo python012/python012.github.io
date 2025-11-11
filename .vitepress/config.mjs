@@ -19,7 +19,20 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'author', content: 'python012' }],
-    ['meta', { name: 'keywords', content: '自动化测试,Python,CI,Jenkins,Java' }]
+    ['meta', { name: 'keywords', content: '自动化测试,Python,CI,Jenkins,Java' }],
+    // Google Analytics
+    [
+      'script',
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-G3XT0Y998Z' }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G3XT0Y998Z');`
+    ]
   ],
   
   // 主题配置
