@@ -424,4 +424,4 @@ npm run docs:preview
 
 ---
 
-*本次博客迁移在 GitHub Copilot (Claude 3.5 Sonnet) 协助下完成。*
+*本次博客迁移在 GitHub Copilot (Claude 4.5 Sonnet) 协助下完成。*
