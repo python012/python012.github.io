@@ -1,0 +1,24 @@
+{
+  "name": "python012-blog",
+  "version": "1.0.0",
+  "description": "小码奔腾的技术博客 - 基于 VitePress",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "keywords": [
+    "blog",
+    "vitepress",
+    "测试",
+    "Python",
+    "Java",
+    "CI/CD"
+  ],
+  "author": "python012",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.0.0"
+  }
+}
