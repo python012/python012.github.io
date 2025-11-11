@@ -17,6 +17,17 @@
   color: var(--vp-c-text-2);
 }
 
+/* Page view counter */
+.page-views {
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+}
+
+.page-views span {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
 .article-meta .date,
 .article-meta .tags {
   display: flex;
