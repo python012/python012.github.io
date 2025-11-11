@@ -87,5 +87,14 @@ export default defineConfig({
       light: 'github-light',
       dark: 'github-dark'
     }
-  }
+  },
+
+  // 忽略死链接检查
+  ignoreDeadLinks: [
+    // 忽略本地开发服务器链接
+    /^http:\/\/localhost/,
+    // 忽略不存在的文件链接
+    './LICENSE',
+    './.github/PROJECT_ANALYSIS'
+  ]
 })
