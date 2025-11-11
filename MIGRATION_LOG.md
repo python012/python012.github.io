@@ -95,7 +95,7 @@ npm run docs:preview
 
 1. **安装 VitePress**
    ```bash
-   cd D:\dev3\python012.github.io
+   cd D:\dev\python012.github.io
    npm install
    ```
 

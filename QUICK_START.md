@@ -14,7 +14,7 @@
 ### 第 1 步：安装依赖（5分钟）
 
 ```cmd
-cd D:\dev3\python012.github.io
+cd D:\dev\python012.github.io
 npm install
 ```
 
