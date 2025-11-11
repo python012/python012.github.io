@@ -43,6 +43,7 @@ features:
 
 ## 📝 最近更新
 
+- **2025-11-11** - [博客重启：从 Hexo 到 VitePress 的迁移之旅](/2025/11/11/blog-migration-to-vitepress)
 - **2018-08-21** - [测试工程师的七项能力](/2018/08/21/7-import-skills-for-testing-enginers)
 - **2018-07-05** - [怎么样更好地设计测试用例](/2018/07/05/how-to-design-good-test-cases)
 - **2018-07-05** - [有关用户登录场景的测试用例设计](/2018/07/05/test-case-desigin-for-user-login)
@@ -52,9 +53,8 @@ features:
 - **2018-05-29** - [在云服务器上使用Python+Selenium+Jenkins搭建webUI测试](/2018/05/29/Setup-webUI-testing-with-Selenium-Python-Jenkins-Cloud-Server-0)
 - **2018-05-27** - [Java中的Mock测试框架Mockito](/2018/05/27/Java中的Mock测试框架Mockito)
 - **2018-05-27** - [使用Git制作patch文件](/2018/05/27/使用Git制作patch文件)
-- **2018-05-27** - [构建一个有Web Application的container](/2018/05/27/构建一个带Web-Application的container)
 
-[查看全部 33 篇文章 →](/archives)
+[查看全部 34 篇文章 →](/archives)
 
 ## 关于本站
 
