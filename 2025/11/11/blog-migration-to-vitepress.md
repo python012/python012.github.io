@@ -1,6 +1,6 @@
 ---
 title: "博客重启：从 Hexo 到 VitePress 的迁移之旅"
-date: "2025-11-11"
+date: 2025-11-11
 description: "记录7年后重启博客的完整迁移过程，从旧的 Hexo 静态站点迁移到现代化的 VitePress，包括技术选型、迁移步骤和后续维护指南"
 tags: ["VitePress", "博客迁移", "GitHub Pages", "CI/CD"]
 ---
@@ -421,3 +421,7 @@ npm run docs:preview
 - VitePress 官方文档：https://vitepress.dev/
 - GitHub Actions 文档：https://docs.github.com/en/actions
 - 本博客源码：https://github.com/python012/python012.github.io
+
+---
+
+*本次博客迁移在 GitHub Copilot (Claude 3.5 Sonnet) 协助下完成。*
